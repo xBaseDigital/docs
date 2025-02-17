@@ -3,7 +3,7 @@ title: XBD Account Setup
 layout: home
 permalink: /xbd-account-setup
 parent: Plug-ins and SDKs
-# nav_order: 2
+nav_order: 1
 ---
 
 # XBD Checkout Integration Guide
