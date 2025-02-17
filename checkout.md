@@ -2,6 +2,7 @@
 title: Checkout
 layout: home
 permalink: /checkout
+nav_order: 2
 ---
 
 # Web SDK 
