@@ -1,6 +1,7 @@
 ---
 title: Checkout
 layout: home
+permalink: /checkout
 ---
 
 # Web SDK 
