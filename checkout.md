@@ -2,6 +2,7 @@
 title: Checkout
 layout: home
 permalink: /checkout
+nav_order: 2
 ---
 
 # Web SDK 
@@ -24,7 +25,9 @@ git clone https://github.com/xBaseDigital/open-cart-plugin
 
 ### Usage Examples
 For every call that we do we re-authenticate and then do the following calls.
-```
+
+
+```js
 $auth_Data = array(
     'grant_type'            => 'client_credentials',
     'client_id'             => $this->config->get($this::CONFIG_XBDPAY_CLIENT_ID),
