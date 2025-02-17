@@ -1,3 +1,9 @@
+---
+title: Checkout
+layout: home
+permalink: /checkout
+---
+
 # Web SDK 
 
 ## PHP SDK - How to use XBD with PHP SDK to intergrate into OpenCart or directly.
