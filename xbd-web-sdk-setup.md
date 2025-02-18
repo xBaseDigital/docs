@@ -1,7 +1,7 @@
 ---
 title: Web SDK Setup
 layout: home
-permalink: /api-sdk-setup
+permalink: /web-sdk-setup
 parent: Plug-ins and SDKs
 nav_order: 3
 ---

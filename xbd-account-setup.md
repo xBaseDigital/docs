@@ -1,12 +1,12 @@
 ---
-title: XBD Account Setup
+title: XBD Account Key Setup
 layout: home
 permalink: /xbd-account-setup
 parent: Plug-ins and SDKs
 nav_order: 1
 ---
 
-# XBD Checkout Integration Guide
+# XBD Account Key Setup
 
 This guide outlines the essential steps for integrating the XBD API into your eCommerce store. Follow these instructions to Request your integration keys, and seamlessly incorporate XBD into your system.
 
