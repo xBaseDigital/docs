@@ -27,7 +27,6 @@ Click on <strong>Create</strong> Button to generate Your <strong>Client Id</stro
 Once created, <strong>Client Id</strong> and <strong>Client Secret</strong> will be generated like below
 
 ![Public Keys](/assets/doc/2.webp)
-![Integration Keys](/assets/doc/3.webp)
 
 
 <strong>Step 2</strong>: Navigate to the <strong>Merchant Id</strong> on top of the Settings page under <strong>Business/Store Settings </strong> section like below
