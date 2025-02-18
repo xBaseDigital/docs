@@ -12,7 +12,7 @@ We are redefining the digital asset payments space by leveraging our multi-licen
 Our products integrate remittance, FX, digital assets, e-commerce, and global banking services with local payment networks.
 
 
-### Why Use RocketFuel
+### Why Use Us
 
 - Low Transactions Fees
 - No Crypto Volatitlity Risk
