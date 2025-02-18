@@ -1,12 +1,12 @@
 ---
-title: API SDK Setup
+title: API Intergration
 layout: home
-permalink: /api-sdk-setup
+permalink: /api-intergration
 parent: Plug-ins and SDKs
 nav_order: 2
 ---
 
-# Integrating checkout directly to our API
+# Integrating checkout directly with our API
 
 To integrate XBD Checkout into your store, follow these steps.
 
