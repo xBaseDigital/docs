@@ -77,3 +77,19 @@ Endpoint  - `/External/pos/currencies`
 4. <strong>Step 4.</strong> To fetch payment QR code
 Method - <strong>`Get`<strong>
 Endpoint - `/External/pos/purchase/generate/qr`
+
+Payload Interaface
+
+```
+interface QrPayloadData {
+  orderId: string;
+  data: ICheckoutPayload;
+}
+
+interface ICheckoutPayload {
+  cryptoCurrency: string;
+  platformId: number;
+  lightningNetwork?: boolean;
+  customerEmail?: string;
+}
+```
