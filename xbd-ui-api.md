@@ -6,7 +6,7 @@ parent: Plug-ins and SDKs
 nav_order: 4
 ---
 
-# Build custom UI.
+# Build custom UI
 To build your own XBD Checkout into your store, follow these steps.
 Currenty you can do it via interacting with our API directly, but soon we will have an SDK to help you to interact via JS.
 
@@ -20,7 +20,6 @@ XBD will provide you with the following details necessary for order creation to 
 
 Sandbox URL – `https://pay-sandbox.xbase.digital/` <br />
 Production URL – `https://pay.xbase.digital/`
-
 
 ## Integration Steps
 
@@ -78,3 +77,19 @@ Endpoint  - `/External/pos/currencies`
 4. <strong>Step 4.</strong> To fetch payment QR code
 Method - <strong>`Get`<strong>
 Endpoint - `/External/pos/purchase/generate/qr`
+
+Payload Interaface
+
+```
+interface QrPayloadData {
+  orderId: string;
+  data: ICheckoutPayload;
+}
+
+interface ICheckoutPayload {
+  cryptoCurrency: string;
+  platformId: number;
+  lightningNetwork?: boolean;
+  customerEmail?: string;
+}
+```
