@@ -6,7 +6,7 @@ parent: Plug-ins and SDKs
 nav_order: 4
 ---
 
-# Build custom UI.
+# Build custom UI
 To build your own XBD Checkout into your store, follow these steps.
 Currenty you can do it via interacting with our API directly, but soon we will have an SDK to help you to interact via JS.
 
