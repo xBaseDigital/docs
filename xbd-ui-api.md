@@ -21,7 +21,6 @@ XBD will provide you with the following details necessary for order creation to 
 Sandbox URL – `https://pay-sandbox.xbase.digital/` <br />
 Production URL – `https://pay.xbase.digital/`
 
-
 ## Integration Steps
 
 <strong>Step 1.</strong> Call the <strong>Token API</strong> to obtain access token to authenticate the further apis
