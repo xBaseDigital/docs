@@ -2,7 +2,7 @@
 title: WordPress Setup
 layout: home
 permalink: /xbd-ui-api
-parent: WordPress Plugin
+parent: Plug-ins and SDKs
 nav_order: 5
 ---
 
