@@ -12,10 +12,10 @@ XBD will provide you with the following details necessary for order creation to 
 - [x]  Client Secret
 - [x]  Merchant Location ID
 
-# Download Plugin 
+## Download Plugin 
 [Download the plugin](https://raw.githubusercontent.com/xBaseDigital/docs/main/wordpress-plugin.zip)
 
-# How to Install WP plugin
+## How to Install WP plugin
 1. Log in to WordPress Dashboard.
 2. From the WordPress admin menu, navigate to Plugins > Add New.
 3. In the input field at the top right, enter the name of the plugin that you want to install and hit enter to search it.
