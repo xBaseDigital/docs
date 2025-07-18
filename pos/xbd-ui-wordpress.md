@@ -2,20 +2,24 @@
 title: WordPress Setup
 layout: home
 permalink: /xbd-ui-api
-parent: Plug-ins and SDKs
+parent: POS API
 nav_order: 5
 ---
 
 ## Prerequisites
-XBD will provide you with the following details necessary for order creation to function, which must be kept confidential on your side:
-- [x]  Client ID
-- [x]  Client Secret
-- [x]  Merchant Location ID
 
-## Download Plugin 
+XBD will provide you with the following details necessary for order creation to function, which must be kept confidential on your side:
+
+- [x] Client ID
+- [x] Client Secret
+- [x] Merchant Location ID
+
+## Download Plugin
+
 [Download the plugin](https://raw.githubusercontent.com/xBaseDigital/docs/main/wordpress-plugin.zip)
 
 ## How to Install WP plugin
+
 1. Log in to WordPress Dashboard.
 2. From the WordPress admin menu, navigate to Plugins > Add New.
 3. In the input field at the top right, enter the name of the plugin that you want to install and hit enter to search it.
