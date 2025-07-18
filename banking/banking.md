@@ -1,26 +1,42 @@
 ---
 title: Banking API
 layout: home
+permalink: /banking
 parent: Get Started
-nav_order: 2
+nav_order: 1
 ---
 
-# POS API
+# Banking API Documentation
 
-Banking Advanced payment technology powered by XBD PAY.
+This guide provides comprehensive details for integrating with the **XBD Money Banking API**. It covers endpoints for managing customer details, currencies, accounts, transactions, and beneficiaries, including endpoint descriptions, request formats, and response structures.
 
-We are redefining the digital asset payments space by leveraging our multi-licensed status to deliver seamless, cross-border payment and digital finance infrastructure.
+## Overview
 
-Our products integrate remittance, FX, digital assets, e-commerce, and global banking services with local payment networks.
+The XBD Money Banking API enables secure and efficient management of financial operations, leveraging advanced cryptographic authentication for enhanced security.
 
-### Why Use Us
+## API Key Authentication with ECDSA Signatures
 
-- Low Transactions Fees
-- No Crypto Volatility Risk
-- User-Friendly Payment Interface
-- No Chargebacks and Declines
-- Feature-Rich Merchant Dashboard
+The API uses **ECDSA (Elliptic Curve Digital Signature Algorithm)** with the **secp256k1 curve** for secure request authentication. This ensures that all API calls are verified and protected against unauthorized access.
 
----
+### Authentication Process
 
-## Plug-ins and SDKs
+- **Client Responsibilities**:
+  - Sign API requests using your **private key**.
+  - Include the signature in the request headers.
+- **Server Responsibilities**:
+  - Verify signatures using the corresponding **public key**.
+- **Key Storage**:
+  - All keys are stored in **DER format** and encoded as **base64 strings**.
+
+### Authentication Steps
+
+1. Generate an ECDSA key pair (private and public keys) using the secp256k1 curve.
+2. Securely store your private key and share the public key with XBD PAY.
+3. Sign each API request with your private key.
+4. Include the base64-encoded signature in the request headers.
+5. The server validates the signature against your public key to authenticate the request.
+
+## Getting Started
+
+- **Obtain API Keys**: Sign up at [XBD Money](https://dashboard.xbd.app/) and finish your onboarding to generate your ECDSA key pair.
+- **Contact Support**: Reach out to [support@xbdgroup.com](mailto:support@xbdgroup.com) for assistance.
