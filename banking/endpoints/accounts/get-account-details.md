@@ -10,6 +10,10 @@ nav_order: 2
 
 ### Endpoint Description
 
+{: .note }
+This endpoint retrieves detailed information about a specific account identified by the accountId. It provides customer details, account status, and currency information for the specified account.
+
+{: .Endpoint Description }
 This endpoint retrieves detailed information about a specific account identified by the accountId. It provides customer details, account status, and currency information for the specified account.
 
 ### Request
