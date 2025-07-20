@@ -10,3 +10,10 @@ logo: "/assets/xbdpay.png"
 
 heading_anchors: true
 color_scheme: dark
+
+footer_content: "Copyright &copy; 2025 XBD Group"
+
+callouts:
+  endpoint-desc:
+    title: Endpoint Description
+    color: blue

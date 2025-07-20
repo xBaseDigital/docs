@@ -8,8 +8,7 @@ nav_order: 1
 
 ## Get List of Accounts
 
-### Endpoint Description
-
+{: .endpoint-desc }
 This endpoint retrieves a list of accounts associated with the authenticated user. It provides detailed information about each account, including customer details, account status, and currency information.
 
 ### Request

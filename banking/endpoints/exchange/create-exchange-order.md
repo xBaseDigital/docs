@@ -8,8 +8,7 @@ nav_order: 2
 
 ## Create Exchange Order
 
-### Endpoint Description
-
+{: .endpoint-desc }
 This endpoint allows users to request a quote for a currency exchange order associated with a specific account.
 
 ### Request

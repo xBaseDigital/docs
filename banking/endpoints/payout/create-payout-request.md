@@ -8,8 +8,7 @@ nav_order: 1
 
 ## Create Payout Request
 
-### Endpoint Description
-
+{: .endpoint-desc }
 This endpoint initiates a payout to a specified beneficiary from a given account. It provides details about the payout transaction and its status.
 
 ### Request

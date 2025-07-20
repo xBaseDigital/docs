@@ -8,8 +8,7 @@ nav_order: 2
 
 ## Get Transaction Details
 
-### Endpoint Description
-
+{: .endpoint-desc }
 This endpoint retrieves detailed information about a specific transaction identified by the transactionId for a given account. It provides details about the transaction status, recipient, and associated risks.
 
 ### Request

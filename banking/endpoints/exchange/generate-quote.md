@@ -8,8 +8,7 @@ nav_order: 1
 
 ## Generate Quote
 
-### Endpoint Description
-
+{: .endpoint-desc }
 This endpoint allows users to request a currency exchange quote for a specified account. It provides details about source and target currencies, settlement date, and transaction type.
 
 ### Request

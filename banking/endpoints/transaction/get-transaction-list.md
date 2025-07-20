@@ -8,8 +8,7 @@ nav_order: 1
 
 ## Get Transaction List
 
-### Endpoint Description
-
+{: .endpoint-desc }
 This endpoint retrieves detailed information about all transactions.
 
 ### Request

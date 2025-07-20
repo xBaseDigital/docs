@@ -8,8 +8,7 @@ nav_order: 1
 
 ## Get Currencies
 
-### Endpoint Description
-
+{: .endpoint-desc }
 This endpoint retrieves a list of available currencies. It provides information about currency codes, symbols, and associated flags, useful for applications needing to display currency options or perform currency-related operations.
 
 ### Request

@@ -8,8 +8,7 @@ nav_order: 1
 
 ## Validate Beneficiary Details
 
-### Endpoint Description
-
+{: .endpoint-desc }
 This endpoint allows you to add a new beneficiary to a specified account. The request requires the account ID as part of the URL and a JSON payload containing the beneficiary's details.
 
 ### Request

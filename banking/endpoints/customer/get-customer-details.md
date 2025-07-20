@@ -8,8 +8,7 @@ nav_order: 1
 
 ## Get Customer Details
 
-### Endpoint Description
-
+{: .endpoint-desc }
 This endpoint retrieves the details of the currently authenticated customer. It provides information about the customer’s profile, account status, and associated company details.
 
 ### Request

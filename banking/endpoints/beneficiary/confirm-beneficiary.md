@@ -8,8 +8,7 @@ nav_order: 2
 
 ## Validate Beneficiary Details
 
-### Endpoint Description
-
+{: .endpoint-desc }
 This endpoint allows you to update the confirmation status of a specific beneficiary associated with a user account. By sending a PUT request to the specified URL, you can confirm or modify the beneficiary's status as needed.
 
 ### Request
