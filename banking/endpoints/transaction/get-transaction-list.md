@@ -42,18 +42,15 @@ Content-Type: application/json
       "id": "ce81820d-1b46-4a19-b779-a5e856ed5811",
       "idempotencyKey": "e8c64777-2e97-472f-b015-5f78888b4402",
       "additionalInfo": {
-        "provider": "FUSE",
         "exchangeTo": "USD",
         "toAccountId": "0197c5c8-cef6-7341-9c2e-c7b4effbe4d1",
         "exchangeRate": 0.2698,
         "fromAccountId": "0197d9d7-91f1-74b1-9398-fcf61a754815",
         "idempotencyKey": "e8c64777-2e97-472f-b015-5f78888b4402",
-        "exchangeAmountTo": 26.98,
-        "sourceAccountFuseId": "0197d9d7-91f1-74b1-9398-fcf61a754815",
-        "targetAccountFuseId": "0197c5c8-cef6-7341-9c2e-c7b4effbe4d1"
+        "exchangeAmountTo": 26.98
       },
       "externalId": "01981c19-27ef-7b32-a830-1d93409a7a64",
-      "transactionReference": "Fuse Exchange AED to USD",
+      "transactionReference": "Exchange AED to USD",
       "assetType": "FIAT",
       "conversionDate": "2025-07-18T05:54:27.629Z",
       "conversionRate": 0.2698,
@@ -117,7 +114,7 @@ Content-Type: application/json
             "user": {
               "loginAttempts": 0,
               "id": "fdda84df-588f-49bf-856c-fb3d23ef7f7f",
-              "email": "safiqfuse1@ibolinva.com",
+              "email": "alex@gmail.com",
               "firstName": "Dilip",
               "lastName": "Sarath",
               "emailVerified": true,
@@ -136,7 +133,6 @@ Content-Type: application/json
             },
             "productActivations": {}
           },
-          "accountProvider": "FUSE",
           "onboardingMode": "AUTOMATED",
           "status": "ACTIVE",
           "type": "PERSONAL",

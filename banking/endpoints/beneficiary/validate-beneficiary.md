@@ -32,42 +32,42 @@ Content-Type: application/json
 
 The request body is a JSON object with the following fields:
 
-| Field | Type | Requirement | Description | Validation Rules | Examples |
-|-------|------|-------------|-------------|------------------|----------|
-| `name` | string | **Required** | Full name of the beneficiary account holder | • Max length: 100 characters<br>• Leading/trailing whitespace trimmed<br>• Must not be empty after trimming | `"John Smith"`, `"ABC Corporation Ltd"` |
-| `reference` | string | **Required** | Payment reference or description for the transaction | • Max length: 200 characters<br>• Leading/trailing whitespace trimmed<br>• Must not be empty after trimming | `"Invoice INV-2024-001"`, `"Monthly Salary Payment"` |
-| `type` | enum | **Required** | Type of beneficiary entity | • Possible values: `INDIVIDUAL`, `BUSINESS`<br>• Use `INDIVIDUAL` for personal accounts<br>• Use `BUSINESS` for corporate accounts | `"INDIVIDUAL"`, `"BUSINESS"` |
-| `transactionType` | enum | **Required** | Determines payment routing and validation requirements | • Possible values: `LOCAL`, `INTERNATIONAL`<br>• `LOCAL`: Domestic payments within same country<br>• `INTERNATIONAL`: Cross-border payments via SWIFT<br>• **Affects validation of other fields** | `"LOCAL"`, `"INTERNATIONAL"` |
-| `currencyCode` | string | **Required** | ISO 4217 currency code for beneficiary account | • Must be exactly 3 alphabetic characters<br>• Must be uppercase<br>• Must be valid ISO 4217 currency code | `"GBP"`, `"USD"`, `"EUR"` |
-| `iban` | string | **Conditional** | International Bank Account Number | • **Required when**: `transactionType` is `INTERNATIONAL`<br>• **Optional when**: `transactionType` is `LOCAL`<br>• When provided for local, `accountNumber` and `sortCode` become optional | `"GB29NWBK60161331926819"` |
-| `accountNumber` | string | **Conditional** | Bank account number for the beneficiary | • **Required when**: `transactionType` is `LOCAL` and `iban` not provided<br>• **Optional when**: `transactionType` is `INTERNATIONAL` or `iban` provided<br>• When provided without `iban`, `sortCode` becomes mandatory | `"12345678"`, `"33264517"` |
-| `sortCode` | string | **Conditional** | Bank sort code or routing number | • **Required when**: `accountNumber` provided and `iban` not provided<br>• **Optional when**: `iban` provided or international transactions<br>• Format varies by country | `"20-14-53"`, `"302414"` |
-| `bicSwiftCode` | string | **Conditional** | BIC/SWIFT code for beneficiary's bank | • **Required when**: `iban` is provided (local and international)<br>• **Optional when**: Only `accountNumber` and `sortCode` for local<br>• 8 or 11 character alphanumeric code | `"NWBKGB2L"`, `"CHASUS33"` |
-| `countryCode` | string | **Required** | ISO 3166-1 Alpha-2 country code for beneficiary location | • Must be exactly 2 alphabetic characters<br>• Must be uppercase<br>• Must be valid ISO 3166-1 Alpha-2 code | `"GB"`, `"US"`, `"DE"` |
-| `bankCountryCode` | string | **Required** | ISO 3166-1 Alpha-2 country code for bank location | • Must be exactly 2 alphabetic characters<br>• Must be uppercase<br>• Must be valid ISO 3166-1 Alpha-2 code | `"GB"`, `"US"`, `"DE"` |
-| `correspondentBic` | string | **Optional** | BIC code for correspondent bank in payment chain | • Used for complex international payment routing<br>• 8 or 11 character alphanumeric code | `"DEUTDEFF"`, `"CITIUS33"` |
-| `address` | object | **Conditional** | Physical address of the beneficiary | • **Required when**: `transactionType` is `INTERNATIONAL` and address provided (must include `line1` and `country`)<br>• **Optional when**: `transactionType` is `LOCAL` | See Address Object Fields below |
+| Field              | Type   | Requirement     | Description                                              | Validation Rules                                                                                                                                                                                                          | Examples                                             |
+| ------------------ | ------ | --------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `name`             | string | **Required**    | Full name of the beneficiary account holder              | • Max length: 100 characters<br>• Leading/trailing whitespace trimmed<br>• Must not be empty after trimming                                                                                                               | `"John Smith"`, `"ABC Corporation Ltd"`              |
+| `reference`        | string | **Required**    | Payment reference or description for the transaction     | • Max length: 200 characters<br>• Leading/trailing whitespace trimmed<br>• Must not be empty after trimming                                                                                                               | `"Invoice INV-2024-001"`, `"Monthly Salary Payment"` |
+| `type`             | enum   | **Required**    | Type of beneficiary entity                               | • Possible values: `INDIVIDUAL`, `BUSINESS`<br>• Use `INDIVIDUAL` for personal accounts<br>• Use `BUSINESS` for corporate accounts                                                                                        | `"INDIVIDUAL"`, `"BUSINESS"`                         |
+| `transactionType`  | enum   | **Required**    | Determines payment routing and validation requirements   | • Possible values: `LOCAL`, `INTERNATIONAL`<br>• `LOCAL`: Domestic payments within same country<br>• `INTERNATIONAL`: Cross-border payments via SWIFT<br>• **Affects validation of other fields**                         | `"LOCAL"`, `"INTERNATIONAL"`                         |
+| `currencyCode`     | string | **Required**    | ISO 4217 currency code for beneficiary account           | • Must be exactly 3 alphabetic characters<br>• Must be uppercase<br>• Must be valid ISO 4217 currency code                                                                                                                | `"GBP"`, `"USD"`, `"EUR"`                            |
+| `iban`             | string | **Conditional** | International Bank Account Number                        | • **Required when**: `transactionType` is `INTERNATIONAL`<br>• **Optional when**: `transactionType` is `LOCAL`<br>• When provided for local, `accountNumber` and `sortCode` become optional                               | `"GB29NWBK60161331926819"`                           |
+| `accountNumber`    | string | **Conditional** | Bank account number for the beneficiary                  | • **Required when**: `transactionType` is `LOCAL` and `iban` not provided<br>• **Optional when**: `transactionType` is `INTERNATIONAL` or `iban` provided<br>• When provided without `iban`, `sortCode` becomes mandatory | `"12345678"`, `"33264517"`                           |
+| `sortCode`         | string | **Conditional** | Bank sort code or routing number                         | • **Required when**: `accountNumber` provided and `iban` not provided<br>• **Optional when**: `iban` provided or international transactions<br>• Format varies by country                                                 | `"20-14-53"`, `"302414"`                             |
+| `bicSwiftCode`     | string | **Conditional** | BIC/SWIFT code for beneficiary's bank                    | • **Required when**: `iban` is provided (local and international)<br>• **Optional when**: Only `accountNumber` and `sortCode` for local<br>• 8 or 11 character alphanumeric code                                          | `"NWBKGB2L"`, `"CHASUS33"`                           |
+| `countryCode`      | string | **Required**    | ISO 3166-1 Alpha-2 country code for beneficiary location | • Must be exactly 2 alphabetic characters<br>• Must be uppercase<br>• Must be valid ISO 3166-1 Alpha-2 code                                                                                                               | `"GB"`, `"US"`, `"DE"`                               |
+| `bankCountryCode`  | string | **Required**    | ISO 3166-1 Alpha-2 country code for bank location        | • Must be exactly 2 alphabetic characters<br>• Must be uppercase<br>• Must be valid ISO 3166-1 Alpha-2 code                                                                                                               | `"GB"`, `"US"`, `"DE"`                               |
+| `correspondentBic` | string | **Optional**    | BIC code for correspondent bank in payment chain         | • Used for complex international payment routing<br>• 8 or 11 character alphanumeric code                                                                                                                                 | `"DEUTDEFF"`, `"CITIUS33"`                           |
+| `address`          | object | **Conditional** | Physical address of the beneficiary                      | • **Required when**: `transactionType` is `INTERNATIONAL` and address provided (must include `line1` and `country`)<br>• **Optional when**: `transactionType` is `LOCAL`                                                  | See Address Object Fields below                      |
 
 #### Address Object Fields
 
-| Field | Type | Requirement | Description | Validation Rules | Examples |
-|-------|------|-------------|-------------|------------------|----------|
-| `address.line1` | string | **Required if address provided for international** | Primary address line | • Required when `address` provided and `transactionType` is `INTERNATIONAL` | `"123 Business Street"`, `"Flat 4B"` |
-| `address.line2` | string | **Optional** | Secondary address line | • No specific validation rules | `"Suite 100"`, `"Building A"` |
-| `address.line3` | string | **Optional** | Additional address line for extended addressing | • No specific validation rules | `"Industrial Estate"` |
-| `address.line4` | string | **Optional** | Fourth address line for complex addressing | • No specific validation rules | `"North Wing"` |
-| `address.countyState` | string | **Optional** | County, state, or province | • No specific validation rules | `"London"`, `"California"`, `"Ontario"` |
-| `address.postCode` | string | **Optional** | Postal or ZIP code | • No specific validation rules | `"SW1A 1AA"`, `"10001"`, `"M1 1AA"` |
-| `address.country` | string | **Required if address provided for international** | Country code for beneficiary's address | • Required when `address` provided and `transactionType` is `INTERNATIONAL`<br>• Must be valid ISO 3166-1 Alpha-2 country code | `"GB"`, `"US"`, `"DE"` |
+| Field                 | Type   | Requirement                                        | Description                                     | Validation Rules                                                                                                               | Examples                                |
+| --------------------- | ------ | -------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------- |
+| `address.line1`       | string | **Required if address provided for international** | Primary address line                            | • Required when `address` provided and `transactionType` is `INTERNATIONAL`                                                    | `"123 Business Street"`, `"Flat 4B"`    |
+| `address.line2`       | string | **Optional**                                       | Secondary address line                          | • No specific validation rules                                                                                                 | `"Suite 100"`, `"Building A"`           |
+| `address.line3`       | string | **Optional**                                       | Additional address line for extended addressing | • No specific validation rules                                                                                                 | `"Industrial Estate"`                   |
+| `address.line4`       | string | **Optional**                                       | Fourth address line for complex addressing      | • No specific validation rules                                                                                                 | `"North Wing"`                          |
+| `address.countyState` | string | **Optional**                                       | County, state, or province                      | • No specific validation rules                                                                                                 | `"London"`, `"California"`, `"Ontario"` |
+| `address.postCode`    | string | **Optional**                                       | Postal or ZIP code                              | • No specific validation rules                                                                                                 | `"SW1A 1AA"`, `"10001"`, `"M1 1AA"`     |
+| `address.country`     | string | **Required if address provided for international** | Country code for beneficiary's address          | • Required when `address` provided and `transactionType` is `INTERNATIONAL`<br>• Must be valid ISO 3166-1 Alpha-2 country code | `"GB"`, `"US"`, `"DE"`                  |
 
 ## Validation Rules Summary
 
 ### Payment Method Validation Matrix
 
-| Transaction Type | IBAN | Account Number | Sort Code | Validation Rule |
-|------------------|------|----------------|-----------|-----------------|
-| INTERNATIONAL | Required | Optional | Optional | IBAN must be provided |
-| LOCAL | Optional | Optional | Conditional | Either IBAN OR (Account Number + Sort Code) required |
+| Transaction Type | IBAN     | Account Number | Sort Code   | Validation Rule                                      |
+| ---------------- | -------- | -------------- | ----------- | ---------------------------------------------------- |
+| INTERNATIONAL    | Required | Optional       | Optional    | IBAN must be provided                                |
+| LOCAL            | Optional | Optional       | Conditional | Either IBAN OR (Account Number + Sort Code) required |
 
 ### Field Format Requirements
 
@@ -212,22 +212,22 @@ The API returns detailed validation errors for each field that fails validation:
 
 ### Common Validation Error Messages
 
-| Error Message | Cause |
-|---------------|-------|
-| "Beneficiary name is required" | Name field is empty or whitespace only |
-| "Beneficiary name must not exceed 100 characters" | Name exceeds character limit |
-| "Reference is required" | Reference field is empty |
-| "Reference must not exceed 200 characters" | Reference exceeds character limit |
-| "IBAN is required for international transactions" | Missing IBAN for international transaction |
-| "Either iban or accountNumber is required" | Neither IBAN nor account number provided for local transaction |
-| "sortCode is required" | Account number provided without sort code (and no IBAN) |
-| "Type must be one of INDIVIDUAL, BUSINESS" | Invalid beneficiary type |
-| "Transaction type must be one of LOCAL, INTERNATIONAL" | Invalid transaction type |
-| "Invalid currency code" | Currency code not ISO 4217 compliant |
-| "Currency code must be uppercase" | Currency code not in uppercase |
-| "Invalid beneficiary country code" | Country code not ISO 3166-1 Alpha-2 |
-| "Country code must be uppercase" | Country code not in uppercase |
-| "Address line1, countyState, postCode and country are required for international transactions" | Missing required address fields for international transaction |
+| Error Message                                                                                  | Cause                                                          |
+| ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| "Beneficiary name is required"                                                                 | Name field is empty or whitespace only                         |
+| "Beneficiary name must not exceed 100 characters"                                              | Name exceeds character limit                                   |
+| "Reference is required"                                                                        | Reference field is empty                                       |
+| "Reference must not exceed 200 characters"                                                     | Reference exceeds character limit                              |
+| "IBAN is required for international transactions"                                              | Missing IBAN for international transaction                     |
+| "Either iban or accountNumber is required"                                                     | Neither IBAN nor account number provided for local transaction |
+| "sortCode is required"                                                                         | Account number provided without sort code (and no IBAN)        |
+| "Type must be one of INDIVIDUAL, BUSINESS"                                                     | Invalid beneficiary type                                       |
+| "Transaction type must be one of LOCAL, INTERNATIONAL"                                         | Invalid transaction type                                       |
+| "Invalid currency code"                                                                        | Currency code not ISO 4217 compliant                           |
+| "Currency code must be uppercase"                                                              | Currency code not in uppercase                                 |
+| "Invalid beneficiary country code"                                                             | Country code not ISO 3166-1 Alpha-2                            |
+| "Country code must be uppercase"                                                               | Country code not in uppercase                                  |
+| "Address line1, countyState, postCode and country are required for international transactions" | Missing required address fields for international transaction  |
 
 ## Error Responses
 
@@ -257,7 +257,7 @@ transactionType == "INTERNATIONAL"
 
 ```
 transactionType == "INTERNATIONAL" AND address provided?
-├── YES: 
+├── YES:
 │   ├── line1 provided? → Required ✓
 │   └── country provided? → Required ✓
 └── NO: Address is optional
@@ -295,7 +295,7 @@ The validation occurs in the following order:
 ### Valid Test Cases
 
 1. **International with IBAN only**
-2. **Local with IBAN only** 
+2. **Local with IBAN only**
 3. **Local with account number + sort code**
 4. **International with complete address**
 5. **Local without address**

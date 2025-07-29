@@ -82,7 +82,7 @@ Content-Type: application/json
       "accountId": "7fb7c416-4526-44c2-8e57-30b6198af5e3",
       "name": "Mr Lance Henry",
       "displayName": "Mr Lance Henry",
-      "reference": "Equals Ben",
+      "reference": "Ben",
       "iban": null,
       "bicSwiftCode": null,
       "correspondentBic": null,
