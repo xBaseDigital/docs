@@ -60,7 +60,7 @@ Content-Type: application/json
     },
     "user": {
       "id": "092f4680-1dea-4186-b404-96505eb28b55",
-      "email": "rahulsivaji921@gmail.com",
+      "email": "rahul@gmail.com",
       "firstName": "rahul",
       "lastName": "sivaji",
       "emailVerified": true,

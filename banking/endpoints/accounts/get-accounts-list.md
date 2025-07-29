@@ -53,7 +53,7 @@ Content-Type: application/json
       "firstName": "rahul",
       "lastName": "sivaji",
       "dateOfBirth": null,
-      "email": "rahulsivaji921@gmail.com",
+      "email": "rahul@gmail.com",
       "phone": null,
       "emailVerified": true
     },
