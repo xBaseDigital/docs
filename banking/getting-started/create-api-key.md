@@ -8,7 +8,7 @@ nav_order: 1
 
 ## Create API Key
 
-This guide explains how to generate a new API key pair for authenticating requests to the **XBD PAY Banking API**. The API key pair consists of a `keyId` (public key) and an `apiSecret` (private key), which must be securely stored.
+This guide explains how to generate a new API key pair for authenticating requests to the **RELM Banking API**. The API key pair consists of a `keyId` (public key) and an `apiSecret` (private key), which must be securely stored.
 
 ### Generate API Key
 

@@ -8,11 +8,11 @@ nav_order: 4
 
 # Integrating checkout via Web SDK
 
-To integrate XBD Checkout into your store, follow these steps.
+To integrate RELM Checkout into your store, follow these steps.
 
 ## Prerequisites
 
-XBD will provide you with the following details necessary for order creation to function, which must be kept confidential on your side:
+RELM will provide you with the following details necessary for order creation to function, which must be kept confidential on your side:
 
 - [x] Pos Client ID
 - [x] Pos Client Secret
@@ -30,9 +30,9 @@ import { initGlobalSdk } from '../sdk/checkout-sdk.es';
 
 window.MyCheckoutSDK = initGlobalSdk({
   "grant_type" : "client_credentials",
-  "client_id" : <POS Client Id which you received from XBD >,
-  "client_secret" : <POS Client Secret which you received from XBD >
-  "merchantLocationId" : <Merchant Location Id which will be provided by XBD>,
+  "client_id" : <POS Client Id which you received from RELM >,
+  "client_secret" : <POS Client Secret which you received from RELM >
+  "merchantLocationId" : <Merchant Location Id which will be provided by RELM>,
 });
 ```
 
@@ -40,7 +40,7 @@ window.MyCheckoutSDK = initGlobalSdk({
 
 ```js
  const checkoutResponse =  await window.MyCheckoutSDK.checkout({
-      "merchantLocationId" : <Merchant Location Id which will be provided by XBD>,
+      "merchantLocationId" : <Merchant Location Id which will be provided by RELM>,
       "merchantOrderId" : <Order ID which you will generate from your side>,
       "title" : <Your Business Name>,
       "description" : <Description of the Cart>,

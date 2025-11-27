@@ -7,7 +7,7 @@ nav_order: 2
 
 # POS API
 
-**XBD PAY** delivers cutting-edge payment technology, leveraging our multi-licensed infrastructure to provide seamless cross-border payments and digital finance solutions.
+**RELM** delivers cutting-edge payment technology, leveraging our multi-licensed infrastructure to provide seamless cross-border payments and digital finance solutions.
 
 Our API integrates:
 
@@ -15,7 +15,7 @@ Our API integrates:
 - Digital assets and e-commerce
 - Global banking with local payment networks
 
-## Why Choose XBD PAY?
+## Why Choose RELM?
 
 - **Low Transaction Fees**: Competitive pricing to boost your margins.
 - **No Crypto Volatility Risk**: Stable transactions without market fluctuations.
@@ -25,4 +25,4 @@ Our API integrates:
 
 ## Support
 
-Need help? Contact us at [support@xbdpay.com](mailto:support@xbdpay.com).
+Need help? Contact us at [support@relm.co](mailto:support@relm.co).

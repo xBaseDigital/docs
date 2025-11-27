@@ -8,7 +8,7 @@ nav_order: 2
 
 ## Canonical String
 
-This guide explains how to construct a canonical string for authenticating API requests to the **XBD Money Banking API**. The canonical string is a critical component used in ECDSA signature generation for secure API authentication.
+This guide explains how to construct a canonical string for authenticating API requests to the **RELM Banking API**. The canonical string is a critical component used in ECDSA signature generation for secure API authentication.
 
 ### Step 1 -- Build the Canonical String
 

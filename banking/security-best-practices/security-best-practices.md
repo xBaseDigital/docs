@@ -8,7 +8,7 @@ nav_order: 4
 
 ## Security Best Practices
 
-This guide outlines essential security practices for interacting with the **XBD PAY Banking API** to ensure the safety of your API key pair, requests, and overall integration. Following these best practices helps protect your application and data from unauthorized access and potential threats.
+This guide outlines essential security practices for interacting with the **RELM Banking API** to ensure the safety of your API key pair, requests, and overall integration. Following these best practices helps protect your application and data from unauthorized access and potential threats.
 
 ## Key Management
 
@@ -22,7 +22,7 @@ Proper management of your API key pair (`keyId` and `apiSecret`) is critical for
 - **Rotate Keys Regularly**:
   - Periodically generate new API key pairs using the `/api/keys` endpoint to minimize the risk of key compromise.
 - **Revoke Compromised Keys Immediately**:
-  - If a key is suspected to be compromised, revoke it through the XBD PAY Merchant Dashboard or contact [support@xbdgroup.com](mailto:support@xbdgroup.com).
+  - If a key is suspected to be compromised, revoke it through the RELM Merchant Dashboard or contact [support@relm.co](mailto:support@relm.co).
 
 ## Request Security
 

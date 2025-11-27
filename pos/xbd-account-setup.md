@@ -8,11 +8,11 @@ nav_order: 2
 
 # Setup Account Key
 
-This guide walks you through integrating the **XBD PAY API** into your eCommerce store by generating and configuring your integration keys.
+This guide walks you through integrating the **RELM API** into your eCommerce store by generating and configuring your integration keys.
 
 ## Prerequisites
 
-- Your onboarding must be **approved** by XBD PAY.
+- Your onboarding must be **approved** by RELM.
 - You must have received an **email invitation** to the Merchant Dashboard.
 - Complete the sign-up process in the Merchant Dashboard to access integration settings.
 
@@ -39,7 +39,7 @@ This guide walks you through integrating the **XBD PAY API** into your eCommerce
 
 ### Step 3: Submit Credentials
 
-Email the following to [tech@xbdgroup.com](mailto:tech@xbdgroup.com):
+Email the following to [support@relm.co](mailto:support@relm.co):
 
 - **Client ID**
 - **Client Secret**
