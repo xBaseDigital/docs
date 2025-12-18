@@ -15,11 +15,20 @@ This endpoint retrieves detailed information about all transactions.
 
 ```
 Method: GET
-URL: {{baseUrl}}/v1/accounts/:accountId/transactions
-Path Parameters:
-accountId - The unique identifier of the account (e.g., 7fb7c416-4526-44c2-8e57-30b6198af5e3)
+URL: {{baseUrl}}/v1/accounts/transactions
 Authentication: Requires authentication.
 ```
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `status` | String | No | Filter by transaction status. |
+| `type` | String | No | Filter by transaction type. |
+| `highRisk` | Boolean | No | Filter by high risk status (`true` or `false`). |
+| `currencyCode` | String | No | Filter by currency code (e.g., USD, EUR). Must be uppercase. |
+| `fromDate` | Date | No | Filter transactions from this date (YYYY-MM-DD). |
+| `toDate` | Date | No | Filter transactions up to this date (YYYY-MM-DD). |
 
 ### Response
 
