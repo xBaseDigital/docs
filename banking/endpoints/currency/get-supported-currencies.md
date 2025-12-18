@@ -53,51 +53,21 @@ Content-Type: application/json
       "providers": [
         "4"
       ]
-    },
-    {
-      "id": "d7ff70ba-87ac-4128-8e54-155bb148f4db",
-      "currencyCode": "USDC",
-      "currencyName": "USD Coin",
-      "currencySymbol": "USDC",
-      "currencyFlag": "https://statics.xbd.money/images/flags/crypto/usdc.svg",
-      "currencyType": "CRYPTO",
-      "enabled": true,
-      "externalId": null,
-      "fiatDetailsId": null,
-      "cryptoNetworks": [
-        {
-          "id": "70c8ff18-2503-48dd-b299-2ade5c6ea994",
-          "currencyId": "d7ff70ba-87ac-4128-8e54-155bb148f4db",
-          "networkId": "ba4bd30b-c1c9-4747-b280-b8a6fa5ba5fa",
-          "decimals": 6,
-          "isNative": true,
-          "contractAddress": null,
-          "tokenStandard": null,
-          "enabled": true,
-          "externalId": "USDC_NOBLE",
-          "metadata": null,
-          "network": {
-            "id": "ba4bd30b-c1c9-4747-b280-b8a6fa5ba5fa",
-            "code": "NOBLE",
-            "name": "Noble",
-            "chainId": "grand-1",
-            "nativeCurrency": "USDC",
-            "isTestnet": false,
-            "enabled": true,
-            "externalId": null,
-            "metadata": null
-          }
-        }
-      ],
-      "providers": [
-        "6"
-      ]
     }
   ]
 }
 ```
 
-The response object contains:
+### Response Fields
+
+- `id`: Unique identifier for the currency.
+- `currencyCode`: ISO currency code (e.g., `USD`, `USDC`).
+- `currencyName`: Full name of the currency.
+- `currencyType`: Type of currency (`FIAT` or `CRYPTO`).
+- `currencyFlag`: URL to the currency's flag image.
+- `enabled`: Boolean indicating if the currency is currently supported.
+- `fiatDetails`: Specific details for Fiat currencies (decimals, etc.).
+- `cryptoNetworks`: Specific details for Crypto currencies (network ID, contract address, etc.).
 
 - `success`: Indicates if the request was successful.
 - `data`: An array of currency objects, where each object includes:
