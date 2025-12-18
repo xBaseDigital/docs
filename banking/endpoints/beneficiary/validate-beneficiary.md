@@ -3,7 +3,7 @@ title: Create Beneficiary
 layout: home
 permalink: /banking/endpoints/beneficiary/create-beneficiary
 parent: Beneficiary
-nav_order: 1
+nav_order: 2
 ---
 
 ## Create Beneficiary
