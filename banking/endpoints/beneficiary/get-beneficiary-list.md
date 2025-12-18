@@ -70,45 +70,22 @@ Content-Type: application/json
             },
             "cryptoWalletAddress": null,
             "networkId": null
-        },
-        {
-            "id": "1d50824b-ac32-4a6b-ab37-902e6ff4cfff",
-            "recipientId": "da7e9262-49e3-4174-b86e-eb30741e1445",
-            "accountId": "385dec3a-9bfe-4072-8733-7872ef350e71",
-            "name": "John Doe",
-            "displayName": "John Doe",
-            "reference": "Payment Ref",
-            "type": "INDIVIDUAL",
-            "status": "ACTIVE",
-            "assetType": "FIAT",
-            "iban": "GB29NWBK60161331926819",
-            "bicSwiftCode": "NWBKGB2L",
-            "correspondentBic": null,
-            "bankingId": null,
-            "bankingIdType": null,
-            "accountNumber": null,
-            "routingNumber": null,
-            "currencyCode": "AED",
-            "countryCode": null,
-            "bankCountryCode": null,
-            "transactionType": "INTERNATIONAL",
-            "addressId": "1e434a9b-7d1f-4722-815e-d5ac6d3f394b",
-            "address": {
-                "id": "1e434a9b-7d1f-4722-815e-d5ac6d3f394b",
-                "line1": "456 Residential St",
-                "line2": "Apt 2B",
-                "line3": null,
-                "line4": null,
-                "countyState": null,
-                "postCode": null,
-                "country": "GB"
-            },
-            "cryptoWalletAddress": null,
-            "networkId": null
         }
     ]
 }
 ```
+
+### Response Fields
+
+- `id`: Unique identifier for the beneficiary.
+- `name`: Name of the beneficiary.
+- `type`: Type of beneficiary (e.g., `INDIVIDUAL`, `BUSINESS`).
+- `assetType`: Type of asset (`FIAT` or `CRYPTO`).
+- `iban`: IBAN for Fiat beneficiaries.
+- `bicSwiftCode`: BIC/SWIFT code for Fiat beneficiaries.
+- `cryptoWalletAddress`: Wallet address for Crypto beneficiaries.
+- `networkId`: Network ID for Crypto beneficiaries.
+- `address`: Beneficiary's address details.
 
 #### Example Response (Crypto Beneficiary)
 
