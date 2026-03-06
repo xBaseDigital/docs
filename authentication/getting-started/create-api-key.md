@@ -29,7 +29,7 @@ nav_order: 1
 
    ![Integration Keys](/assets/doc/3.webp)
 
-5. Securely store your all the keys show below.
+5. Securely store your all the keys shown below.
 
    ![Public Keys](/assets/doc/4.webp)
 
