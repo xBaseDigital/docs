@@ -1,7 +1,7 @@
 ---
 title: Order Creation
 layout: home
-permalink: /api-intergration
+permalink: /pos/checkout
 parent: POS API
 nav_order: 3
 ---
