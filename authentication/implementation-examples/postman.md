@@ -1,7 +1,7 @@
 ---
 title: Postman Pre-request Script
 layout: home
-permalink: /banking/implementation-examples/postman
+permalink: /auth/implementation-examples/postman
 parent: Implementation Examples
 nav_order: 3
 ---
@@ -70,7 +70,7 @@ new Promise((resolve, reject) => {
             for (let i = 0; i < derBuffer.sigBytes; i++) {
               derBytes.push(
                 (derBuffer.words[Math.floor(i / 4)] >>> (24 - (i % 4) * 8)) &
-                  0xff
+                  0xff,
               );
             }
 
@@ -97,14 +97,14 @@ new Promise((resolve, reject) => {
             const ec = new elliptic.ec("secp256k1");
             const keyPair = ec.keyFromPrivate(privateKeyHex, "hex");
             const messageHash = CryptoJS.SHA256(canonicalString).toString(
-              CryptoJS.enc.Hex
+              CryptoJS.enc.Hex,
             );
             const signature = keyPair.sign(messageHash, { canonical: true });
 
             // Convert to DER format and base64 encode
             const derSignature = signature.toDER();
             const signatureBase64 = btoa(
-              String.fromCharCode.apply(null, derSignature)
+              String.fromCharCode.apply(null, derSignature),
             );
 
             // Set authorization header
@@ -120,9 +120,9 @@ new Promise((resolve, reject) => {
             console.error("Signing error:", error);
             reject(error);
           }
-        }
+        },
       );
-    }
+    },
   );
 });
 ```
@@ -146,7 +146,6 @@ Follow these steps to configure and use the pre-request script in Postman for au
 4. **Copy and paste the provided pre-request script** into the editor.
 
 5. **Set the required environment variables in Postman:**
-
    - `keyId`: Your API key ID  
      _Example_: `a1b2c3d4e5f6g7h8`
 
@@ -159,7 +158,6 @@ Follow these steps to configure and use the pre-request script in Postman for au
    > 💡 To set variables, go to **Environment > Edit**, add the variables, and click **Save**.
 
 6. **Configure your API request** in the request editor:
-
    - Set the HTTP **method**
    - Provide the **URL**
    - Add any **headers**
@@ -167,7 +165,6 @@ Follow these steps to configure and use the pre-request script in Postman for au
 
 7. **Send the request**.  
    The pre-request script will automatically:
-
    - Generate the canonical string
    - Sign it using your private key
    - Construct the `Authorization` header in the format:

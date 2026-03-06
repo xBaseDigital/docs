@@ -1,7 +1,7 @@
 ---
 title: Create API Key
 layout: home
-permalink: /banking/create-api-key
+permalink: /auth/create-api-key
 parent: Getting Started
 nav_order: 1
 ---

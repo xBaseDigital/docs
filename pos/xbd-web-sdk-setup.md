@@ -1,4 +1,4 @@
----
+<!-- ---
 title: Web SDK Setup
 layout: home
 permalink: /web-sdk-setup
@@ -60,4 +60,4 @@ With this <strong>paymentRedirectUrl</strong>, your store will be navigated to o
 ### Demo
 
 - [Ecommerce store](https://xkicks.store)
-- [Repo](https://github.com/xBaseDigital/xkicks)
+- [Repo](https://github.com/xBaseDigital/xkicks) -->

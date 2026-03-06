@@ -1,8 +1,8 @@
 ---
 title: Troubleshooting
 layout: home
-permalink: /banking/troubleshooting
-parent: Banking API
+permalink: /auth/troubleshooting
+parent: API Authentication
 nav_order: 5
 ---
 

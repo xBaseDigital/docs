@@ -1,8 +1,8 @@
 ---
 title: Technical Details
 layout: home
-permalink: /banking/technical-details
-parent: Banking API
+permalink: /auth/technical-details
+parent: API Authentication
 nav_order: 6
 ---
 

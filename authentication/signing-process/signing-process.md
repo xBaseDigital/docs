@@ -1,8 +1,8 @@
 ---
 title: Signing Process
 layout: home
-permalink: /banking/signing-process
-parent: Banking API
+permalink: /auth/signing-process
+parent: API Authentication
 nav_order: 2
 ---
 

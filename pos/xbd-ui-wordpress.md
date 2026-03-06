@@ -1,4 +1,4 @@
----
+<!-- ---
 title: WordPress Setup
 layout: home
 permalink: /xbd-ui-api
@@ -27,4 +27,4 @@ RELM will provide you with the following details necessary for order creation to
 5. Once the plugin is installed, click on the Activate button to activate the plugin.
 6. To check and configure settings, go to Main menu > "Crypto Settings".
 7. Enter the details that will be shared to you from RELM.
-8. To view the plugin the website, you would need to add the shortcode in location you want to show. The shortcode is [donation_form]
+8. To view the plugin the website, you would need to add the shortcode in location you want to show. The shortcode is [donation_form] -->

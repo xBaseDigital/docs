@@ -1,7 +1,7 @@
 ---
 title: JavaScript - Browser/Node.js
 layout: home
-permalink: /banking/implementation-examples/javascript
+permalink: /auth/implementation-examples/javascript
 parent: Implementation Examples
 nav_order: 1
 ---
@@ -16,7 +16,7 @@ async function signRequest(
   body,
   contentType,
   keyId,
-  privateKeyBase64
+  privateKeyBase64,
 ) {
   const timestamp = Math.floor(Date.now() / 1000).toString();
 
@@ -39,7 +39,7 @@ async function signRequest(
   const derBytes = [];
   for (let i = 0; i < derBuffer.sigBytes; i++) {
     derBytes.push(
-      (derBuffer.words[Math.floor(i / 4)] >>> (24 - (i % 4) * 8)) & 0xff
+      (derBuffer.words[Math.floor(i / 4)] >>> (24 - (i % 4) * 8)) & 0xff,
     );
   }
 
@@ -66,7 +66,7 @@ async function signRequest(
   const ec = new elliptic.ec("secp256k1");
   const keyPair = ec.keyFromPrivate(privateKeyHex, "hex");
   const messageHash = CryptoJS.SHA256(canonicalString).toString(
-    CryptoJS.enc.Hex
+    CryptoJS.enc.Hex,
   );
   const signature = keyPair.sign(messageHash, { canonical: true });
 
@@ -84,7 +84,7 @@ const authHeader = await signRequest(
   null,
   null,
   "your-key-id",
-  "your-private-key-base64"
+  "your-private-key-base64",
 );
 
 fetch("/api/users", {

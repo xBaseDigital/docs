@@ -2,7 +2,7 @@
 title: POS API
 layout: home
 parent: Get Started
-nav_order: 2
+nav_order: 3
 ---
 
 # POS API

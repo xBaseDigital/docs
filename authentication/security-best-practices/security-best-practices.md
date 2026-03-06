@@ -1,8 +1,8 @@
 ---
 title: Security Best Practices
 layout: home
-permalink: /banking/security-best-practices
-parent: Banking API
+permalink: /auth/security-best-practices
+parent: API Authentication
 nav_order: 4
 ---
 
