@@ -6,36 +6,33 @@ parent: Getting Started
 nav_order: 1
 ---
 
-## Create API Key
+# Generate Auth Key
 
-This guide explains how to generate a new API key pair for authenticating requests to the **RELM Banking API**. The API key pair consists of a `keyId` (public key) and an `apiSecret` (private key), which must be securely stored.
+## Prerequisites
 
-### Generate API Key
+- Your onboarding must be **approved** by RELM.
 
-Make a **POST** request to the `/api/keys` endpoint to create a new API key pair.
+## Integration Steps
 
-**Endpoint**: `/api/keys`  
-**Method**: `POST`
+### Step 1: Generate Integration Keys
 
-**Request Headers**:
+1. Log in to the **Merchant Portal**.
+2. Click on profile icon and then **Settings**.
 
-```bash
-curl -X POST /api/keys \
--H "Authorization: Bearer <your-jwt-token>" \
--H "Content-Type: application/json" \
--d '{"name": "My API Key"}'
-```
+   ![Integration Keys](/assets/doc/1.webp)
 
-**Response**:
+3. Click on **API Key Management**.
 
-```json
-{
-  "success": true,
-  "data": {
-    "keyId": "a1b2c3d4e5f6g7h8",
-    "apiSecret": "MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg..."
-  }
-}
-```
+   ![Integration Keys](/assets/doc/2.webp)
 
-**Important**: Save both `keyId` and `apiSecret` securely. The apiSecret is your private key and cannot be retrieved again.
+4. Give a name and click on **Generate Key**.
+
+   ![Integration Keys](/assets/doc/3.webp)
+
+5. Securely store your all the keys show below.
+
+   ![Public Keys](/assets/doc/4.webp)
+
+### Step 2: Generate Signature for Order Creation
+
+1. Visit the link and generate the **Signature** for **Order Creation** explain on next article.

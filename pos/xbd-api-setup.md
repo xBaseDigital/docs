@@ -15,7 +15,7 @@ This guide explains how to integrate **RELM Checkout** directly into your e-comm
 Before you begin, make sure you have:
 
 - **Private Key**, **Public Key**, and **Key ID** provided by RELM
-- Implemented **signature generation logic** as described in the [Authentication & Signing guide](../authentication) (previous article)
+- Implemented **signature generation logic** as described in the [Authentication & Signing guide](https://docs.relm.co/auth)
 - Familiarity with HTTP POST requests and JSON handling
 
 **Environment URLs**  
@@ -25,9 +25,12 @@ Production: `https://api.relm.co`
 ## Integration Steps
 
 <strong>Step 1.</strong> Call the <strong>Order creation api</strong> to create an order on RELM System
+
 Endpoint – `/v1/pos/client/order/create`
 
 Method – <strong>`POST`</strong>
+
+Headers
 
 ```json
 "header" : {
