@@ -33,14 +33,14 @@ within the application.
 ## API Authentication
 
 To authenticate API requests, you must generate a **signature** using
-the **Key ID** and **Private Key**.
+the **Key ID**, **Public Key** and **Private Key**.
 
 This signature must be included in the request headers when calling the
 API.
 
 ### Generate API Signature
 
-Use your **Key ID**, **Public Key** and **Private Key** to generate the API signature.
+Use your **Key ID**, **Public Key** and **Private Key** to generate the API signature from the below documentation.
 
 [Reference documentation](https://docs.relm.co/auth)
 
@@ -73,6 +73,12 @@ Endpoint
     /partners/ssb/access-token
 
 ---
+
+### Header
+
+```json
+Authorization : Signature {Generate Signature}
+```
 
 ### Payload
 
