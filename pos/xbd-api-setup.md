@@ -14,7 +14,7 @@ This guide explains how to integrate **RELM Checkout** directly into your **e-co
 
 Before starting the integration, ensure that you have the following:
 
-- **Key ID**, **Public Key**, and **Private Key** provided by RELM
+- **Key ID**, **Public Key**, and **Private Key** as mentioned in the [Reference](https://docs.relm.co/auth/create-api-key)
 - Implemented **API signature generation** as described in the [Authentication & Signing Guide](https://docs.relm.co/auth)
 - Basic familiarity with **HTTP requests** and **JSON payloads**
 
