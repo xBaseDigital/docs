@@ -76,9 +76,7 @@ Endpoint
 
 ### Header
 
-```http
-Authorization: Signature {GENERATED_SIGNATURE}
-```
+`Authorization: Signature {GENERATED_SIGNATURE}`
 
 ### Payload
 
