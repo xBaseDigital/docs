@@ -1,5 +1,5 @@
 ---
-title: Onboarding SDK
+title: Partner SDK
 layout: home
 permalink: /onboarding-sdk
 parent: Get Started
