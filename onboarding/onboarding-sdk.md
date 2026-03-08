@@ -22,7 +22,7 @@ within the application.
 
 **Production**
 
-    https://api.preprod.relm.co/v1
+    https://api.relm.co/v1
 
 **Sandbox**
 
@@ -42,26 +42,16 @@ API.
 
 Use your **Key ID** and **Private Key** to generate the API signature.
 
-Reference documentation:
-
-https://docs.relm.co/banking/implementation-examples
+[Reference documentation](https://docs.relm.co/auth)
 
 ---
 
 ## Retrieve API Credentials
 
-The **Key ID** and **Private Key** are available through secure links.
+The **Key ID** and **Private Key** are available through secure links. This will be shared privately to you.
 
 ⚠️ These links can be opened **only once**, so store the credentials
 securely.
-
-### Sandbox
-
-https://share.1password.com/s#q8btdXAxKvScnN0SGRa1YkM_ijsa5DCJJ1JKxYeGkahQ
-
-### Production
-
-https://share.1password.com/s#U3GCdvRrzfbXs3OKqhmzKrc0n4dnU1o6QaInMHROiGA
 
 ---
 
@@ -69,6 +59,8 @@ https://share.1password.com/s#U3GCdvRrzfbXs3OKqhmzKrc0n4dnU1o6QaInMHROiGA
 
 After authentication is implemented, call the following endpoint from
 your backend to generate the **Sumsub access token**.
+
+Add the signature in the header on the below API
 
 ## Endpoint
 
@@ -93,18 +85,10 @@ Endpoint
 
 ### Field Description
 
----
+externalUserId - Unique customer identifier
 
-Field Description
-
----
-
-externalUserId Unique customer identifier
-
-customerType Type of customer (`INDIVIDUAL` or `BUSINESS`)
+customerType - Type of customer (`INDIVIDUAL` or `BUSINESS`)
 used for selecting the verification level
-
----
 
 ---
 
