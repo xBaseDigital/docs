@@ -16,9 +16,9 @@ within the application.
 
 ---
 
-# Backend Setup
+## Backend Setup
 
-## Base URLs
+### Base URLs
 
 **Production**
 
@@ -40,7 +40,7 @@ API.
 
 ## Generate API Signature
 
-Use your **Key ID** and **Private Key** to generate the API signature.
+Use your **Key ID**, **Public Key** and **Private Key** to generate the API signature.
 
 [Reference documentation](https://docs.relm.co/auth)
 
@@ -48,7 +48,7 @@ Use your **Key ID** and **Private Key** to generate the API signature.
 
 ## Retrieve API Credentials
 
-The **Key ID** and **Private Key** are available through secure links. This will be shared privately to you.
+The **Key ID**, **Public Key** and **Private Key** are available through secure links. The secure links will be shared privately to you.
 
 ⚠️ These links can be opened **only once**, so store the credentials
 securely.
