@@ -30,7 +30,7 @@ within the application.
 
 ---
 
-# API Authentication
+## API Authentication
 
 To authenticate API requests, you must generate a **signature** using
 the **Key ID** and **Private Key**.
@@ -38,7 +38,7 @@ the **Key ID** and **Private Key**.
 This signature must be included in the request headers when calling the
 API.
 
-## Generate API Signature
+### Generate API Signature
 
 Use your **Key ID**, **Public Key** and **Private Key** to generate the API signature.
 
@@ -46,7 +46,7 @@ Use your **Key ID**, **Public Key** and **Private Key** to generate the API sign
 
 ---
 
-## Retrieve API Credentials
+### Retrieve API Credentials
 
 The **Key ID**, **Public Key** and **Private Key** are available through secure links. The secure links will be shared privately to you.
 
