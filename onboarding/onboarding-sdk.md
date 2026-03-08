@@ -76,9 +76,8 @@ Endpoint
 
 ### Header
 
-```json
-Authorization : Signature {Generate Signature}
-```
+````http
+Authorization: Signature {GENERATED_SIGNATURE}
 
 ### Payload
 
@@ -87,7 +86,7 @@ Authorization : Signature {Generate Signature}
   "externalUserId": "string",
   "customerType": "INDIVIDUAL | BUSINESS"
 }
-```
+````
 
 ### Field Description
 
