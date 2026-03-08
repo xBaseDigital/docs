@@ -10,9 +10,7 @@ nav_order: 4
 
 ## Overview
 
-This document explains how the **Sumsub WebSDK** is integrated into the
-dashboard onboarding flow to perform **customer KYC/KYB verification**
-within the application.
+This document explains how the **Sumsub WebSDK** is integrated into the dashboard onboarding flow to enable **customer KYC/KYB verification** within the application.
 
 ---
 
@@ -32,35 +30,44 @@ within the application.
 
 ## API Authentication
 
-To authenticate API requests, you must generate a **signature** using
-the **Key ID**, **Public Key** and **Private Key**.
+All API requests must be authenticated using a **signature-based authentication mechanism**.
 
-This signature must be included in the request headers when calling the
-API.
+To generate the signature, you will need the following credentials:
 
-### Generate API Signature
+- **Key ID**
+- **Public Key**
+- **Private Key**
 
-Use your **Key ID**, **Public Key** and **Private Key** to generate the API signature from the below documentation.
+The generated signature must be included in the request headers when calling any RELM API.
 
-[Reference documentation](https://docs.relm.co/auth)
+### Generating the API Signature
+
+Use your **Key ID**, **Public Key**, and **Private Key** to generate the authentication signature as described in the documentation below.
+
+[Signature Generation Guide](https://docs.relm.co/auth)
 
 ---
 
 ### Retrieve API Credentials
 
-The **Key ID**, **Public Key** and **Private Key** are available through secure links. The secure links will be shared privately to you.
+The following credentials are required to generate the API signature:
 
-⚠️ These links can be opened **only once**, so store the credentials
-securely.
+- **Key ID**
+- **Public Key**
+- **Private Key**
+
+These credentials will be shared with you through **secure links**.
+
+⚠️ **Important:**  
+Each secure link can be opened **only once**. Please make sure to store the credentials in a **secure location** after accessing them.
 
 ---
 
 ## Access Token API
 
-After authentication is implemented, call the following endpoint from
-your backend to generate the **Sumsub access token**.
+Once API authentication has been implemented, you can call the following endpoint from your **backend** to generate the **Sumsub access token**.
 
-Add the signature in the header on the below API
+The generated **API signature must be included in the request headers** when calling this API.
 
 ### Endpoint
 
@@ -89,10 +96,12 @@ Endpoint
 
 ### Field Description
 
-externalUserId - Unique customer identifier
+- **externalUserId**  
+  Unique identifier for the customer.
 
-customerType - Type of customer (`INDIVIDUAL` or `BUSINESS`)
-used for selecting the verification level
+- **customerType**  
+  Specifies the type of customer. Supported values are `INDIVIDUAL` or `BUSINESS`.  
+  This value is used to determine the appropriate verification level.
 
 ---
 
@@ -197,10 +206,3 @@ import SumsubWebSdk from "@sumsub/websdk-react";
   onError={errorHandler}
 />;
 ```
-
----
-
-## Verification Flow
-
-Customer → Frontend → Backend → Relm API → Access Token → Frontend
-launches SDK → KYC Completed
