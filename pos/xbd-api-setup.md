@@ -8,19 +8,24 @@ nav_order: 3
 
 # Integrating RELM Checkout via Direct API
 
-This guide explains how to integrate **RELM Checkout** directly into your e-commerce store or POS system using our REST API.
+This guide explains how to integrate **RELM Checkout** directly into your **e-commerce store** or **POS system** using the RELM REST API.
 
 ## Prerequisites
 
-Before you begin, make sure you have:
+Before starting the integration, ensure that you have the following:
 
-- **Private Key**, **Public Key**, and **Key ID** provided by RELM
-- Implemented **signature generation logic** as described in the [Authentication & Signing guide](https://docs.relm.co/auth)
-- Familiarity with HTTP POST requests and JSON handling
+- **Key ID**, **Public Key**, and **Private Key** provided by RELM
+- Implemented **API signature generation** as described in the [Authentication & Signing Guide](https://docs.relm.co/auth)
+- Basic familiarity with **HTTP requests** and **JSON payloads**
 
-**Environment URLs**  
-Sandbox: `https://sandbox.api.relm.co`  
-Production: `https://api.relm.co`
+## Environment URLs
+
+Use the following base URLs depending on the environment you are working in.
+
+| Environment | Base URL                      |
+| ----------- | ----------------------------- |
+| Sandbox     | `https://sandbox.api.relm.co` |
+| Production  | `https://api.relm.co`         |
 
 ## Integration Steps
 
