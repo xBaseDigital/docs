@@ -6,7 +6,7 @@ parent: POS API
 nav_order: 3
 ---
 
-# Integrating RELM Checkout via Direct API
+## Integrating RELM Checkout via Direct API
 
 This guide explains how to integrate **RELM Checkout** directly into your **e-commerce store** or **POS system** using the RELM REST API.
 
