@@ -55,14 +55,14 @@ securely.
 
 ---
 
-# Access Token API
+## Access Token API
 
 After authentication is implemented, call the following endpoint from
 your backend to generate the **Sumsub access token**.
 
 Add the signature in the header on the below API
 
-## Endpoint
+### Endpoint
 
 Method
 
@@ -74,7 +74,7 @@ Endpoint
 
 ---
 
-## Payload
+### Payload
 
 ```json
 {
@@ -92,7 +92,7 @@ used for selecting the verification level
 
 ---
 
-## Response
+### Response
 
 ```json
 {
@@ -106,9 +106,9 @@ used for selecting the verification level
 
 ---
 
-# Frontend Integration
+## Frontend Integration
 
-## Install the SDK
+### Install the SDK
 
 npm:
 
@@ -120,7 +120,7 @@ yarn:
 
 ---
 
-## Import the SDK
+### Import the SDK
 
 ```javascript
 import snsWebSdk from "@sumsub/websdk";
@@ -134,7 +134,7 @@ Standalone:
 
 ---
 
-## Create SDK Container
+### Create SDK Container
 
 ```html
 <div id="sumsub-websdk-container"></div>
@@ -142,7 +142,7 @@ Standalone:
 
 ---
 
-## Initialize SDK
+### Initialize SDK
 
 ```javascript
 function launchWebSdk(accessToken) {
@@ -179,7 +179,7 @@ function getNewAccessToken() {
 
 ---
 
-# React Integration
+## React Integration
 
 ```jsx
 import SumsubWebSdk from "@sumsub/websdk-react";
@@ -196,7 +196,7 @@ import SumsubWebSdk from "@sumsub/websdk-react";
 
 ---
 
-# Verification Flow
+## Verification Flow
 
 Customer → Frontend → Backend → Relm API → Access Token → Frontend
 launches SDK → KYC Completed
