@@ -3,7 +3,7 @@ title: Banking API
 layout: home
 permalink: /banking
 parent: Get Started
-nav_order: 2
+nav_order: 3
 ---
 
 # Banking API Documentation
