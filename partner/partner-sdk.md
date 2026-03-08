@@ -1,7 +1,7 @@
 ---
 title: Partner SDK
 layout: home
-permalink: /onboarding-sdk
+permalink: /partner-sdk
 parent: Get Started
 nav_order: 4
 ---
