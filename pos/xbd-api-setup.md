@@ -101,10 +101,6 @@ With this <strong>paymentLink</strong>, your frontend can navigate to our Checko
 
 There are currently no rate limits enforced for creating orders via the RELM APIs. You can create orders as needed without restrictions. 
 
-### Demo
-
-- [Ecommerce store](https://xkicks.store)
-
 ## Error Codes
 
 When an error occurs, the API responds with a structured error object. Below is the general format:
@@ -176,3 +172,7 @@ When an error occurs, the API responds with a structured error object. Below is 
   }
 }
 ```
+
+### Demo
+
+- [Ecommerce store](https://xkicks.store)
