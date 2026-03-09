@@ -1,7 +1,7 @@
 ---
 title: Webhook Setup
 layout: home
-permalink: /webhook/setup
+permalink: /pos/webhook/setup
 parent: Webhooks
 nav_order: 1
 ---
