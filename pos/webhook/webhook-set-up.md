@@ -2,7 +2,7 @@
 title: Setup
 layout: home
 permalink: /pos/webhook/setup
-parent: POS API
+parent: Webhook
 nav_order: 2
 ---
 
