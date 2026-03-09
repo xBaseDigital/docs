@@ -97,6 +97,82 @@ You will receive a <strong>paymentLink</strong> in the response, which you need 
 
 With this <strong>paymentLink</strong>, your frontend can navigate to our Checkout solution which will further process the order and receive the payment.
 
+## Rate Limiting
+
+There are currently no rate limits enforced for creating orders via the RELM APIs. You can create orders as needed without restrictions. 
+
 ### Demo
 
 - [Ecommerce store](https://xkicks.store)
+
+## Error Codes
+
+When an error occurs, the API responds with a structured error object. Below is the general format:
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "string",
+    "fullCode": "string",
+    "msg": ["string"],
+    "source": "string",
+    "statusCode": "number",
+    "traceId": "string"
+  }
+}
+```
+
+### Example: 500 Internal Server Error
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "internal-server-error",
+    "fullCode": "RELM-GEN-INTERNAL-SERVER-ERROR",
+    "msg": [
+      "\nInvalid `prisma.posOrder.create()` invocation:\n\n\nUnique constraint failed on the fields: (`clientOrderId`)"
+    ],
+    "source": "GEN",
+    "statusCode": 500,
+    "traceId": "cfc75450-1bba-11f1-ad67-93c03b26c699"
+  }
+}
+```
+
+### Example: 401 Unauthorized
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "unauthorized",
+    "fullCode": "RELM-GEN-UNAUTHORIZED",
+    "msg": [
+      "Invalid API key authentication"
+    ],
+    "source": "GEN",
+    "statusCode": 401,
+    "traceId": "63f10450-1bbb-11f1-ad67-93c03b26c699"
+  }
+}
+```
+
+### Example: 404 Not Found
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "not-found",
+    "fullCode": "RELM-GEN-NOT-FOUND",
+    "msg": [
+      "Currency USDE not found"
+    ],
+    "source": "GEN",
+    "statusCode": 404,
+    "traceId": "98c52fd0-1bbb-11f1-ad67-93c03b26c699"
+  }
+}
+```
