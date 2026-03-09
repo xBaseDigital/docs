@@ -3,7 +3,7 @@ title: Order Creation
 layout: home
 permalink: /pos/checkout
 parent: POS API
-nav_order: 3
+nav_order: 1
 ---
 
 ## Integrating RELM Checkout via Direct API
