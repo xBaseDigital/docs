@@ -1,4 +1,10 @@
-## POS Order Events
+---
+title: POS Order Events
+layout: home
+permalink: /webhook/events
+parent: Webhooks
+nav_order: 2
+---
 
 Webhooks for POS orders notify your system about important events during the order lifecycle. Below are the main events:
 
