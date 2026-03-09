@@ -1,7 +1,7 @@
 ---
-title: POS Order Events
+title: Order Events
 layout: home
-permalink: /webhook/events
+permalink: /pos/webhook/events
 parent: Webhooks
 nav_order: 2
 ---

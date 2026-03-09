@@ -1,5 +1,5 @@
 ---
-title: Webhook Setup
+title: Setup
 layout: home
 permalink: /pos/webhook/setup
 parent: Webhooks
@@ -14,10 +14,10 @@ Follow these steps to set up your webhook:
 
 Go to the `Accept` section in your dashboard and click on **Integrations**.
 
-![Navigate to Integrations](../assets/doc/accept_settings.png)
+![Navigate to Integrations](../assets/doc/accept_settings.webp)
 
 ### Step 2: Configure Your Webhook URL and Click Save
 
 Enter your webhook URL in the provided field and click **Save** to complete the setup.
 
-![Configure Webhook URL](../assets/doc/save_webhook.png)
+![Configure Webhook URL](../assets/doc/save_webhook.webp)
