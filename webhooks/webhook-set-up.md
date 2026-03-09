@@ -1,4 +1,12 @@
-## Webhook Setup Steps
+---
+title: Webhook Setup
+layout: home
+permalink: /webhook/setup
+parent: Webhooks
+nav_order: 1
+---
+
+## Steps
 
 Follow these steps to set up your webhook:
 
