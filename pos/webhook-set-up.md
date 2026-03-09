@@ -2,8 +2,8 @@
 title: Setup
 layout: home
 permalink: /pos/webhook/setup
-parent: Webhooks
-nav_order: 1
+parent: POS API
+nav_order: 2
 ---
 
 ## Steps
