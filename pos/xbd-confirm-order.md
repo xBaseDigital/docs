@@ -166,14 +166,6 @@ Headers
 }
 ```
 
-Request
-
-```json
-{
-  "orderId": "{orderId from the order confirmation response}"
-}
-```
-
 Response
 
 ```json
