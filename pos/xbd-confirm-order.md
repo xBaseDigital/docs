@@ -1,14 +1,14 @@
 ---
-title: How to Test Order Confirmation on Sandbox
+title: Test Order Confirmation on Sandbox
 layout: home
 permalink: /pos/confirm-order
 parent: POS API
 nav_order: 2
 ---
 
-## How to Test Order Confirmation on Sandbox
+## Test Order Confirmation on Sandbox
 
-This guide walks you through how to confirm a RELM order and collect a crypto payment address so your customer can complete their payment.
+This guide explains how to confirm a RELM order and obtain the crypto payment address your customer will use to complete the transaction.
 
 ## Prerequisites
 
@@ -54,63 +54,63 @@ Response
 
 ```json
 {
-    "success": true,
-    "data": {
-        "orderId": "6207f830-25da-4297-90b3-69bdb762b2c2",
-        "clientOrderId": "e-119114",
-        "orderAmount": "105",
-        "orderCurrency": "USD",
-        "recipientEmail": "engineering@xbdgroup.com",
-        "status": "PROCESSING",
-        "orderType": "EPOS",
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmRlcklkIjoiNjIwN2Y4MzAtMjVkYS00Mjk3LTkwYjMtNjliZGI3NjJiMmMyIiwiY3VzdG9tZXJJZCI6ImM3MDlmZjRkLWQzODQtNDI5Mi05ZjQ5LThhNGM0ZjQ2NzEyYiIsImlhdCI6MTc3MzQxNjM4MCwiZXhwIjoxNzczNDE5OTgwfQ.j3lm9c5KNZf8M9y-D_Sm82S5TEjG5lvXnjxVBd5l7vg",
-        "paymentCurrency": "USDC",
-        "paymentAmount": "108.171",
-        "payerRemainingAmount": "108.171",
-        "payerEmail": "engineering@xbdgroup.com",
-        "paymentWalletAddress": "0xc6A9da4519cFA90d53638B9F10bD83c7b91f3fa9",
-        "qrCode": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATbSURBVO3BQY4cSRIEQdNA/f/Lujz6KYBEejXZsyaCf6RqyUnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXok5eA/CQ1E5A31ExAJjUTkEnNBGRScwNkUjMB+Ulq3jipWnRSteikatEny9RsAnKj5gkgTwCZ1ExAJjUTkBs1T6jZBGTTSdWik6pFJ1WLPvkyIE+oeQPIE0AmNROQCcgNkEnNBGQTkCfUfNNJ1aKTqkUnVYs++eWAvKFmAnKj5gbIBGRSMwGZ1PxmJ1WLTqoWnVQt+uQ/Rs0EZFIzAXkCyKRmUjMB+X9yUrXopGrRSdWiT75Mzb9MzSYgN0A2qfmXnFQtOqladFK16JNlQH4TIJOaCcikZgIyqZmATGomIE8A+ZedVC06qVp0UrUI/8gvBmSTmieA3KiZgNyo+c1OqhadVC06qVr0yUtAJjVPAJnUTED+JiCTmknNBGQCcqNmArJJzQ2QSc0bJ1WLTqoWnVQt+mQZkEnNjZoJyKRmAjKpmYDcqLkBMqmZgDyh5gbIpGYC8oSaCchPOqladFK16KRq0ScvqZmAvKFmAjKpmYA8AWSTmgnIG0Bu1PzLTqoWnVQtOqla9MlLQCY1N0AmNROQSc0E5A01TwCZ1DwB5EbNE0CeUPOTTqoWnVQtOqla9MlLam6APKFmAjKpeQLIDZBJzaTmBsik5gbIDZBJzY2aCcgEZFLzTSdVi06qFp1ULfpkGZAbNTdAJjUTkEnNE0BugDyh5gbIpGYCMqm5UTMBeQPIpOaNk6pFJ1WLTqoWffISkEnNBGQCcqNmAjKpuQFyo2YC8i8DMqmZ1ExAJjU/6aRq0UnVopOqRfhHFgGZ1ExAJjVvAJnUTEAmNZuA3Ki5AXKjZgIyqXkCyI2aN06qFp1ULTqpWvTJlwF5A8ik5gbIpOab1ExAJiA3aiYg36RmArLppGrRSdWik6pFn7wEZFLzBJBJzaTmDSCTmgnIJjVPAJnU3KiZgNyomYB800nVopOqRSdVi/CPfBGQSc0NkCfUPAHkRs0NkEnNBGRS8wSQGzU3QCY1N0AmNW+cVC06qVp0UrXok3+MmhsgE5BJzQTkRs0NkEnNBOQGyKRmAjKpmYBsAvJNJ1WLTqoWnVQt+uQlIE8AmdTcANmkZgIyqfkmIDdAboC8oeabTqoWnVQtOqlahH/kFwPyhJo3gExqngByo+YJIJOaCcgTat44qVp0UrXopGrRJy8B+UlqnlAzAZnUvAHkRs0bQCY1T6iZgHzTSdWik6pFJ1WLPlmmZhOQGzUTkBs1E5BJzQTkb1LzBJBJzY2aTSdVi06qFp1ULfrky4A8oeYJIJOaCciNmgnI3wTkm9RMQCY1b5xULTqpWnRSteiTX07NBGRSMwG5UTMBuVFzA+QJNTdAJjUTkAnIpOabTqoWnVQtOqla9Ml/HJBJzQRkUvMEkEnNpOZvUjMB+aaTqkUnVYtOqhZ98mVq/iY1E5BJzRtqJiCTmgnIE2qeUPM3nVQtOqladFK16JNlQH4SkBsgk5oJyBNqbtT8JCCTmifUbDqpWnRSteikahH+kaolJ1WLTqoWnVQtOqladFK16KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aL/AQQCIHw9/K9HAAAAAElFTkSuQmCC",
-        "paymentLink": "https://sandbox.checkout.relm.co/?t=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmRlcklkIjoiNjIwN2Y4MzAtMjVkYS00Mjk3LTkwYjMtNjliZGI3NjJiMmMyIiwiY3VzdG9tZXJJZCI6ImM3MDlmZjRkLWQzODQtNDI5Mi05ZjQ5LThhNGM0ZjQ2NzEyYiIsImlhdCI6MTc3MzQxNjM4MCwiZXhwIjoxNzczNDE5OTgwfQ.j3lm9c5KNZf8M9y-D_Sm82S5TEjG5lvXnjxVBd5l7vg",
-        "company": {
-            "id": "d1abec21-8d0c-475c-9c3d-98d7d6757175",
-            "customerId": "c709ff4d-d384-4292-9f49-8a4c4f46712b",
-            "name": "xKicks Sandbox",
-            "displayName": "xKicks Sandbox",
-            "email": null,
-            "phone": null,
-            "website": "test",
-            "registrationNumber": "323232",
-            "registeredAddress": "test, test, testa, 1111221, IND",
-            "companyAddressId": "d5ddbb41-9c5d-4c22-a02c-5b3172d6d88b",
-            "industryName": "Antiques",
-            "industryDetail": null,
-            "createdAt": "2026-02-12T10:42:03.666Z",
-            "updatedAt": "2026-02-12T10:42:04.015Z"
-        },
-        "network": {
-            "id": "6a48b281-c3c4-4a78-aa1f-f153d6b5ae71",
-            "code": "ETH_TEST5",
-            "name": "Ethereum Sepolia (Sandbox)",
-            "chainId": "11155111",
-            "nativeCurrency": "ETH",
-            "isTestnet": true,
-            "enabled": true,
-            "externalId": null,
-            "metadata": null,
-            "createdAt": "2025-11-28T05:18:12.150Z",
-            "updatedAt": "2025-12-03T15:31:48.089Z"
-        },
-        "createdAt": "2026-03-13T15:39:40.120Z",
-        "expiresAt": "2026-03-13T16:39:40.120Z",
-        "additionalInfo": {
-            "redirectUrl": {
-                "accept": "https://sandbox.xkicks.store/success",
-                "cancel": "https://sandbox.xkicks.store/cancel",
-                "failed": "https://sandbox.xkicks.store/failure"
-            }
-        },
-        "payerConversionRate": "1.030200"
-    }
+  "success": true,
+  "data": {
+    "orderId": "6207f830-25da-4297-90b3-69bdb762b2c2",
+    "clientOrderId": "e-119114",
+    "orderAmount": "105",
+    "orderCurrency": "USD",
+    "recipientEmail": "engineering@xbdgroup.com",
+    "status": "PROCESSING",
+    "orderType": "EPOS",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmRlcklkIjoiNjIwN2Y4MzAtMjVkYS00Mjk3LTkwYjMtNjliZGI3NjJiMmMyIiwiY3VzdG9tZXJJZCI6ImM3MDlmZjRkLWQzODQtNDI5Mi05ZjQ5LThhNGM0ZjQ2NzEyYiIsImlhdCI6MTc3MzQxNjM4MCwiZXhwIjoxNzczNDE5OTgwfQ.j3lm9c5KNZf8M9y-D_Sm82S5TEjG5lvXnjxVBd5l7vg",
+    "paymentCurrency": "USDC",
+    "paymentAmount": "108.171",
+    "payerRemainingAmount": "108.171",
+    "payerEmail": "engineering@xbdgroup.com",
+    "paymentWalletAddress": "0xc6A9da4519cFA90d53638B9F10bD83c7b91f3fa9",
+    "qrCode": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATbSURBVO3BQY4cSRIEQdNA/f/Lujz6KYBEejXZsyaCf6RqyUnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXok5eA/CQ1E5A31ExAJjUTkEnNBGRScwNkUjMB+Ulq3jipWnRSteikatEny9RsAnKj5gkgTwCZ1ExAJjUTkBs1T6jZBGTTSdWik6pFJ1WLPvkyIE+oeQPIE0AmNROQCcgNkEnNBGQTkCfUfNNJ1aKTqkUnVYs++eWAvKFmAnKj5gbIBGRSMwGZ1PxmJ1WLTqoWnVQt+uQ/Rs0EZFIzAXkCyKRmUjMB+X9yUrXopGrRSdWiT75Mzb9MzSYgN0A2qfmXnFQtOqladFK16JNlQH4TIJOaCcikZgIyqZmATGomIE8A+ZedVC06qVp0UrUI/8gvBmSTmieA3KiZgNyo+c1OqhadVC06qVr0yUtAJjVPAJnUTED+JiCTmknNBGQCcqNmArJJzQ2QSc0bJ1WLTqoWnVQt+mQZkEnNjZoJyKRmAjKpmYDcqLkBMqmZgDyh5gbIpGYC8oSaCchPOqladFK16KRq0ScvqZmAvKFmAjKpmYA8AWSTmgnIG0Bu1PzLTqoWnVQtOqla9MlLQCY1N0AmNROQSc0E5A01TwCZ1DwB5EbNE0CeUPOTTqoWnVQtOqla9MlLam6APKFmAjKpeQLIDZBJzaTmBsik5gbIDZBJzY2aCcgEZFLzTSdVi06qFp1ULfpkGZAbNTdAJjUTkEnNE0BugDyh5gbIpGYCMqm5UTMBeQPIpOaNk6pFJ1WLTqoWffISkEnNBGQCcqNmAjKpuQFyo2YC8i8DMqmZ1ExAJjU/6aRq0UnVopOqRfhHFgGZ1ExAJjVvAJnUTEAmNZuA3Ki5AXKjZgIyqXkCyI2aN06qFp1ULTqpWvTJlwF5A8ik5gbIpOab1ExAJiA3aiYg36RmArLppGrRSdWik6pFn7wEZFLzBJBJzaTmDSCTmgnIJjVPAJnU3KiZgNyomYB800nVopOqRSdVi/CPfBGQSc0NkCfUPAHkRs0NkEnNBGRS8wSQGzU3QCY1N0AmNW+cVC06qVp0UrXok3+MmhsgE5BJzQTkRs0NkEnNBOQGyKRmAjKpmYBsAvJNJ1WLTqoWnVQt+uQlIE8AmdTcANmkZgIyqfkmIDdAboC8oeabTqoWnVQtOqlahH/kFwPyhJo3gExqngByo+YJIJOaCcgTat44qVp0UrXopGrRJy8B+UlqnlAzAZnUvAHkRs0bQCY1T6iZgHzTSdWik6pFJ1WLPlmmZhOQGzUTkBs1E5BJzQTkb1LzBJBJzY2aTSdVi06qFp1ULfrky4A8oeYJIJOaCciNmgnI3wTkm9RMQCY1b5xULTqpWnRSteiTX07NBGRSMwG5UTMBuVFzA+QJNTdAJjUTkAnIpOabTqoWnVQtOqla9Ml/HJBJzQRkUvMEkEnNpOZvUjMB+aaTqkUnVYtOqhZ98mVq/iY1E5BJzRtqJiCTmgnIE2qeUPM3nVQtOqladFK16JNlQH4SkBsgk5oJyBNqbtT8JCCTmifUbDqpWnRSteikahH+kaolJ1WLTqoWnVQtOqladFK16KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aL/AQQCIHw9/K9HAAAAAElFTkSuQmCC",
+    "paymentLink": "https://sandbox.checkout.relm.co/?t=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmRlcklkIjoiNjIwN2Y4MzAtMjVkYS00Mjk3LTkwYjMtNjliZGI3NjJiMmMyIiwiY3VzdG9tZXJJZCI6ImM3MDlmZjRkLWQzODQtNDI5Mi05ZjQ5LThhNGM0ZjQ2NzEyYiIsImlhdCI6MTc3MzQxNjM4MCwiZXhwIjoxNzczNDE5OTgwfQ.j3lm9c5KNZf8M9y-D_Sm82S5TEjG5lvXnjxVBd5l7vg",
+    "company": {
+      "id": "d1abec21-8d0c-475c-9c3d-98d7d6757175",
+      "customerId": "c709ff4d-d384-4292-9f49-8a4c4f46712b",
+      "name": "xKicks Sandbox",
+      "displayName": "xKicks Sandbox",
+      "email": null,
+      "phone": null,
+      "website": "test",
+      "registrationNumber": "323232",
+      "registeredAddress": "test, test, testa, 1111221, IND",
+      "companyAddressId": "d5ddbb41-9c5d-4c22-a02c-5b3172d6d88b",
+      "industryName": "Antiques",
+      "industryDetail": null,
+      "createdAt": "2026-02-12T10:42:03.666Z",
+      "updatedAt": "2026-02-12T10:42:04.015Z"
+    },
+    "network": {
+      "id": "6a48b281-c3c4-4a78-aa1f-f153d6b5ae71",
+      "code": "ETH_TEST5",
+      "name": "Ethereum Sepolia (Sandbox)",
+      "chainId": "11155111",
+      "nativeCurrency": "ETH",
+      "isTestnet": true,
+      "enabled": true,
+      "externalId": null,
+      "metadata": null,
+      "createdAt": "2025-11-28T05:18:12.150Z",
+      "updatedAt": "2025-12-03T15:31:48.089Z"
+    },
+    "createdAt": "2026-03-13T15:39:40.120Z",
+    "expiresAt": "2026-03-13T16:39:40.120Z",
+    "additionalInfo": {
+      "redirectUrl": {
+        "accept": "https://sandbox.xkicks.store/success",
+        "cancel": "https://sandbox.xkicks.store/cancel",
+        "failed": "https://sandbox.xkicks.store/failure"
+      }
+    },
+    "payerConversionRate": "1.030200"
+  }
 }
 ```
 
