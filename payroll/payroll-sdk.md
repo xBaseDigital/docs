@@ -6,7 +6,7 @@ parent: Get Started
 nav_order: 5
 ---
 
-# Payroll SDK — Integration Guide
+# Payroll Widget — Integration Guide
 
 A lightweight embeddable widget that opens a payroll widget inside your app via an iframe. This guide covers everything you need to load and launch the widget.
 
@@ -157,49 +157,104 @@ window.PayoutSDK.close();
 
 ---
 
+## Session Expiry
+
+Access tokens are short-lived. When a token expires mid-session, the widget will **automatically close** and fire the `onSessionExpired` callback.
+
+This means the existing tokens are no longer valid. To reopen the widget you must fetch a fresh pair of tokens from `/v1/api-keys/tokens` and call `init()` + `open()` again — the same process as the initial launch.
+
+```ts
+window.PayoutSDK.init({
+  // ...
+  onSessionExpired: async () => {
+    // Widget has already closed at this point.
+    // Do NOT reopen with the old tokens — they are expired.
+
+    // 1. Re-fetch fresh tokens
+    const response = await fetch(`${baseUrl}/v1/api-keys/tokens`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "<your_signature>",
+      },
+    });
+
+    const { data } = await response.json();
+    const { token, refreshToken } = data;
+
+    // 2. Re-initialize with new tokens and reopen
+    window.PayoutSDK.init({
+      accessToken: token,
+      refreshToken,
+      flavor: "SANDBOX",
+      onSuccess: (data) => console.log("Success:", data),
+      onError: (err) => console.error("Error:", err),
+      onSessionExpired: () => {
+        /* handle recursively if needed */
+      },
+    });
+
+    window.PayoutSDK.open();
+  },
+});
+```
+
+> **Important:** Do not attempt to reopen the widget with the old tokens after `onSessionExpired` fires. The session is already invalid and the widget will fail to load. Always fetch fresh tokens first.
+
+---
+
 ## Full Example (React)
 
 ```tsx
-const handleOpenPayout = async () => {
+const openPayoutWidget = async () => {
   const baseUrl = "https://sandbox.api.relm.co";
   const portalUrl = "https://sandbox.portal.relm.co";
 
-  // 1. Fetch tokens
-  const response = await fetch(`${baseUrl}/v1/api-keys/tokens`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "<your_signature>",
-    },
-  });
+  // Reusable token fetch
+  const fetchTokens = async () => {
+    const response = await fetch(`${baseUrl}/v1/api-keys/tokens`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "<your_signature>",
+      },
+    });
+    const { data } = await response.json();
+    return data; // { token, refreshToken }
+  };
 
-  const { data } = await response.json();
-  const { token, refreshToken } = data;
-
-  // 2. Load SDK (skip if already loaded)
-  const existing = document.querySelector(
-    `script[src="${portalUrl}/sdk/payout-sdk.js"]`,
-  );
-
-  const initAndOpen = () => {
+  // Reusable init + open
+  const initAndOpen = (token: string, refreshToken: string) => {
     window.PayoutSDK?.init({
       accessToken: token,
       refreshToken,
       flavor: "SANDBOX",
       onSuccess: (data) => console.log("Success:", data),
       onError: (err) => console.error("Error:", err),
-      onSessionExpired: () => console.log("Session expired"),
+      onSessionExpired: async () => {
+        // Widget is closed — re-fetch and reopen
+        const fresh = await fetchTokens();
+        initAndOpen(fresh.token, fresh.refreshToken);
+      },
     });
     window.PayoutSDK?.open();
   };
 
+  // 1. Fetch tokens
+  const { token, refreshToken } = await fetchTokens();
+
+  // 2. Load SDK (skip if already loaded)
+  const existing = document.querySelector(
+    `script[src="${portalUrl}/sdk/payout-sdk.js"]`,
+  );
+
   if (existing) {
-    initAndOpen();
+    initAndOpen(token, refreshToken);
   } else {
     const script = document.createElement("script");
     script.src = `${portalUrl}/sdk/payout-sdk.js`;
     script.async = true;
-    script.onload = initAndOpen;
+    script.onload = () => initAndOpen(token, refreshToken);
     document.body.appendChild(script);
   }
 };
@@ -226,5 +281,4 @@ const handleOpenPayout = async () => {
 | --------- | -------------------------------- |
 | `LOCAL`   | `http://localhost:3000`          |
 | `SANDBOX` | `https://sandbox.portal.relm.co` |
-| `PREPROD` | `https://portal.preprod.relm.co` |
 | `LIVE`    | `https://portal.relm.co`         |
