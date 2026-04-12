@@ -6,9 +6,9 @@ parent: Get Started
 nav_order: 5
 ---
 
-# PayoutSDK — Integration Guide
+# Payroll SDK — Integration Guide
 
-A lightweight embeddable widget that opens a payout portal inside your app via an iframe. This guide covers everything you need to load and launch the widget.
+A lightweight embeddable widget that opens a payroll widget inside your app via an iframe. This guide covers everything you need to load and launch the widget.
 
 ---
 
@@ -19,6 +19,14 @@ The flow has three steps:
 1. **Fetch tokens** from the Relm API using your API key credentials
 2. **Load the SDK script** served from the portal
 3. **Call `init()` then `open()`** to launch the widget
+
+---
+
+### Generating the API Signature
+
+Use your **Key ID**, **Public Key**, and **Private Key** to generate the authentication signature as described in the documentation below.
+
+[Signature Generation Guide](https://docs.relm.co/auth)
 
 ---
 
@@ -62,12 +70,11 @@ const response = await fetch(`${baseUrl}/v1/api-keys/tokens`, {
 
 ### Base URLs by environment
 
-| Flavor    | Base URL                         |
-| --------- | -------------------------------- |
-| `LOCAL`   | `http://localhost:3000`          |
-| `SANDBOX` | `https://sandbox.api.relm.co`    |
-| `PREPROD` | `https://portal.preprod.relm.co` |
-| `LIVE`    | `https://portal.relm.co`         |
+| Flavor    | Base URL                      |
+| --------- | ----------------------------- |
+| `LOCAL`   | `http://localhost:3000`       |
+| `SANDBOX` | `https://sandbox.api.relm.co` |
+| `LIVE`    | `https://portal.relm.co`      |
 
 ---
 
@@ -110,7 +117,7 @@ Initializes the widget. Call this **once** per session.
 window.PayoutSDK.init({
   accessToken: "<token from Step 1>",
   refreshToken: "<refreshToken from Step 1>",
-  flavor: "SANDBOX", // LOCAL | SANDBOX | PREPROD | LIVE
+  flavor: "SANDBOX", // LOCAL | SANDBOX | LIVE
   onSuccess: (data) => {
     console.log("Payout success:", data);
     // data: { transactionId, amount, currency, method }
@@ -126,14 +133,11 @@ window.PayoutSDK.init({
 
 #### Config options
 
-| Property           | Type       | Required | Description                                  |
-| ------------------ | ---------- | -------- | -------------------------------------------- |
-| `accessToken`      | `string`   | ✅       | Short-lived token from `/v1/api-keys/tokens` |
-| `refreshToken`     | `string`   | ✅       | Refresh token from `/v1/api-keys/tokens`     |
-| `flavor`           | `string`   | ✅       | Target environment (`SANDBOX`, `LIVE`, etc.) |
-| `onSuccess`        | `function` | ❌       | Called on successful payout                  |
-| `onError`          | `function` | ❌       | Called on payout failure                     |
-| `onSessionExpired` | `function` | ❌       | Called when the session expires              |
+| Property       | Type     | Required | Description                                  |
+| -------------- | -------- | -------- | -------------------------------------------- |
+| `accessToken`  | `string` | ✅       | Short-lived token from `/v1/api-keys/tokens` |
+| `refreshToken` | `string` | ✅       | Refresh token from `/v1/api-keys/tokens`     |
+| `flavor`       | `string` | ✅       | Target environment (`SANDBOX`, `LIVE`, etc.) |
 
 ### `PayoutSDK.open()`
 
