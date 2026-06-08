@@ -14,10 +14,10 @@ This guide will help you get started with integrating RELM's payment and banking
 
 RELM provides two environments for integration and testing. Use the appropriate base URL depending on the environment you are working in.
 
-| Environment | Base URL                      | Purpose                                                      |
-| ----------- | ----------------------------- | ------------------------------------------------------------ |
-| Sandbox     | `https://sandbox.api.relm.co` | For development and testing. Use this environment to integrate and test your application without affecting real transactions. |
-| Production  | `https://api.relm.co`         | For live transactions. Switch to this environment once your integration is complete and tested. |
+| Environment | Base URL                                     | Purpose                                                      |
+| ----------- |----------------------------------------------| ------------------------------------------------------------ |
+| Sandbox     | `https://sandbox.api.relm.co`                | For development and testing. Use this environment to integrate and test your application without affecting real transactions. |
+| Production  | `https://api.relm.co`                        | For live transactions. Switch to this environment once your integration is complete and tested. |
 
 ### Important Notes
 
