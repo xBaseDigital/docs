@@ -3,7 +3,7 @@ title: Onboarding SDK
 layout: home
 permalink: /onboarding-sdk
 parent: SDK Integration
-nav_order: 2
+nav_order: 1
 ---
 
 # Onboarding SDK
