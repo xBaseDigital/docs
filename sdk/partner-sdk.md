@@ -1,9 +1,9 @@
 ---
-title: Partner SDK
+title: Sumsub SDK
 layout: home
-permalink: /partner-sdk
+permalink: /sumsub-sdk
 parent: SDK Integration
-nav_order: 1
+nav_order: 2
 ---
 
 # Sumsub SDK Integration Guide
