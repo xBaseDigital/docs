@@ -2,8 +2,8 @@
 title: Partner SDK
 layout: home
 permalink: /partner-sdk
-parent: Get Started
-nav_order: 2
+parent: SDK Integration
+nav_order: 1
 ---
 
 # Sumsub SDK Integration Guide
