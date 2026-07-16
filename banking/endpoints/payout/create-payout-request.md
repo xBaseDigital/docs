@@ -249,13 +249,3 @@ The `purpose` field in the request body can take one of the following values:
 - `utility_bill`
 - `none`
 
-**FreemarketTxPurpose:**
-- `Transferring_Funds_To_Own_Account`
-- `Repatriating_Overseas_Earnings`
-- `Investment_Property_Purchase`
-- `Overseas_Purchase`
-- `Investing_Abroad`
-- `Speculative_Trading`
-- `Sales_From_Commerce_Site`
-- `Paying_Overseas_Suppliers`
-- `Other`
