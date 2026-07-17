@@ -16,3 +16,6 @@ vendor/
 /.idea/docs.iml
 /.idea/modules.xml
 /.idea/vcs.xml
+
+# Ignore macOS Finder metadata files
+.DS_Store

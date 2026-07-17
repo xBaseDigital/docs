@@ -224,7 +224,6 @@ Exceeding rate limits returns a `429 Too Many Requests` response with a `Retry-A
 ## Support & Resources
 
 - **Developer Portal**: [https://docs.relm.co](https://docs.relm.co)
-- **API Status**: [https://status.relm.co](https://status.relm.co)
 - **Support Email**: [support@relm.co](mailto:support@relm.co)
 
 ---
