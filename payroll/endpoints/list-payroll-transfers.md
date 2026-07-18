@@ -2,7 +2,7 @@
 title: List Payroll Transfers
 layout: home
 permalink: /payroll/endpoints/list-payroll-transfers
-parent: Payroll
+parent: Payroll API
 nav_order: 7
 ---
 

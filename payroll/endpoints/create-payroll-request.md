@@ -2,7 +2,7 @@
 title: Create Payroll Request
 layout: home
 permalink: /payroll/endpoints/create-payroll-request
-parent: Payroll
+parent: Payroll API
 nav_order: 2
 ---
 

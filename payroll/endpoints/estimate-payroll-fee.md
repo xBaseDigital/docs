@@ -2,7 +2,7 @@
 title: Estimate Payroll Fee
 layout: home
 permalink: /payroll/endpoints/estimate-payroll-fee
-parent: Payroll
+parent: Payroll API
 nav_order: 1
 ---
 

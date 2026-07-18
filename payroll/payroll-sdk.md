@@ -1,9 +1,9 @@
 ---
 title: Payroll Widget
 layout: home
-permalink: /payroll-widget
-parent: Get Started
-nav_order: 5
+permalink: /payroll/widget
+parent: Payroll
+nav_order: 2
 ---
 
 # Payroll Widget — Integration Guide
