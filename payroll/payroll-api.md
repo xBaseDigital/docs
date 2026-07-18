@@ -1,9 +1,10 @@
 ---
 title: Payroll API
 layout: home
-permalink: /payroll
-parent: Get Started
-nav_order: 4
+permalink: /payroll/api
+parent: Payroll
+nav_order: 1
+has_children: true
 ---
 
 # Payroll API Documentation
@@ -130,23 +131,23 @@ All fees are transparently disclosed in the estimate and request responses.
 
 ### Fee Estimation & Request Creation
 
-- [**POST /payroll/estimate**](endpoints/estimate-payroll-fee) — Estimate fees for a payroll distribution
-- [**POST /payroll/requests**](endpoints/create-payroll-request) — Create a new payroll request
-- [**GET /payroll/requests/:requestId**](endpoints/get-payroll-request) — Get detailed payroll request information
+- [**POST /payroll/estimate**](/payroll/endpoints/estimate-payroll-fee) — Estimate fees for a payroll distribution
+- [**POST /payroll/requests**](/payroll/endpoints/create-payroll-request) — Create a new payroll request
+- [**GET /payroll/requests/:requestId**](/payroll/endpoints/get-payroll-request) — Get detailed payroll request information
 
 ### Quote Management
 
-- [**PATCH /payroll/requests/:requestId/accept**](endpoints/accept-payroll-quote) — Accept the provided quote
-- [**DELETE /payroll/requests/:requestId**](endpoints/cancel-payroll-request) — Cancel a payroll request
+- [**PATCH /payroll/requests/:requestId/accept**](/payroll/endpoints/accept-payroll-quote) — Accept the provided quote
+- [**DELETE /payroll/requests/:requestId**](/payroll/endpoints/cancel-payroll-request) — Cancel a payroll request
 
 ### Listing & Tracking
 
-- [**GET /payroll/requests**](endpoints/list-payroll-requests) — List all payroll requests for the authenticated customer
-- [**GET /payroll/transfers**](endpoints/list-payroll-transfers) — List individual beneficiary payouts with status tracking
+- [**GET /payroll/requests**](/payroll/endpoints/list-payroll-requests) — List all payroll requests for the authenticated customer
+- [**GET /payroll/transfers**](/payroll/endpoints/list-payroll-transfers) — List individual beneficiary payouts with status tracking
 
 ### Reference
 
-- [**Enums & Types**](endpoints/enums-and-types) — Status enums, transfer types, and MCB purpose codes
+- [**Enums & Types**](/payroll/endpoints/enums-and-types) — Status enums, transfer types, and MCB purpose codes
 
 ---
 

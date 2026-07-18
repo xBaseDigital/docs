@@ -2,7 +2,7 @@
 title: Cancel Payroll Request
 layout: home
 permalink: /payroll/endpoints/cancel-payroll-request
-parent: Payroll
+parent: Payroll API
 nav_order: 6
 ---
 

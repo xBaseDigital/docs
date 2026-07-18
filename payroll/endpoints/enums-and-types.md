@@ -2,7 +2,7 @@
 title: Enums & Types
 layout: home
 permalink: /payroll/endpoints/enums-and-types
-parent: Payroll
+parent: Payroll API
 nav_order: 8
 ---
 

@@ -2,7 +2,7 @@
 title: List Payroll Requests
 layout: home
 permalink: /payroll/endpoints/list-payroll-requests
-parent: Payroll
+parent: Payroll API
 nav_order: 5
 ---
 

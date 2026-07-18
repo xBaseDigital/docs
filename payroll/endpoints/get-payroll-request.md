@@ -2,7 +2,7 @@
 title: Get Payroll Request
 layout: home
 permalink: /payroll/endpoints/get-payroll-request
-parent: Payroll
+parent: Payroll API
 nav_order: 4
 ---
 
@@ -421,10 +421,7 @@ Before accepting the quote, compare estimated vs. actual rates:
 
 ```json
 {
-  "estimatedFxRate": "91.2450",      // Initial estimate
-  "fxExchange": {
-    "exchangeRate": "80.2850"         // Actual rate from admin
-  }
+  "estimatedFxRate": "91.2450"
 }
 ```
 

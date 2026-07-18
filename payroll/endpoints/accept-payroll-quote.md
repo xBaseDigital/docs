@@ -2,7 +2,7 @@
 title: Accept Payroll Quote
 layout: home
 permalink: /payroll/endpoints/accept-payroll-quote
-parent: Payroll
+parent: Payroll API
 nav_order: 3
 ---
 
