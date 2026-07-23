@@ -42,10 +42,43 @@ Auth:     PARTNER | PARTNER_ADMIN
 Status: 200 OK
 ```
 
+`data` is an array of beneficiaries for the account (page and limit control the window).
+
 ```json
 {
   "success": true,
-  "data": { }
+  "data": [
+    {
+      "id": "39aa9cab-c45a-41f6-92d8-5aff67916fcf",
+      "recipientId": "8a42e9ff-ac35-4b47-b605-5aca4ac0bc78",
+      "accountId": "385dec3a-9bfe-4072-8733-7872ef350e71",
+      "name": "Acme Corp",
+      "displayName": "Acme Corp",
+      "reference": "Invoice#123",
+      "type": "BUSINESS",
+      "status": "ACTIVE",
+      "assetType": "FIAT",
+      "iban": "GB29NWBK60161331926812",
+      "bicSwiftCode": "NWBKGB2L",
+      "correspondentBic": null,
+      "bankingId": null,
+      "bankingIdType": null,
+      "accountNumber": null,
+      "routingNumber": null,
+      "currencyCode": "AED",
+      "countryCode": null,
+      "bankCountryCode": null,
+      "transactionType": "LOCAL",
+      "addressId": "f00e6da2-1d30-40ea-9593-7ecd3f9bb10e",
+      "address": {
+        "line1": "123 Business Rd",
+        "line2": "Suite 100",
+        "country": "AG"
+      },
+      "cryptoWalletAddress": null,
+      "networkId": null
+    }
+  ]
 }
 ```
 
@@ -100,9 +133,30 @@ Status: 201 Created
 ```json
 {
   "success": true,
-  "data": { }
+  "data": {
+    "id": "39aa9cab-c45a-41f6-92d8-5aff67916fcf",
+    "recipientId": "8a42e9ff-ac35-4b47-b605-5aca4ac0bc78",
+    "accountId": "385dec3a-9bfe-4072-8733-7872ef350e71",
+    "name": "Acme Corp",
+    "displayName": "Acme Corp",
+    "reference": "Invoice#123",
+    "type": "BUSINESS",
+    "status": "PENDING",
+    "assetType": "FIAT",
+    "iban": "GB29NWBK60161331926812",
+    "bicSwiftCode": "NWBKGB2L",
+    "currencyCode": "AED",
+    "transactionType": "LOCAL",
+    "metadata": {
+      "bankName": "NatWest"
+    },
+    "cryptoWalletAddress": null,
+    "networkId": null
+  }
 }
 ```
+
+New beneficiaries are created in `PENDING` status and must be confirmed before they can receive payouts.
 
 ---
 
@@ -140,7 +194,18 @@ Status: 201 Created
 ```json
 {
   "success": true,
-  "data": { }
+  "data": {
+    "id": "39aa9cab-c45a-41f6-92d8-5aff67916fcf",
+    "name": "Acme Corp",
+    "displayName": "Acme Corporation",
+    "reference": "Invoice#123",
+    "type": "BUSINESS",
+    "status": "ACTIVE",
+    "assetType": "FIAT",
+    "currencyCode": "AED",
+    "countryCode": "GB",
+    "updatedAt": "2026-07-15T12:01:02.479Z"
+  }
 }
 ```
 
@@ -182,9 +247,17 @@ Status: 200 OK
 ```json
 {
   "success": true,
-  "data": { }
+  "data": {
+    "id": "39aa9cab-c45a-41f6-92d8-5aff67916fcf",
+    "name": "Acme Corp",
+    "status": "ACTIVE",
+    "assetType": "FIAT",
+    "currencyCode": "AED"
+  }
 }
 ```
+
+When `confirmed` is `false`, the beneficiary is removed and `data` reflects the deletion result.
 
 ---
 
@@ -210,7 +283,10 @@ Status: 200 OK
 ```json
 {
   "success": true,
-  "data": { }
+  "data": {
+    "id": "39aa9cab-c45a-41f6-92d8-5aff67916fcf",
+    "status": "DELETED"
+  }
 }
 ```
 
@@ -241,9 +317,21 @@ Auth:     PARTNER | PARTNER_ADMIN
 Status: 200 OK
 ```
 
+`data` contains the provider-specific payout configuration for the beneficiary, including the supported payment methods, purpose codes, and any per-scheme limits. Exact fields depend on the account's banking provider.
+
 ```json
 {
   "success": true,
-  "data": { }
+  "data": {
+    "beneficiaryId": "39aa9cab-c45a-41f6-92d8-5aff67916fcf",
+    "accountCurrencyId": "e2149078-9be5-46f8-9ec1-4c742314a170",
+    "currencyCode": "AED",
+    "paymentMethods": ["LOCAL", "SWIFT"],
+    "purposeCodes": ["salaries", "goods_bought", "professional"],
+    "limits": {
+      "min": "1.00",
+      "max": "1000000.00"
+    }
+  }
 }
 ```

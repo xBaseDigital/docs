@@ -33,6 +33,9 @@ Auth:     PARTNER | PARTNER_ADMIN
 | `status` | string | No | Filter by `RemitterStatus`. |
 | `currencyId` | string | No | Filter by currency. |
 
+{: .note }
+When `assetType` and `status` are omitted, the list defaults to `CRYPTO` remitters with status `WHITELISTED`.
+
 ### Response
 
 ```
@@ -42,7 +45,28 @@ Status: 200 OK
 ```json
 {
   "success": true,
-  "data": [ ]
+  "data": [
+    {
+      "id": "b7c1f0a2-3d4e-4f5a-8b6c-9d0e1f2a3b4c",
+      "accountId": "385dec3a-9bfe-4072-8733-7872ef350e71",
+      "assetType": "CRYPTO",
+      "status": "WHITELISTED",
+      "isWhitelisted": true,
+      "label": "Treasury cold wallet",
+      "type": "INDIVIDUAL",
+      "firstName": "Ahmed",
+      "lastName": "Khan",
+      "cryptoWalletAddress": "0xAE2Aa32105185B00508fF6f477c3Eb1D75BA8dDa",
+      "networkId": "6a48b281-c3c4-4a78-aa1f-f153d6b5ae71",
+      "currencyId": "cd6a2c1c-d62c-4ea5-983b-82fae5395b2d",
+      "currency": {
+        "currencyCode": "USDT",
+        "currencyName": "Tether",
+        "currencyType": "CRYPTO"
+      },
+      "createdAt": "2026-05-01T09:00:00.000Z"
+    }
+  ]
 }
 ```
 
@@ -101,7 +125,19 @@ Status: 201 Created
 ```json
 {
   "success": true,
-  "data": { }
+  "data": {
+    "id": "b7c1f0a2-3d4e-4f5a-8b6c-9d0e1f2a3b4c",
+    "accountId": "385dec3a-9bfe-4072-8733-7872ef350e71",
+    "assetType": "CRYPTO",
+    "status": "WHITELISTED",
+    "isWhitelisted": true,
+    "label": "Treasury cold wallet",
+    "type": "INDIVIDUAL",
+    "cryptoWalletAddress": "0xAE2Aa32105185B00508fF6f477c3Eb1D75BA8dDa",
+    "networkId": "6a48b281-c3c4-4a78-aa1f-f153d6b5ae71",
+    "currencyId": "cd6a2c1c-d62c-4ea5-983b-82fae5395b2d",
+    "createdAt": "2026-05-01T09:00:00.000Z"
+  }
 }
 ```
 
@@ -156,7 +192,23 @@ Status: 201 Created
 ```json
 {
   "success": true,
-  "data": { }
+  "data": {
+    "id": "c8d2e1b3-4e5f-4a6b-9c7d-0e1f2a3b4c5d",
+    "accountId": "385dec3a-9bfe-4072-8733-7872ef350e71",
+    "assetType": "FIAT",
+    "status": "WHITELISTED",
+    "isWhitelisted": true,
+    "label": "Supplier account",
+    "type": "BUSINESS",
+    "accountNumber": null,
+    "currencyId": "0ff5db18-ad57-4703-a031-08907aa814f1",
+    "currency": {
+      "currencyCode": "AED",
+      "currencyName": "United Arab Emirates Dirham",
+      "currencyType": "FIAT"
+    },
+    "createdAt": "2026-05-01T09:05:00.000Z"
+  }
 }
 ```
 
@@ -190,6 +242,9 @@ Status: 200 OK
 ```json
 {
   "success": true,
-  "data": { }
+  "data": {
+    "id": "b7c1f0a2-3d4e-4f5a-8b6c-9d0e1f2a3b4c",
+    "status": "REMOVED"
+  }
 }
 ```
