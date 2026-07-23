@@ -46,7 +46,39 @@ Status: 200 OK
 ```json
 {
   "success": true,
-  "data": [ ]
+  "data": [
+    {
+      "id": "9ffa201c-6733-4837-b728-b0ec2bc419bd",
+      "customerId": "c709ff4d-d384-4292-9f49-8a4c4f46712b",
+      "accountProvider": "FUSE",
+      "onboardingMode": "AUTOMATED",
+      "status": "ACTIVE",
+      "type": "PERSONAL",
+      "externalId": "328",
+      "correlationId": "328",
+      "accountCurrencies": [
+        {
+          "id": "e2149078-9be5-46f8-9ec1-4c742314a170",
+          "currencyId": "0ff5db18-ad57-4703-a031-08907aa814f1",
+          "type": "FIAT",
+          "balance": "76205.12",
+          "available": "75221.85",
+          "locked": "0",
+          "status": "ENABLED",
+          "currency": {
+            "id": "0ff5db18-ad57-4703-a031-08907aa814f1",
+            "currencyCode": "AED",
+            "currencyName": "United Arab Emirates Dirham",
+            "currencySymbol": "د.إ",
+            "currencyType": "FIAT",
+            "enabled": true
+          }
+        }
+      ],
+      "createdAt": "2026-02-12T10:42:03.644Z",
+      "updatedAt": "2026-04-20T10:45:58.120Z"
+    }
+  ]
 }
 ```
 
@@ -78,7 +110,42 @@ Auth:     PARTNER | PARTNER_ADMIN
 Status: 200 OK
 ```
 
-Returns the formatted `AccountDTO`. If the account does not exist or does not belong to the customer, the request returns `404 Account not found`.
+Returns the formatted `AccountDTO` for the account.
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "9ffa201c-6733-4837-b728-b0ec2bc419bd",
+    "customerId": "c709ff4d-d384-4292-9f49-8a4c4f46712b",
+    "accountProvider": "FUSE",
+    "status": "ACTIVE",
+    "type": "PERSONAL",
+    "externalId": "328",
+    "accountCurrencies": [
+      {
+        "id": "e2149078-9be5-46f8-9ec1-4c742314a170",
+        "currencyId": "0ff5db18-ad57-4703-a031-08907aa814f1",
+        "type": "FIAT",
+        "balance": "76205.12",
+        "available": "75221.85",
+        "locked": "0",
+        "status": "ENABLED",
+        "currency": {
+          "currencyCode": "AED",
+          "currencyName": "United Arab Emirates Dirham",
+          "currencySymbol": "د.إ",
+          "currencyType": "FIAT"
+        }
+      }
+    ],
+    "createdAt": "2026-02-12T10:42:03.644Z",
+    "updatedAt": "2026-04-20T10:45:58.120Z"
+  }
+}
+```
+
+If the account does not exist or does not belong to the customer, the request returns `404 Account not found`.
 
 ---
 
@@ -108,56 +175,30 @@ Auth:     PARTNER | PARTNER_ADMIN
 Status: 200 OK
 ```
 
-Returns the list of available currencies for the account.
-
----
-
-## Enable Account Currency
-
-{: .endpoint-desc }
-Creates and enables a currency on the account. This action is recorded in the customer's audit log as a partner action.
-
-### Request
-
-```
-Method:   PATCH
-URL:      {{baseUrl}}/v1/client/:customerId/accounts/:accountId/currencies/:currencyCode
-Auth:     PARTNER | PARTNER_ADMIN
-```
-
-### Path Parameters
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-| `customerId` | string (UUID) | Yes | ID of the customer. |
-| `accountId` | string (UUID) | Yes | ID of the account. |
-| `currencyCode` | string | Yes | 3–5 character uppercase currency code (e.g. `USD`, `USDT`). |
-
-### Payload
-
-```json
-{
-  "status":    "AccountCurrencyStatus",
-  "networkId": "string"
-}
-```
-
-### Field Description
-
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `status` | string | No | Target `AccountCurrencyStatus` for the currency. |
-| `networkId` | string (UUID) | No | Network to enable the currency on (for multi-network assets). |
-
-### Response
-
-```
-Status: 200 OK
-```
+Returns the list of currencies that can be enabled on the account.
 
 ```json
 {
   "success": true,
-  "data": { }
+  "data": [
+    {
+      "id": "0ff5db18-ad57-4703-a031-08907aa814f1",
+      "currencyCode": "AED",
+      "currencyName": "United Arab Emirates Dirham",
+      "currencySymbol": "د.إ",
+      "currencyType": "FIAT",
+      "enabled": true
+    },
+    {
+      "id": "cd6a2c1c-d62c-4ea5-983b-82fae5395b2d",
+      "currencyCode": "USDT",
+      "currencyName": "Tether",
+      "currencySymbol": "₮",
+      "currencyType": "CRYPTO",
+      "enabled": true
+    }
+  ]
 }
 ```
+
+---
