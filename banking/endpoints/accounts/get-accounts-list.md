@@ -1,6 +1,7 @@
 ---
 title: Get Accounts List
-layout: home
+layout: endpoint
+try_it: getAccountsList
 permalink: /banking/endpoints/accounts/get-accounts-list
 parent: Accounts
 nav_order: 1

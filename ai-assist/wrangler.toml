@@ -1,0 +1,23 @@
+# Ask AI for the Relm developer docs.
+# Deploy: npx wrangler secret put ANTHROPIC_API_KEY && npm run deploy
+name = "relm-docs-ai"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+DOCS_INDEX_URL = "https://docs.relm.co/assets/ai/docs-index.json"
+ALLOWED_ORIGINS = "https://docs.relm.co,http://localhost:4000,http://127.0.0.1:4000"
+MODEL = "claude-opus-5-5"
+EFFORT = "low"
+INDEX_TTL_SECONDS = "300"
+
+# 10 questions per minute per visitor, enforced across all Cloudflare locations.
+# Remove this block to fall back to the built-in per-instance limiter (RATE_LIMIT_PER_MINUTE).
+[[ratelimits]]
+name = "ASK_LIMITER"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 10
+  period = 60

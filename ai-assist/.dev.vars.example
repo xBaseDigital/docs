@@ -1,0 +1,4 @@
+# Copy to .dev.vars for `npm run dev` (never commit .dev.vars).
+ANTHROPIC_API_KEY=sk-ant-...
+# Point at a local `bundle exec jekyll serve` so the AI reads your unpublished edits.
+DOCS_INDEX_URL=http://127.0.0.1:4000/assets/ai/docs-index.json

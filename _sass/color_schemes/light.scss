@@ -1,0 +1,27 @@
+// Relm light scheme. Replaces the theme's light.scss so every theme component uses Relm's colours.
+$color-scheme: light !default;
+
+$relm-ink: #1b054c !default;        // Relm brand indigo: headings
+$relm-text: #3a3748 !default;       // body copy
+$relm-muted: #6b6779 !default;      // secondary copy, chevrons
+$relm-line: #e5e2ec !default;       // borders and rules
+$relm-rail: #f6f5f9 !default;       // sidebar and quiet surfaces
+$relm-accent: #5b2ed6 !default;     // links, current page, primary actions
+$relm-accent-fill: #5b2ed6 !default; // solid fills with white text
+
+$body-background-color: $white !default;
+$body-heading-color: $relm-ink !default;
+$body-text-color: $relm-text !default;
+$link-color: $relm-accent !default;
+$nav-child-link-color: $relm-text !default;
+$sidebar-color: $relm-rail !default;
+$base-button-color: $relm-rail !default;
+$btn-primary-color: $relm-accent-fill !default;
+$code-background-color: #f5f3fa !default;
+$feedback-color: #ece9f4 !default;
+$table-background-color: $white !default;
+$search-background-color: $white !default;
+$search-result-preview-color: $relm-muted !default;
+$border-color: $relm-line !default;
+
+@import "./vendor/OneLightJekyll/syntax";

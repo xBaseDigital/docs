@@ -1,6 +1,20 @@
 ---
 title: Client Beneficiaries
-layout: home
+layout: endpoint
+try_it:
+  - op: getClientBeneficiaries
+    heading: "Get Beneficiary List"
+  - op: createClientBeneficiary
+    heading: "Create Beneficiary"
+  - op: updateClientBeneficiary
+    heading: "Update Beneficiary"
+  - op: confirmClientBeneficiary
+    heading: "Confirm Beneficiary"
+  - op: removeClientBeneficiary
+    heading: "Remove Beneficiary"
+  - op: getClientPayoutConfig
+    heading: "Get Payout Config"
+try_it_spec: /assets/openapi/partner.json
 permalink: /partner/manage-client/beneficiaries
 parent: Manage Client Banking
 nav_order: 3

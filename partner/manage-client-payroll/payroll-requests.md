@@ -1,6 +1,18 @@
 ---
 title: Payroll Requests
-layout: home
+layout: endpoint
+try_it:
+  - op: clientCreatePayrollRequest
+    heading: "Create Payroll Request"
+  - op: clientListPayrollRequests
+    heading: "List Payroll Requests"
+  - op: clientGetPayrollRequest
+    heading: "Get Payroll Request by ID"
+  - op: clientAcceptPayrollQuote
+    heading: "Accept Payroll Quote"
+  - op: clientCancelPayrollRequest
+    heading: "Cancel Payroll Request"
+try_it_spec: /assets/openapi/partner.json
 permalink: /partner/manage-client-payroll/requests
 parent: Manage Client Payroll
 nav_order: 2

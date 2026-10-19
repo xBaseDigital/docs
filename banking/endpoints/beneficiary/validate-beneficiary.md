@@ -1,6 +1,7 @@
 ---
 title: Create Beneficiary
-layout: home
+layout: endpoint
+try_it: createBeneficiary
 permalink: /banking/endpoints/beneficiary/create-beneficiary
 parent: Beneficiary
 nav_order: 2

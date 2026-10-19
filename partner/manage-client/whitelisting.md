@@ -1,6 +1,16 @@
 ---
 title: Client Whitelisting
-layout: home
+layout: endpoint
+try_it:
+  - op: getClientWhitelistedWallets
+    heading: "Get Whitelisted Wallets"
+  - op: whitelistClientCryptoWallet
+    heading: "Whitelist Crypto Wallet"
+  - op: whitelistClientFiatAccount
+    heading: "Whitelist Fiat Account"
+  - op: removeClientWhitelistedWallet
+    heading: "Remove Whitelisted Wallet"
+try_it_spec: /assets/openapi/partner.json
 permalink: /partner/manage-client/whitelisting
 parent: Manage Client Banking
 nav_order: 4

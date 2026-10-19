@@ -1,6 +1,12 @@
 ---
 title: Client Accounts
-layout: home
+layout: endpoint
+try_it:
+  - op: getClientAccounts
+    heading: "Get Client Accounts"
+  - op: getClientAccount
+    heading: "Get Client Account"
+try_it_spec: /assets/openapi/partner.json
 permalink: /partner/manage-client/accounts
 parent: Manage Client Banking
 nav_order: 2

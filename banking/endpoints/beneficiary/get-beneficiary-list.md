@@ -1,6 +1,7 @@
 ---
 title: Get Beneficiary List
-layout: home
+layout: endpoint
+try_it: getBeneficiaryList
 permalink: /banking/endpoints/beneficiary/get-beneficiary-list
 parent: Beneficiary
 nav_order: 1

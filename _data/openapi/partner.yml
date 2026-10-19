@@ -1,0 +1,872 @@
+openapi: 3.1.0
+info:
+  title: Relm Partner API
+  version: "1.0.0-draft"
+  summary: "Onboard customers and manage their banking and payroll as a partner."
+  description: |
+    Requests from the Try it panel go to the **sandbox** environment only. Draft generated on
+    19 Oct 2026 from kubera `origin/main` validators and routes.
+  contact:
+    name: Relm Support
+    email: support@relm.co
+servers:
+  - url: https://sandbox.api.relm.co
+    description: Sandbox
+security:
+  - partnerAuth: []
+  - signature: []
+tags:
+  - name: Onboarding
+    description: Create customers.
+  - name: Client banking
+    description: Customer, accounts, beneficiaries, payouts and whitelisting for your customers.
+  - name: Payroll
+    description: Payroll for your customers.
+paths:
+  /v1/partners/customers/onboard:
+    post:
+      tags: [Onboarding]
+      operationId: partnerOnboardCustomer
+      summary: Create customer
+      description: |
+        Creates a customer linked to your partner account. `companyName` is required for
+        BUSINESS. `password` needs 8+ characters with upper and lower case, a number and a symbol.
+      x-try-it-save:
+        - { from: data.id, to: customerId }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password, firstName, lastName, type, phone, countryCode, ipAddress]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string, minLength: 8 }
+                firstName: { type: string, maxLength: 50 }
+                lastName: { type: string, maxLength: 50 }
+                type: { type: string, enum: [INDIVIDUAL, BUSINESS] }
+                phone: { type: string }
+                countryCode: { type: string, description: ISO 3166-1 alpha-2. }
+                ipAddress: { type: string }
+                companyName: { type: string, maxLength: 50 }
+                terms: { type: boolean, const: true }
+                privacyPolicy: { type: boolean, const: true }
+            example:
+              email: jane.smith+sandbox@example.com
+              password: SandboxPass@1
+              firstName: Jane
+              lastName: Smith
+              type: BUSINESS
+              companyName: Acme Ltd
+              phone: "+971500000000"
+              countryCode: AE
+              ipAddress: 203.0.113.10
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/auth/login:
+    post:
+      tags: [Onboarding]
+      operationId: customerLogin
+      summary: Log in as the customer
+      description: |
+        Logs in as a customer you created and returns their `token`. Use it for customer-scoped
+        calls such as the Onboarding SDK.
+      security: []
+      x-try-it-note: Use only sandbox test customers here.
+      x-try-it-save:
+        - { from: data.token, to: "auth:bearerAuth", label: customer token }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string }
+            example:
+              email: jane.smith+sandbox@example.com
+              password: SandboxPass@1
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}:
+    get:
+      tags: [Client banking]
+      operationId: getClientCustomer
+      summary: Get client customer
+      description: Returns the customer's profile. The customer must be linked to your partner account.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/accounts:
+    get:
+      tags: [Client banking]
+      operationId: getClientAccounts
+      summary: Get client accounts
+      description: Lists the customer's accounts with currencies and balances.
+      x-try-it-save:
+        - { from: data.0.id, to: accountId }
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/accounts/{accountId}:
+    get:
+      tags: [Client banking]
+      operationId: getClientAccount
+      summary: Get client account
+      description: Returns one of the customer's accounts.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/AccountId"
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/accounts/{accountId}/beneficiary:
+    get:
+      tags: [Client banking]
+      operationId: getClientBeneficiaries
+      summary: Get beneficiary list
+      description: Lists beneficiaries on the customer's account.
+      x-try-it-save:
+        - { from: data.0.id, to: beneficiaryId }
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/AccountId"
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1, default: 1 }
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, default: 10 }
+        - name: assetType
+          in: query
+          schema: { type: string, enum: [FIAT, CRYPTO] }
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    post:
+      tags: [Client banking]
+      operationId: createClientBeneficiary
+      summary: Create beneficiary
+      description: |
+        Same rules as the Banking **Create beneficiary**: `reference` and `currencyCode` are
+        required, plus `firstName` + `lastName`, `companyName` or `name`.
+      x-try-it-save:
+        - { from: data.id, to: beneficiaryId }
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/AccountId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, required: [reference, currencyCode], additionalProperties: true }
+            example:
+              type: BUSINESS
+              companyName: Acme Corp
+              reference: Supplier payment
+              currencyCode: AED
+              countryCode: AE
+              bankCountryCode: AE
+              transactionType: LOCAL
+              bankingIdType: iban
+              iban: AE070331234567890123456
+              bicSwiftCode: BOMLAEAD
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/accounts/{accountId}/beneficiary/{beneficiaryId}:
+    put:
+      tags: [Client banking]
+      operationId: updateClientBeneficiary
+      summary: Update beneficiary
+      description: Updates a beneficiary's display details.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/BeneficiaryId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                displayName: { type: string }
+                countryCode: { type: string }
+                email: { type: string }
+                source: { type: string }
+            example:
+              displayName: Acme Corporation
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/accounts/{accountId}/beneficiaries/{beneficiaryId}:
+    put:
+      tags: [Client banking]
+      operationId: confirmClientBeneficiary
+      summary: Confirm beneficiary
+      description: Confirms a pending beneficiary with `confirmed true`. `confirmed false` deletes it.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/BeneficiaryId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [confirmed]
+              properties:
+                confirmed: { type: boolean }
+            example: { confirmed: true }
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    delete:
+      tags: [Client banking]
+      operationId: removeClientBeneficiary
+      summary: Remove beneficiary
+      description: Deletes the beneficiary.
+      x-try-it-note: This deletes the beneficiary on sandbox.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/BeneficiaryId"
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/accounts/{accountId}/beneficiary/{beneficiaryId}/payout-config:
+    get:
+      tags: [Client banking]
+      operationId: getClientPayoutConfig
+      summary: Get payout config
+      description: Returns the provider-specific payout configuration for a beneficiary and account currency.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/BeneficiaryId"
+        - name: accountCurrencyId
+          in: query
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/accounts/{accountId}/payouts/estimate:
+    get:
+      tags: [Client banking]
+      operationId: getClientPayoutFeeEstimate
+      summary: Estimate payout fee
+      description: Estimates the fee for a payout and returns a `feeHash` for **Create payout**.
+      x-try-it-save:
+        - { from: data.feeHash, to: feeHash }
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/AccountId"
+        - name: amount
+          in: query
+          required: true
+          description: Greater than 0, at most 2 decimal places.
+          schema: { type: number, exclusiveMinimum: 0 }
+          example: 100
+        - name: currency
+          in: query
+          required: true
+          description: 3–5 uppercase letters.
+          schema: { type: string, minLength: 3, maxLength: 5 }
+          example: AED
+        - name: beneficiaryId
+          in: query
+          schema: { type: string, format: uuid }
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/accounts/{accountId}/payout/two-factor:
+    post:
+      tags: [Client banking]
+      operationId: sendClientPayoutOtp
+      summary: Send payout verification code
+      description: |
+        Emails a 6-digit code needed by **Create payout**. `templateName` takes the values
+        `partnerPayoutVerificationCode` or `payoutVerificationCode`.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/AccountId"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                templateName: { type: string, enum: [partnerPayoutVerificationCode, payoutVerificationCode] }
+                hash: { type: string }
+            example:
+              templateName: partnerPayoutVerificationCode
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/accounts/{accountId}/payout:
+    post:
+      tags: [Client banking]
+      operationId: createClientPayout
+      summary: Create payout
+      description: |
+        Same as the Banking **Create payout** plus a required 6-digit `otp` from **Send payout
+        verification code**.
+      x-try-it-note: This moves money on sandbox. A new idempotencyKey is generated on every send.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/AccountId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [beneficiaryId, amount, currency, idempotencyKey, otp]
+              properties:
+                beneficiaryId: { type: string, format: uuid }
+                amount: { type: string }
+                currency: { type: string }
+                idempotencyKey: { type: string, format: uuid }
+                otp: { type: string, pattern: "^\\d{6}$" }
+                feeHash: { type: string }
+                purpose: { type: string }
+                description: { type: string }
+                reference: { type: string, minLength: 6, maxLength: 35 }
+            example:
+              beneficiaryId: "{{beneficiaryId}}"
+              amount: "10.00"
+              currency: AED
+              reference: INV-2026-001
+              feeHash: "{{feeHash}}"
+              otp: "123456"
+              idempotencyKey: "{{uuid}}"
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/accounts/{accountId}/whitelisted:
+    get:
+      tags: [Client banking]
+      operationId: getClientWhitelistedWallets
+      summary: Get whitelisted wallets
+      description: Lists whitelisted crypto wallets and fiat accounts for the account.
+      x-try-it-save:
+        - { from: data.0.id, to: remitterId }
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/AccountId"
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/accounts/{accountId}/crypto-wallets/whitelist:
+    post:
+      tags: [Client banking]
+      operationId: whitelistClientCryptoWallet
+      summary: Whitelist crypto wallet
+      description: Whitelists a crypto wallet the customer can receive from. `cryptoWalletAddress` is 26–100 characters.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/AccountId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [cryptoWalletAddress, networkId, currencyId]
+              properties:
+                cryptoWalletAddress: { type: string, minLength: 26, maxLength: 100 }
+                networkId: { type: string, format: uuid }
+                currencyId: { type: string }
+                label: { type: string, maxLength: 200 }
+                type: { type: string, enum: [INDIVIDUAL, BUSINESS] }
+                firstName: { type: string, maxLength: 100 }
+                lastName: { type: string, maxLength: 100 }
+                dob: { type: string, format: date }
+                memo: { type: string }
+                metadata: { type: object }
+            example:
+              cryptoWalletAddress: "0xdf5274da75a9d55e886baa68091a3ae74a78fc48"
+              networkId: 6a48b281-c3c4-4a78-aa1f-f153d6b5ae71
+              currencyId: cd6a2c1c-d62c-4ea5-983b-82fae5395b2d
+              label: Treasury wallet
+              type: INDIVIDUAL
+              firstName: Jane
+              lastName: Smith
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/accounts/{accountId}/fiat-accounts/whitelist:
+    post:
+      tags: [Client banking]
+      operationId: whitelistClientFiatAccount
+      summary: Whitelist fiat account
+      description: |
+        Whitelists a bank account by IBAN (10–34 characters). BUSINESS needs `name`; otherwise
+        `firstName` and `lastName`. If `address` is sent, `line1` and `country` are required.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/AccountId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [iban, currencyId]
+              properties:
+                iban: { type: string, minLength: 10, maxLength: 34 }
+                currencyId: { type: string }
+                type: { type: string, enum: [INDIVIDUAL, BUSINESS] }
+                name: { type: string, maxLength: 200 }
+                firstName: { type: string, maxLength: 100 }
+                lastName: { type: string, maxLength: 100 }
+                label: { type: string, maxLength: 200 }
+                address: { type: object }
+            example:
+              iban: GB29NWBK60161331926819
+              currencyId: 0ff5db18-ad57-4703-a031-08907aa814f1
+              type: INDIVIDUAL
+              firstName: Jane
+              lastName: Smith
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/accounts/{accountId}/crypto-wallets/whitelisted/{remitterId}:
+    delete:
+      tags: [Client banking]
+      operationId: removeClientWhitelistedWallet
+      summary: Remove whitelisted wallet
+      description: Removes a whitelisted wallet.
+      x-try-it-note: This removes the wallet on sandbox.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/AccountId"
+        - name: remitterId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/payroll/estimate:
+    post:
+      tags: [Payroll]
+      operationId: clientEstimatePayrollFee
+      summary: Estimate payroll fee
+      description: |
+        Calculates fees and the amount each beneficiary receives, and returns a `feeHash` to pass
+        to **Create payroll request**. `amountSplitDetails` must be non-empty with unique
+        `beneficiaryId`s. `amount` is a decimal string (max 8 dp for SOURCE, 2 for PAYROLL).
+      x-try-it-save:
+        - { from: data.feeHash, to: payrollFeeHash }
+        - { from: data.sourceAccountCurrencyId, to: sourceAccountCurrencyId }
+        - { from: data.payrollAccountCurrencyId, to: payrollAccountCurrencyId }
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/PayrollEstimateRequest" }
+            example:
+              sourceAccountCurrencyId: "{{sourceAccountCurrencyId}}"
+              payrollAccountCurrencyId: "{{payrollAccountCurrencyId}}"
+              amountSplitDetails:
+                - beneficiaryId: "{{beneficiaryId}}"
+                  amount: "100.00"
+                  amountCurrencyType: SOURCE
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/payroll/requests:
+    post:
+      tags: [Payroll]
+      operationId: clientCreatePayrollRequest
+      summary: Create payroll request
+      description: |
+        Creates a payroll request from a `feeHash` returned by **Estimate payroll fee**. Funds are
+        debited from the source account and the request waits for a quote. Each split needs a
+        `purpose`: `FCISS`, `PEN` or `OFS`.
+      x-try-it-note: This debits the sandbox source account.
+      x-try-it-save:
+        - { from: data.id, to: requestId }
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/PayrollCreateRequest" }
+            example:
+              sourceAccountCurrencyId: "{{sourceAccountCurrencyId}}"
+              payrollAccountCurrencyId: "{{payrollAccountCurrencyId}}"
+              feeHash: "{{payrollFeeHash}}"
+              amountSplitDetails:
+                - beneficiaryId: "{{beneficiaryId}}"
+                  amount: "100.00"
+                  amountCurrencyType: SOURCE
+                  purpose: FCISS
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    get:
+      tags: [Payroll]
+      operationId: clientListPayrollRequests
+      summary: List payroll requests
+      description: Lists payroll requests, newest first by default.
+      x-try-it-save:
+        - { from: data.0.id, to: requestId }
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - name: status
+          in: query
+          description: "One status or several separated by commas: RESOLVING_BENEFICIARIES, PENDING, QUOTE_PROVIDED, QUOTE_ACCEPTED, EXECUTING, PAYOUT_INITIATED, COMPLETED, PARTIALLY_COMPLETED, FAILED, CANCELLED."
+          schema: { type: string, examples: ["QUOTE_PROVIDED,QUOTE_ACCEPTED"] }
+        - { $ref: "#/components/parameters/StartDate" }
+        - { $ref: "#/components/parameters/EndDate" }
+        - { $ref: "#/components/parameters/Sort" }
+        - { $ref: "#/components/parameters/Page" }
+        - { $ref: "#/components/parameters/Limit" }
+      responses:
+        "200": { $ref: "#/components/responses/Paged" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/payroll/requests/{requestId}:
+    get:
+      tags: [Payroll]
+      operationId: clientGetPayrollRequest
+      summary: Get payroll request
+      description: Returns one payroll request with its splits, transfers and fee breakdown.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/RequestId"
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    delete:
+      tags: [Payroll]
+      operationId: clientCancelPayrollRequest
+      summary: Cancel payroll request
+      description: Cancels a payroll request that hasn't been executed yet. `cancellationReason` is optional (max 500 characters).
+      x-try-it-note: This cancels the request on sandbox.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/RequestId"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cancellationReason: { type: string, maxLength: 500 }
+            example:
+              cancellationReason: Created by mistake
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/payroll/requests/{requestId}/accept:
+    patch:
+      tags: [Payroll]
+      operationId: clientAcceptPayrollQuote
+      summary: Accept payroll quote
+      description: Accepts the quote on a request in `QUOTE_PROVIDED`, which starts execution.
+      x-try-it-note: This starts the payroll on sandbox.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - $ref: "#/components/parameters/RequestId"
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/client/{customerId}/payroll/transfers:
+    get:
+      tags: [Payroll]
+      operationId: clientListPayrollTransfers
+      summary: List payroll transfers
+      description: Lists individual beneficiary transfers across payroll requests.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+        - name: search
+          in: query
+          description: Transfer ID or beneficiary name (partial match).
+          schema: { type: string }
+        - name: status
+          in: query
+          description: "One status or several separated by commas: PENDING, INITIATED, PROCESSING, COMPLETED, FAILED."
+          schema: { type: string, examples: ["PROCESSING,COMPLETED"] }
+        - { $ref: "#/components/parameters/StartDate" }
+        - { $ref: "#/components/parameters/EndDate" }
+        - { $ref: "#/components/parameters/Sort" }
+        - { $ref: "#/components/parameters/Page" }
+        - { $ref: "#/components/parameters/Limit" }
+      responses:
+        "200": { $ref: "#/components/responses/Paged" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+components:
+  securitySchemes:
+    partnerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-label: Partner token
+      x-help: Sandbox partner token from GET /v1/api-keys/tokens, called from your backend with your partner API key.
+      description: Partner access token. Roles PARTNER or PARTNER_ADMIN.
+    signature:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: |
+        `Signature <keyId>:<signature>:<timestamp>`, signed on your server (see Authentication).
+        Can't be used from the Try it panel.
+  parameters:
+    CustomerId:
+      name: customerId
+      in: path
+      required: true
+      description: Must be a customer linked to your partner account.
+      schema: { type: string, format: uuid }
+    AccountId:
+      name: accountId
+      in: path
+      required: true
+      description: Must belong to the customer.
+      schema: { type: string, format: uuid }
+    BeneficiaryId:
+      name: beneficiaryId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    RequestId:
+      name: requestId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    StartDate:
+      name: startDate
+      in: query
+      description: ISO 8601 date or date-time.
+      schema: { type: string, examples: ["2026-10-01"] }
+    EndDate:
+      name: endDate
+      in: query
+      description: ISO 8601 date or date-time.
+      schema: { type: string, examples: ["2026-10-19"] }
+    Sort:
+      name: sort
+      in: query
+      description: Sort by creation time.
+      schema: { type: string, enum: [asc, desc] }
+    Page:
+      name: page
+      in: query
+      schema: { type: integer, minimum: 1, default: 1 }
+    Limit:
+      name: limit
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+
+  responses:
+    Envelope:
+      description: Success. The resource is in `data`.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, const: true }
+              data: {}
+    Paged:
+      description: Success. Items are in `data` and paging in `pagination` (no hasNextPage; keep going while page < totalPages).
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, const: true }
+              data: { type: array, items: {} }
+              pagination:
+                type: object
+                properties:
+                  total: { type: integer }
+                  page: { type: integer }
+                  limit: { type: integer }
+                  totalPages: { type: integer }
+    BadRequest:
+      description: Validation failed. `error.msg` lists each problem as `<field> <message>`.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    Unauthorized:
+      description: Missing, expired or invalid credentials.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    Forbidden:
+      description: The caller's role, product activation or ownership doesn't allow this request.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    NotFound:
+      description: The resource doesn't exist or doesn't belong to the caller.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+  schemas:
+    ErrorResponse:
+      type: object
+      required: [success, error]
+      properties:
+        success: { type: boolean, const: false }
+        error:
+          type: object
+          properties:
+            code: { type: string, examples: [bad-request] }
+            fullCode: { type: string, examples: [RELM-GEN-BAD-REQUEST] }
+            msg: { type: array, items: { type: string } }
+            data: {}
+            source: { type: string }
+            statusCode: { type: integer }
+            traceId: { type: string }
+    PayrollSplit:
+      type: object
+      required: [beneficiaryId, amount]
+      properties:
+        beneficiaryId: { type: string, format: uuid }
+        amount: { type: string, description: Decimal string greater than 0. }
+        amountCurrencyType: { type: string, enum: [SOURCE, PAYROLL], default: SOURCE }
+    PayrollEstimateRequest:
+      type: object
+      required: [sourceAccountCurrencyId, payrollAccountCurrencyId, amountSplitDetails]
+      properties:
+        sourceAccountCurrencyId: { type: string, format: uuid }
+        payrollAccountCurrencyId: { type: string, format: uuid }
+        amountSplitDetails:
+          type: array
+          minItems: 1
+          items: { $ref: "#/components/schemas/PayrollSplit" }
+    PayrollCreateRequest:
+      type: object
+      required: [sourceAccountCurrencyId, payrollAccountCurrencyId, feeHash, amountSplitDetails]
+      properties:
+        sourceAccountCurrencyId: { type: string, format: uuid }
+        payrollAccountCurrencyId: { type: string, format: uuid }
+        feeHash: { type: string }
+        amountSplitDetails:
+          type: array
+          minItems: 1
+          items:
+            allOf:
+              - $ref: "#/components/schemas/PayrollSplit"
+              - type: object
+                required: [purpose]
+                properties:
+                  purpose: { type: string, enum: [FCISS, PEN, OFS] }

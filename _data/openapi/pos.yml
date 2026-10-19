@@ -1,0 +1,265 @@
+openapi: 3.1.0
+info:
+  title: Relm POS API
+  version: "1.0.0-draft"
+  summary: "Create checkout orders, confirm them in sandbox, trigger settlement and fetch orders."
+  description: |
+    Requests from the Try it panel go to the **sandbox** environment only. Draft generated on
+    19 Oct 2026 from kubera `origin/main` validators and routes.
+  contact:
+    name: Relm Support
+    email: support@relm.co
+servers:
+  - url: https://sandbox.api.relm.co
+    description: Sandbox
+security:
+  - bearerAuth: []
+  - signature: []
+tags:
+  - name: Orders
+    description: POS checkout orders.
+  - name: Settlement
+    description: Sandbox settlement.
+paths:
+  /v1/pos/client/order/create:
+    post:
+      tags: [Orders]
+      operationId: createPosOrder
+      summary: Create order
+      description: |
+        Creates a checkout order and returns a `paymentLink` to send the payer to, plus an order
+        `token` used by the `/v1/pos/app/*` endpoints. `orderAmount` must be between 100 and
+        100,000,000. Requires the `XBD_POS` product.
+      x-try-it-save:
+        - { from: data.token, to: "auth:posOrderToken", label: order token }
+        - { from: data.orderId, to: orderId }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [orderAmount, currencyCode, recipientEmail]
+              properties:
+                clientOrderId: { type: string }
+                orderAmount: { type: number, minimum: 100, maximum: 100000000 }
+                currencyCode: { type: string }
+                recipientEmail: { type: string, format: email }
+                recipientName: { type: string }
+                description: { type: string }
+                recipientAddress:
+                  type: object
+                  required: [line1, country]
+                  properties:
+                    line1: { type: string }
+                    line2: { type: string }
+                    line3: { type: string }
+                    line4: { type: string }
+                    countyState: { type: string }
+                    postCode: { type: string }
+                    country: { type: string }
+                redirectUrl:
+                  type: object
+                  properties:
+                    accept: { type: string, format: uri }
+                    cancel: { type: string, format: uri }
+                    failed: { type: string, format: uri }
+            example:
+              clientOrderId: order-1001
+              orderAmount: 150
+              currencyCode: AED
+              recipientEmail: payer@example.com
+              description: 2 x T-shirt
+              redirectUrl:
+                accept: https://shop.example.com/thanks
+                cancel: https://shop.example.com/cart
+                failed: https://shop.example.com/failed
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/pos/app/order/confirm:
+    post:
+      tags: [Orders]
+      operationId: confirmPosOrder
+      summary: Confirm order
+      description: |
+        Locks in the payment currency for an order and returns the wallet address to pay. Uses the
+        order `token` from **Create order**, not your API token. `networkId` picks the network for
+        currencies available on several.
+      security:
+        - posOrderToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [currencyCode]
+              properties:
+                currencyCode: { type: string }
+                networkId: { type: string, format: uuid }
+            example:
+              currencyCode: USDT
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/pos/client/settlements/trigger:
+    post:
+      tags: [Settlement]
+      operationId: triggerPosSettlement
+      summary: Trigger settlement (sandbox)
+      description: |
+        Runs the test-mode settlement for **all** of the merchant's eligible orders. Takes no body
+        and no order ID. Sandbox only.
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/pos/client/orders:
+    get:
+      tags: [Orders]
+      operationId: fetchPosOrders
+      summary: Fetch orders
+      description: Lists the merchant's POS orders with filters.
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [PENDING, PROCESSING, INTERNAL_TRANSFER_COMPLETE, READY_FOR_EXECUTION, READY_FOR_SETTLEMENT, PROCESSING_SETTLEMENT, SETTLEMENT_INITATED, COMPLETED, CANCELLED, PARTIAL_FILLED, EXPIRED, FAILED]
+        - name: orderType
+          in: query
+          schema: { type: string, enum: [EPOS, APP_POS, PAYMENT_LINK] }
+        - name: posOrderId
+          in: query
+          schema: { type: string, format: uuid }
+        - name: clientOrderId
+          in: query
+          schema: { type: string }
+        - name: recipientName
+          in: query
+          schema: { type: string }
+        - name: recipientEmail
+          in: query
+          schema: { type: string }
+        - name: fromDate
+          in: query
+          description: ISO 8601 date.
+          schema: { type: string, format: date }
+        - name: toDate
+          in: query
+          description: ISO 8601 date.
+          schema: { type: string, format: date }
+        - name: order
+          in: query
+          schema: { type: string, enum: [asc, desc] }
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1, default: 1 }
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100 }
+      responses:
+        "200": { $ref: "#/components/responses/Paged" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-label: Bearer token
+      x-help: Sandbox token from GET /v1/api-keys/tokens, called from your backend.
+      description: Sandbox access token from `GET /v1/api-keys/tokens`.
+    signature:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: |
+        `Signature <keyId>:<signature>:<timestamp>`, signed on your server (see Authentication).
+        Can't be used from the Try it panel.
+    posOrderToken:
+      type: http
+      scheme: bearer
+      x-label: Order token
+      x-placeholder: Filled in by Create order
+      x-help: The token returned by Create order (data.token). Sending Create order here fills it in.
+      description: The order `token` returned by **Create order**, sent as `Authorization Bearer <token>`.
+
+  responses:
+    Envelope:
+      description: Success. The resource is in `data`.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, const: true }
+              data: {}
+    Paged:
+      description: Success. Items are in `data` and paging in `pagination` (no hasNextPage; keep going while page < totalPages).
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, const: true }
+              data: { type: array, items: {} }
+              pagination:
+                type: object
+                properties:
+                  total: { type: integer }
+                  page: { type: integer }
+                  limit: { type: integer }
+                  totalPages: { type: integer }
+    BadRequest:
+      description: Validation failed. `error.msg` lists each problem as `<field> <message>`.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    Unauthorized:
+      description: Missing, expired or invalid credentials.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    Forbidden:
+      description: The caller's role, product activation or ownership doesn't allow this request.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    NotFound:
+      description: The resource doesn't exist or doesn't belong to the caller.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+  schemas:
+    ErrorResponse:
+      type: object
+      required: [success, error]
+      properties:
+        success: { type: boolean, const: false }
+        error:
+          type: object
+          properties:
+            code: { type: string, examples: [bad-request] }
+            fullCode: { type: string, examples: [RELM-GEN-BAD-REQUEST] }
+            msg: { type: array, items: { type: string } }
+            data: {}
+            source: { type: string }
+            statusCode: { type: integer }
+            traceId: { type: string }

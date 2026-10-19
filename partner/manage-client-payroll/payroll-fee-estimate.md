@@ -1,6 +1,10 @@
 ---
 title: Payroll Fee Estimate
-layout: home
+layout: endpoint
+try_it:
+  - op: clientEstimatePayrollFee
+    heading: "Estimate Payroll Fee"
+try_it_spec: /assets/openapi/partner.json
 permalink: /partner/manage-client-payroll/fee-estimate
 parent: Manage Client Payroll
 nav_order: 1

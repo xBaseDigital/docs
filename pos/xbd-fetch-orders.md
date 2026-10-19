@@ -1,6 +1,10 @@
 ---
 title: Fetch Orders
-layout: home
+layout: endpoint
+try_it:
+  - op: fetchPosOrders
+    heading: "Endpoint"
+try_it_spec: /assets/openapi/pos.json
 permalink: /pos/fetch-orders
 parent: POS API
 nav_order: 3

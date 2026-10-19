@@ -7,3 +7,7 @@ gem "just-the-docs", "0.10.1" # pinned to the current release
 # gem "just-the-docs"        # always download the latest release
 
 gem "csv", "~> 3.3"
+
+# Ruby 4.0 no longer bundles these standard-library gems
+gem "logger"
+gem "ostruct"

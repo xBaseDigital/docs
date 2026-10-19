@@ -1,0 +1,15 @@
+---
+layout: default
+---
+<div class="endpoint-layout">
+  <div class="endpoint-docs">
+    {{ content }}
+  </div>
+  <aside class="try-it"
+         aria-label="Try this endpoint"
+         data-operations="{{ page.try_it | jsonify | escape }}"
+         data-spec="{{ page.try_it_spec | default: '/assets/openapi/banking.json' | relative_url }}"
+         data-server="{{ site.try_it_server | default: 'https://sandbox.api.relm.co' }}">
+    <noscript>Enable JavaScript to try this endpoint.</noscript>
+  </aside>
+</div>

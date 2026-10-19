@@ -1,0 +1,28 @@
+// Relm dark scheme. Replaces the theme's dark.scss; same roles as light.scss.
+$color-scheme: dark;
+
+$relm-ink: #f2f0f7;
+$relm-text: #c7c3d2;
+$relm-muted: #8f8a9f;
+$relm-line: #2d2b37;
+$relm-rail: #14131a;
+$relm-accent: #a98cff;
+$relm-accent-fill: #6a3de8;
+
+$body-background-color: #1a1922;
+$body-heading-color: $relm-ink;
+$body-text-color: $relm-text;
+$link-color: $relm-accent;
+$nav-child-link-color: $relm-text;
+$sidebar-color: $relm-rail;
+$base-button-color: #24222d;
+$btn-primary-color: $relm-accent-fill;
+$code-background-color: #22202b; // OneDarkJekyll highlighting sits on this
+$code-linenumber-color: #dee2f7;
+$feedback-color: #201e29;
+$table-background-color: #1f1d27;
+$search-background-color: #22202b;
+$search-result-preview-color: $relm-muted;
+$border-color: $relm-line;
+
+@import "./vendor/OneDarkJekyll/syntax";

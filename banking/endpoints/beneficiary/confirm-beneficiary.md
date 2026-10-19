@@ -1,6 +1,7 @@
 ---
 title: Confirm Beneficiary
-layout: home
+layout: endpoint
+try_it: confirmBeneficiary
 permalink: /banking/endpoints/beneficiary/confirm-beneficiary
 parent: Beneficiary
 nav_order: 3

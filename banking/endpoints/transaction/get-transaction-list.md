@@ -1,6 +1,7 @@
 ---
 title: Get Transaction List
-layout: home
+layout: endpoint
+try_it: getTransactionList
 permalink: /banking/endpoints/transaction/get-transaction-list
 parent: Transaction
 nav_order: 1
