@@ -24,8 +24,8 @@ Authentication: Requires authentication.
 
 | Parameter | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
-| `status` | String | No | Filter by transaction status. |
-| `type` | String | No | Filter by transaction type. |
+| `status` | String | No | Filter by transaction status. One of the [transaction statuses](#transaction-status) below. |
+| `type` | String | No | Filter by transaction type: `CREDIT` (money in), `DEBIT` (money out), `FX` (currency exchanges), `WALLET_TRANSFER` (transfers between your wallets), or `ALL_WALLET_TRANSFERS` (wallet transfers and POS settlement transfers). Without a `type`, wallet transfers and POS settlement transfers are listed only once they are `COMPLETED`. |
 | `highRisk` | Boolean | No | Filter by high risk status (`true` or `false`). |
 | `currencyCode` | String | No | Filter by currency code (e.g., USD, EUR). Must be uppercase. |
 | `fromDate` | Date | No | Filter transactions from this date (YYYY-MM-DD). |
@@ -110,17 +110,20 @@ Content-Type: application/json
 
 - `id`: Unique identifier for the transaction.
 - `transactionReference`: Reference string for the transaction.
-- `assetType`: Type of asset involved (e.g., `FIAT`).
+- `assetType`: Type of asset involved: `FIAT` or `CRYPTO`.
 - `amount`: Transaction amount.
 - `currency`: Object containing currency details (`currencyCode`, `currencySymbol`, etc.).
-- `status`: Current status of the transaction (e.g., `PROCESSING`, `COMPLETED`).
-- `type`: Type of transaction (e.g., `DEBIT`, `CREDIT`).
-- `paymentMethod`: Method of payment (e.g., `LOCAL`).
-- `paymentType`: Specific type of payment (e.g., `PAYMENT_TYPE_FX`).
+- `status`: Current status of the transaction. See [transaction statuses](#transaction-status).
+- `type`: `CREDIT` (money in) or `DEBIT` (money out).
+- `paymentMethod`: Method of payment: `LOCAL` or `SWIFT`.
+- `paymentType`: Specific type of payment. See [other transaction fields](#other-transaction-fields) for every value.
 - `settlementDate`: Date when the transaction was settled.
-- `transactionCategory`: Category of the transaction (e.g., `FX`).
+- `transactionCategory`: `FX` for a currency exchange, `PAYMENT` for everything else.
 - `accountCurrency`: Details of the account currency involved.
 - `additionalInfo`: Object containing extra details like exchange rates (if applicable).
 - `createdAt`: Timestamp when the transaction was created.
 - `updatedAt`: Timestamp when the transaction was last updated.
 
+### Possible values
+
+{% include enums/transaction-values.md %}

@@ -157,7 +157,7 @@ paths:
           in: query
           schema:
             type: string
-            enum: [PENDING, CANCELED, UNDER_REVIEW, DECLINED, PROCESSING, COMPLETED, FAILED, FAILED_HELD, RETRIED, REVERSED, AWAITING_FUNDS, ACTION_REQUIRED]
+            enum: [PENDING, UNDER_REVIEW, PROCESSING, COMPLETED, FAILED, DECLINED, CANCELED, REVERSED, AWAITING_FUNDS, ACTION_REQUIRED]
         - name: type
           in: query
           schema:
@@ -852,7 +852,7 @@ components:
             type: { type: string, enum: [CREDIT, DEBIT] }
             status:
               type: string
-              enum: [PENDING, CANCELED, UNDER_REVIEW, DECLINED, PROCESSING, COMPLETED, FAILED, FAILED_HELD, RETRIED, REVERSED, AWAITING_FUNDS, ACTION_REQUIRED]
+              enum: [PENDING, UNDER_REVIEW, PROCESSING, COMPLETED, FAILED, DECLINED, CANCELED, REVERSED, AWAITING_FUNDS, ACTION_REQUIRED]
             internalTransferStatus: { type: [string, "null"], enum: [NA, PENDING, AWAITING_FUNDS, FAILED, COMPLETED, null] }
             paymentMethod: { type: [string, "null"], examples: [LOCAL] }
             paymentType: { $ref: "#/components/schemas/PaymentType" }

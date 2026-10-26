@@ -55,8 +55,17 @@ module RelmAI
         title: page.data["title"].to_s,
         parent: page.data["parent"],
         grand_parent: page.data["grand_parent"],
-        content: clean(page.content.to_s)
+        content: clean(expand_includes(page.content.to_s, page.site))
       }.compact
+    end
+
+    # Inlines {% include file.md %} so shared snippets (such as the enum tables in _includes/enums/)
+    # are part of the text the AI reads. One level deep is enough for these snippets.
+    def expand_includes(markdown, site)
+      markdown.gsub(/\{%-?\s*include\s+([\w\/.-]+)\s*-?%\}/) do
+        file = site.in_source_dir("_includes", Regexp.last_match(1))
+        File.file?(file) ? File.read(file) : ""
+      end
     end
 
     # Drops markup that only means something to Jekyll/kramdown: {: .class } attribute lines,
@@ -67,6 +76,7 @@ module RelmAI
         .gsub(/\{%-?\s*comment\s*-?%\}.*?\{%-?\s*endcomment\s*-?%\}/m, "")
         .gsub(/\{%-?.*?-?%\}/m, "")
         .gsub(/^\{:[^}\n]*\}[ \t]*\n/, "")
+        .gsub(/<!--.*?-->/m, "")
         .gsub(/\n{3,}/, "\n\n")
         .strip
     end
