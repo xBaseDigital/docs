@@ -16,7 +16,7 @@ This endpoint allows users to request a currency exchange quote for a specified 
 
 ```
 Method: POST
-URL: {{baseUrl}}/accounts/:accountId/orders/quote
+URL: {{baseUrl}}/v1/accounts/:accountId/orders/quote
 Path Parameters : accountId - The unique identifier of the account (e.g., 36abacac-2aa2-4eb7-b96e-870364065c05)
 Authentication: Requires authentication.
 ```
@@ -46,6 +46,11 @@ Content-Type: application/json
   }
 }
 ```
+
+- `type.from`: `balance` or `bank`.
+- `type.to`: `balance` or `payment`.
+
+Some accounts require `type.from`, `type.to` and `settlementDate`, so send them as in the example above.
 
 ### Response Body
 

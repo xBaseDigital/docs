@@ -112,14 +112,14 @@ Auth:     PARTNER | PARTNER_ADMIN
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `templateName` | string | No | Notification template: `XBD_PAYOUT_VERIFICATION` or `PARTNER_PAYOUT_VERIFICATION`. |
+| `templateName` | string | No | Email template for the code: `partnerPayoutVerificationCode` (default) or `payoutVerificationCode`. |
 | `hash` | string | No | Optional context hash associated with the verification. |
 
 ### Example Request
 
 ```json
 {
-  "templateName": "PARTNER_PAYOUT_VERIFICATION"
+  "templateName": "partnerPayoutVerificationCode"
 }
 ```
 
@@ -173,7 +173,7 @@ Auth:     PARTNER | PARTNER_ADMIN
 | `otp` | string | Yes | 6-digit payout verification code from the two-factor step. |
 | `feeHash` | string | No | Fee hash from the estimate; locks the quoted fee. |
 | `purpose` | string | No | Transaction purpose code (see [Create Payout Request](/banking/endpoints/payout/create-payout-request) for the list). |
-| `description` | string | Conditional | Required when `purpose` is `OTHER`. |
+| `description` | string | Conditional | Required when `purpose` is `Other` (case-sensitive). |
 | `reference` | string | No | Payment reference. Max 35 characters. |
 
 ### Example Request
@@ -233,3 +233,9 @@ Status: 200 OK
 
 An invalid or missing `otp` returns `401`; an invalid or expired `feeHash`, insufficient
 balance, or invalid input returns `400`; an unowned customer returns `403`.
+
+## Possible values
+
+The payout in the response is a transaction, with these values:
+
+{% include enums/transaction-values.md %}

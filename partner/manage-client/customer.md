@@ -83,3 +83,7 @@ Status: 200 OK
 ```
 
 `data` contains the customer record together with its associated `company` and `user` details. A request for a customer that cannot be found returns `404 Not Found`.
+
+## Possible values
+
+{% include enums/customer-values.md %}

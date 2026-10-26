@@ -39,8 +39,8 @@ Auth:     PARTNER | PARTNER_ADMIN
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `assetType` | string | No | Filter by `RemitterAssetType`. |
-| `status` | string | No | Filter by `RemitterStatus`. |
+| `assetType` | string | No | Filter by asset type: `FIAT` or `CRYPTO`. |
+| `status` | string | No | Filter by status: `WHITELISTED` or `NON_WHITELISTED`. |
 | `currencyId` | string | No | Filter by currency. |
 
 {: .note }
@@ -120,7 +120,7 @@ Auth:     PARTNER | PARTNER_ADMIN
 | `networkId` | string (UUID) | Yes | Network the wallet is on. |
 | `currencyId` | string | Yes | Currency associated with the wallet. |
 | `label` | string | No | Friendly label. Max 200 chars. |
-| `type` | string | No | `RemitterType`. |
+| `type` | string | No | `INDIVIDUAL` or `BUSINESS`. |
 | `firstName` / `lastName` | string | No | Owner name. Max 100 chars each. |
 | `dob` | string | No | Date of birth, ISO 8601. |
 | `address` | object | No | Owner address. |
@@ -187,7 +187,7 @@ Auth:     PARTNER | PARTNER_ADMIN
 |---|---|---|---|
 | `iban` | string | Yes | IBAN, 10–34 characters. |
 | `currencyId` | string | Yes | Currency associated with the account. |
-| `type` | string | No | `RemitterType`. Determines whether business or individual name fields are required. |
+| `type` | string | No | `INDIVIDUAL` or `BUSINESS`. Determines whether business or individual name fields are required. |
 | `name` | string | Conditional | Required when `type=BUSINESS`. Max 200 chars. |
 | `firstName` / `lastName` | string | Conditional | Required when `type` is not `BUSINESS`. Max 100 chars each. |
 | `label` | string | No | Friendly label. Max 200 chars. |
@@ -258,3 +258,7 @@ Status: 200 OK
   }
 }
 ```
+
+## Possible values
+
+{% include enums/whitelist-values.md %}

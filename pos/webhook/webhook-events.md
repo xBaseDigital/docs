@@ -6,11 +6,16 @@ parent: Webhook
 nav_order: 2
 ---
 
-Webhooks for POS orders notify your system about important events during the order lifecycle. Below are the main events:
+Webhooks for POS orders notify your system about important events during the order lifecycle. Webhooks are sent for `EPOS` orders only. Each payload carries the order's `status`; no webhook is sent when an order becomes `EXPIRED` or `FAILED`.
 
-### Order Confirmation Event
+| Event | `status` | When |
+| :--- | :--- | :--- |
+| Payment received | `COMPLETED` or `PARTIAL_FILLED` | Sent each time a payment for the order is received. `COMPLETED` means the order is fully paid; `PARTIAL_FILLED` means the payer has paid less than the full amount so far. |
+| Order cancelled | `CANCELLED` | Sent when the order is cancelled. |
 
-This event is triggered when a user confirms an order on the Relm checkout website. At this stage, a payment address is generated for the user, and the webhook sends the order details to your endpoint. The `status` field in the payload will be set to `COMPLETED`.
+### Payment Received Event
+
+Sent each time a payment for the order arrives, so a partly paid order can send more than one. `payerPaidAmount` is the amount the payer has paid.
 
 **Sample Payload:**
 
@@ -25,13 +30,14 @@ This event is triggered when a user confirms an order on the Relm checkout websi
   "orderType": "EPOS",
   "paymentCurrency": "USDC",
   "paymentAmount": "100.00",
+  "payerPaidAmount": "100.00",
   "paymentWalletAddress": "0x1234567890abcdef1234567890abcdef12345678"
 }
 ```
 
 ### Order Cancellation Event
 
-This event is sent when an order is cancelled. The webhook payload is similar to the confirmation event, but the `status` field will be set to `CANCELLED`.
+Sent when an order is cancelled. The payload has the same fields, with `status` set to `CANCELLED`.
 
 **Sample Payload:**
 
@@ -46,6 +52,7 @@ This event is sent when an order is cancelled. The webhook payload is similar to
   "orderType": "EPOS",
   "paymentCurrency": "USDC",
   "paymentAmount": "100.00",
+  "payerPaidAmount": "0.00",
   "paymentWalletAddress": "0x1234567890abcdef1234567890abcdef12345678"
 }
 ```

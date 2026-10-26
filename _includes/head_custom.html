@@ -4,7 +4,8 @@
 {%- assign theme_default = site.theme_toggle.default | default: "system" -%}
 <script>
   /*
-   * Light / dark mode. Runs before the page is drawn so it never flashes the wrong colours.
+   * Light / dark mode: the header toggle and following the system setting. The first choice is made in
+   * head.html, before the page is drawn, so it never flashes unstyled or in the wrong colours.
    * A choice made with the header toggle is remembered; until then the site follows the system setting
    * (or `theme_toggle.default` in _config.yml). Each mode is one of the theme's colour schemes.
    */
@@ -21,9 +22,22 @@
       if (fallback === 'light' || fallback === 'dark') { return fallback; }
       return media && media.matches ? 'light' : 'dark';
     }
+    /* head.html already loaded the right stylesheet. When the mode changes, load the other one alongside
+       and drop the old one once it's ready, so the page is never without styles. */
+    function swapStylesheet(theme) {
+      var link = document.getElementById('relm-theme-css');
+      var href = css + theme + '.css';
+      if (!link || link.getAttribute('href') === href) { return; }
+      var next = link.cloneNode();
+      next.setAttribute('href', href);
+      next.onload = function () { if (link.parentNode) { link.parentNode.removeChild(link); } };
+      next.onerror = next.onload;
+      link.id = '';
+      next.id = 'relm-theme-css';
+      link.parentNode.insertBefore(next, link.nextSibling);
+    }
     function apply(theme) {
-      var link = document.querySelector('link[rel="stylesheet"][href*="/assets/css/just-the-docs-"]:not(#jtd-head-nav-stylesheet)');
-      if (link) { link.setAttribute('href', css + theme + '.css'); }
+      swapStylesheet(theme);
       document.documentElement.setAttribute('data-theme', theme);
       document.documentElement.style.colorScheme = theme;
       var toggle = document.querySelector('[data-theme-toggle]');

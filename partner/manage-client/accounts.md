@@ -41,7 +41,7 @@ Auth:     PARTNER | PARTNER_ADMIN
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `status` | string | No | Filter accounts by `AccountStatus` (e.g. `ACTIVE`). |
+| `status` | string | No | Filter accounts by status: `ACTIVE` (default), `PENDING`, `PROCESSING`, `LOCKED`, `BLOCKED`, `DISABLED` or `CLOSED`. |
 
 ### Response
 
@@ -208,3 +208,9 @@ Returns the list of currencies that can be enabled on the account.
 ```
 
 ---
+
+## Possible values
+
+In the account list, `accountProvider` is the name of the provider that holds the account (for example `FUSE`). The single-account response does not include it.
+
+{% include enums/account-values.md %}

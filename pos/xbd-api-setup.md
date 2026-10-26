@@ -97,6 +97,8 @@ Response
 }
 ```
 
+`status` is one of `PENDING`, `PROCESSING`, `PARTIAL_FILLED`, `COMPLETED`, `CANCELLED`, `EXPIRED` or `FAILED`.
+
 You will receive a <strong>paymentLink</strong> in the response, which you need to redirect the user to.
 
 With this <strong>paymentLink</strong>, your frontend can navigate to our Checkout solution which will further process the order and receive the payment.

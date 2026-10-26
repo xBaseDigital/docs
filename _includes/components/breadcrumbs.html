@@ -1,0 +1,14 @@
+{%- comment -%} Breadcrumbs from _data/navigation.yml: section / group / page. {%- endcomment -%}
+{%- if page.url != "/" and page.nav and page.nav.trail.size > 0 -%}
+<nav aria-label="Breadcrumb" class="breadcrumb-nav">
+  <ol class="breadcrumb-nav-list">
+    {%- for crumb in page.nav.trail -%}
+      {%- if forloop.last and crumb.title == page.title -%}{%- continue -%}{%- endif -%}
+      <li class="breadcrumb-nav-list-item">
+        {%- if crumb.url and crumb.url != page.url -%}<a href="{{ crumb.url | relative_url }}">{{ crumb.title }}</a>{%- else -%}<span>{{ crumb.title }}</span>{%- endif -%}
+      </li>
+    {%- endfor -%}
+    <li class="breadcrumb-nav-list-item"><span aria-current="page">{{ page.title }}</span></li>
+  </ol>
+</nav>
+{%- endif -%}

@@ -1,0 +1,8 @@
+{%- assign link = include.link -%}
+{%- assign here = false -%}{%- if link.url == page.url -%}{%- assign here = true -%}{%- endif -%}
+<li class="nav-list-item{% if here %} active{% endif %}">
+  <a href="{{ link.url | relative_url }}" class="nav-list-link{% if here %} active{% endif %}"{% if here %} aria-current="page"{% endif %}>
+    {%- if link.method -%}<span class="api-method" data-method="{{ link.method }}">{% if link.method == "DELETE" %}DEL{% else %}{{ link.method }}{% endif %}</span>{%- endif -%}
+    <span class="nav-link-text">{{ link.title }}</span>
+  </a>
+</li>

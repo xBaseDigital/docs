@@ -190,16 +190,16 @@ Content-Type: application/json
   - `id`: The unique identifier for the payout request.
   - `idempotencyKey`: The idempotency key used.
   - `additionalInfo`: Object containing additional info like `purpose` and `feeRuleSet`.
-  - `assetType`: The type of asset (e.g., “FIAT”).
+  - `assetType`: The type of asset: `FIAT` or `CRYPTO`.
   - `accountCurrencyId`: The identifier for the account currency.
   - `accountCurrency`: Detailed account currency object.
   - `recipient`: Detailed recipient object.
   - `amount`: The amount of the payout.
   - `currencyId`: The identifier for the currency.
   - `currency`: Detailed currency object.
-  - `status`: The current status of the payout (e.g., “PENDING”).
-  - `type`: The type of transaction (e.g., “DEBIT”).
-  - `paymentMethod`: The payment method (e.g., “LOCAL”).
+  - `status`: The current status of the payout. A new payout starts as `PENDING`, or `UNDER_REVIEW` if it is held for review. See [transaction statuses](#transaction-status).
+  - `type`: The type of transaction. Always `DEBIT` for a payout.
+  - `paymentMethod`: The payment method: `LOCAL` or `SWIFT`.
   - `paymentType`: The specific payment type.
   - `riskScore`: The risk score.
   - `feeAmount`: The fee amount.
@@ -210,9 +210,13 @@ Content-Type: application/json
   - `updatedAt`: Update timestamp.
   - `runningBalance`: Running balance after transaction.
   - `runningAvailableBalance`: Running available balance.
-  - `transactionCategory`: Category of transaction.
+  - `transactionCategory`: `PAYMENT` for a payout (`FX` is used for currency exchanges).
   - `totalAmount`: Total amount including fees.
   - `netAmount`: Net amount.
+
+### Possible values
+
+{% include enums/transaction-values.md %}
 
 ### Transaction Purpose Enums
 

@@ -200,7 +200,7 @@ paths:
               countryCode: AE
               bankCountryCode: AE
               transactionType: LOCAL
-              bankingIdType: iban
+              bankingIdType: IBAN
               iban: AE070331234567890123456
               bicSwiftCode: BOMLAEAD
       responses:

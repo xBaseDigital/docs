@@ -81,15 +81,15 @@ Content-Type: application/json
 - `success`: A boolean indicating the success of the request.
 - `data`: An object containing customer details:
   - `id`: The unique identifier for the customer.
-  - `customerType`: The type of customer (e.g., individual, business).
+  - `customerType`: The type of customer: `INDIVIDUAL`, `BUSINESS` or `MERCHANT`.
   - `customerAddressId`: The identifier for the customer’s address (can be null).
   - `terms`: A boolean indicating acceptance of terms.
   - `privacyPolicy`: A boolean indicating acceptance of the privacy policy.
-  - `accountApplicationStatus`: The status of the customer’s account application.
-  - `verificationResult`: The result of the customer verification process.
+  - `accountApplicationStatus`: The status of the customer’s account application: `PENDING`, `APPROVED` or `REJECTED`.
+  - `verificationResult`: The result of the customer verification process: `PENDING`, `APPROVED`, `REJECTED` or `REQUIRE_RESUBMISSION`.
   - `createdAt`: The timestamp when the customer was created.
   - `updatedAt`: The timestamp of the last update to the customer profile.
-  - `productActivations`: An object detailing the activation status of various products:
+  - `productActivations`: An object with one entry per product the customer has requested, each `PENDING`, `APPROVED` or `REJECTED`. For example:
     - `XBD_BANKING`: Status of banking product activation.
     - `XBD_OTC`: Status of over-the-counter product activation.
     - `XBD_POS`: Status of point-of-sale product activation.
@@ -117,3 +117,7 @@ Content-Type: application/json
     - `roles`: An array of roles assigned to the user.
     - `passcodeSet`: A boolean indicating if a passcode has been set for the user.
   - `questionnaireStatus`: The status of any questionnaires associated with the customer.
+
+### Possible values
+
+{% include enums/customer-values.md %}

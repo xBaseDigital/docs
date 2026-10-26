@@ -6,14 +6,18 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
+    "build:server": "esbuild src/server.ts --bundle --platform=node --target=node22 --format=esm --outfile=dist/server.mjs --banner:js=\"import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);\"",
+    "start": "node dist/server.mjs",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.server.json"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.132.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20261019.1",
+    "@types/node": "^22.20.5",
+    "esbuild": "0.28.2",
     "typescript": "^5.9.0",
     "vitest": "^3.2.0",
     "wrangler": "^4.40.0"

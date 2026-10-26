@@ -25,13 +25,14 @@ Authentication: Requires Bearer token
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `status` | String | ❌ | Filter by request status (case-sensitive) |
+| `status` | String | ❌ | Filter by request status (case-sensitive). Pass several as a comma-separated list. |
 | `page` | Integer | ❌ | Page number (default: 1) |
 | `limit` | Integer | ❌ | Results per page (default: 20, max: 100) |
 
 ### Status Filter Values
 
-Filter by one of the following status values:
+Filter by one or more of the following status values (comma-separated):
+- `RESOLVING_BENEFICIARIES`
 - `PENDING`
 - `QUOTE_PROVIDED`
 - `QUOTE_ACCEPTED`
@@ -42,7 +43,7 @@ Filter by one of the following status values:
 - `FAILED`
 - `CANCELLED`
 
-For detailed status descriptions, see [Enums & Types](enums-and-types#payroll-request-status).
+For detailed status descriptions, see [Enums & Types](enums-and-types#payrollrequeststatus).
 
 ### Example Requests
 

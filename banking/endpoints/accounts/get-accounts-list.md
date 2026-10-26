@@ -1424,18 +1424,18 @@ Each object in the array represents an **account** and includes:
 - `customerId`: The unique identifier for the customer.
 - `customer`: An object containing detailed customer information:
   - `id`: The unique identifier for the customer.
-  - `customerType`: The type of customer (e.g., `"BUSINESS"`).
+  - `customerType`: The type of customer: `INDIVIDUAL`, `BUSINESS` or `MERCHANT`.
   - `customerAddress`: An object containing address details (`line1`, `postCode`, `country`, etc.).
-  - `accountApplicationStatus`: The status of the customer’s account application.
-  - `verificationResult`: The result of the customer verification process.
+  - `accountApplicationStatus`: The status of the customer’s account application: `PENDING`, `APPROVED` or `REJECTED`.
+  - `verificationResult`: The result of the customer verification process: `PENDING`, `APPROVED`, `REJECTED` or `REQUIRE_RESUBMISSION`.
   - `providerVerificationResult`: The verification result from the provider.
   - `bankingEnabledAt`: Timestamp when banking was enabled.
   - `createdAt`, `updatedAt`: Timestamps for customer record.
   - `userId`: Associated user ID.
-- `accountProvider`: The provider of the account (e.g., `"FUSE"`, `"FIREBLOCKS"`).
-- `onboardingMode`: The mode of onboarding (e.g., `"AUTOMATED"`).
-- `status`: The current status of the account (e.g., `"ACTIVE"`).
-- `type`: The type of account (e.g., `"PERSONAL"`).
+- `accountProvider`: A numeric code (as a string, for example `"6"`) identifying the provider that holds the account. Treat it as an opaque identifier.
+- `onboardingMode`: The mode of onboarding.
+- `status`: The current status of the account. See [possible values](#possible-values).
+- `type`: The type of account: `PERSONAL`, `BUSINESS` or `SAVINGS`.
 - `externalId`: An external reference ID for the account.
 - `correlationId`: A correlation ID for tracking.
 - `currencyId`: The ID of the base currency (can be `null`).
@@ -1456,3 +1456,7 @@ Each object in the array represents an **account** and includes:
 - `beneficiaries`: An array of beneficiaries associated with the account.
 - `createdAt`: The timestamp when the account was created.
 - `updatedAt`: The timestamp of the last update to the account.
+
+### Possible values
+
+{% include enums/account-values.md %}

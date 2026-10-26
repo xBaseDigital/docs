@@ -1,0 +1,22 @@
+{%- comment -%}
+  Replaces the theme's "Table of contents": section and group pages list their pages, grouped as in the
+  sidebar, with each endpoint's method and path. Set `has_toc: false` on a page to leave it out.
+{%- endcomment -%}
+{%- if page.nav_index -%}
+<div class="page-index">
+  {%- for group in page.nav_index.groups -%}
+    {%- if group.title -%}<h2 class="page-index-title" id="{{ group.title | slugify }}">{{ group.title }}</h2>{%- endif -%}
+    <ul class="page-index-list">
+      {%- for link in group.pages -%}
+      <li>
+        <a class="page-index-link" href="{{ link.url | relative_url }}">
+          {%- if link.method -%}<span class="api-method" data-method="{{ link.method }}">{% if link.method == "DELETE" %}DEL{% else %}{{ link.method }}{% endif %}</span>{%- endif -%}
+          <span class="page-index-name">{{ link.page_title }}</span>
+          {%- if link.path -%}<code class="page-index-path">{{ link.path }}</code>{%- endif -%}
+        </a>
+      </li>
+      {%- endfor -%}
+    </ul>
+  {%- endfor -%}
+</div>
+{%- endif -%}

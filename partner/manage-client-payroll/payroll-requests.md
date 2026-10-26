@@ -94,7 +94,7 @@ The object returned by create / get / accept / cancel, and in each item of the l
 }
 ```
 
-`status` is one of: `PENDING`, `QUOTE_PROVIDED`, `QUOTE_ACCEPTED`, `EXECUTING`,
+`status` is one of: `RESOLVING_BENEFICIARIES`, `PENDING`, `QUOTE_PROVIDED`, `QUOTE_ACCEPTED`, `EXECUTING`,
 `PAYOUT_INITIATED`, `COMPLETED`, `PARTIALLY_COMPLETED`, `FAILED`, `CANCELLED`.
 
 {: .note }
