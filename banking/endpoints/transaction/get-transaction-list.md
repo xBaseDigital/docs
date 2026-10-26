@@ -116,7 +116,7 @@ Content-Type: application/json
 - `status`: Current status of the transaction. See [transaction statuses](#transaction-status).
 - `type`: `CREDIT` (money in) or `DEBIT` (money out).
 - `paymentMethod`: Method of payment: `LOCAL` or `SWIFT`.
-- `paymentType`: Specific type of payment. See [other transaction fields](#other-transaction-fields) for every value.
+- `paymentType`: Specific type of payment (e.g., `PAYMENT_TYPE_FX`).
 - `settlementDate`: Date when the transaction was settled.
 - `transactionCategory`: `FX` for a currency exchange, `PAYMENT` for everything else.
 - `accountCurrency`: Details of the account currency involved.
