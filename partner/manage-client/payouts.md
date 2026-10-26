@@ -1,6 +1,14 @@
 ---
 title: Client Payouts
-layout: home
+layout: endpoint
+try_it:
+  - op: getClientPayoutFeeEstimate
+    heading: "Estimate Payout Fee"
+  - op: sendClientPayoutOtp
+    heading: "Send Payout Verification Code"
+  - op: createClientPayout
+    heading: "Create Payout"
+try_it_spec: /assets/openapi/partner.json
 permalink: /partner/manage-client/payouts
 parent: Manage Client Banking
 nav_order: 5

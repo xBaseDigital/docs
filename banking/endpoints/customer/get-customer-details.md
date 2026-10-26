@@ -1,6 +1,7 @@
 ---
 title: Get Customer Details
-layout: home
+layout: endpoint
+try_it: getCustomerDetails
 permalink: /banking/endpoints/customer/get-customer-details
 parent: Customer
 nav_order: 1

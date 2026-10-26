@@ -1,6 +1,10 @@
 ---
 title: Payroll Transfers
-layout: home
+layout: endpoint
+try_it:
+  - op: clientListPayrollTransfers
+    heading: "List Payroll Transfers"
+try_it_spec: /assets/openapi/partner.json
 permalink: /partner/manage-client-payroll/transfers
 parent: Manage Client Payroll
 nav_order: 3

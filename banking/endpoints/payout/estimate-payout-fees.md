@@ -1,6 +1,7 @@
 ---
 title: Estimate Payout Fees
-layout: home
+layout: endpoint
+try_it: estimatePayoutFees
 permalink: /banking/endpoints/payout/estimate-payout-fees
 parent: Payout
 nav_order: 1

@@ -15,5 +15,18 @@ footer_content: "Copyright &copy; 2025 Relm"
 
 callouts:
   endpoint-desc:
-    title: Endpoint Description
+    title: About this endpoint
     color: blue
+
+# Ask AI: answers questions from these docs (service in ai-assist/, index built by _plugins/ai_docs_index.rb).
+# Set `endpoint` to the deployed service URL to turn it on; leave it empty to hide Ask AI.
+ai_assist:
+  endpoint: ""
+
+exclude:
+  - ai-assist
+
+# Light / dark mode toggle in the header. Visitors' choice is remembered;
+# `default` applies until they pick one: system (follow the device), light or dark.
+theme_toggle:
+  default: system

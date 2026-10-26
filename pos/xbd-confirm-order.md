@@ -1,6 +1,15 @@
 ---
 title: Test Order Confirmation on Sandbox
-layout: home
+layout: endpoint
+try_it:
+  - op: createPosOrder
+  - op: confirmPosOrder
+    label: "Confirm order"
+    heading: "Integration Steps"
+  - op: triggerPosSettlement
+    label: "Trigger settlement"
+    heading: "Triggering a Settlement (Sandbox Only)"
+try_it_spec: /assets/openapi/pos.json
 permalink: /pos/confirm-order
 parent: POS API
 nav_order: 2

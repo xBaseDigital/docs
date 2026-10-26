@@ -1,6 +1,8 @@
 ---
 title: List Payroll Requests
-layout: home
+layout: endpoint
+try_it: listPayrollRequests
+try_it_spec: /assets/openapi/payroll.json
 permalink: /payroll/endpoints/list-payroll-requests
 parent: Payroll API
 nav_order: 5

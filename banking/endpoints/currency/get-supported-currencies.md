@@ -1,6 +1,7 @@
 ---
 title: Get Supported Currencies
-layout: home
+layout: endpoint
+try_it: getSupportedCurrencies
 permalink: /banking/endpoints/currency/get-supported-currencies
 parent: Currency
 nav_order: 1

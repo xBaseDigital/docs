@@ -1,6 +1,12 @@
 ---
 title: Onboard Customer
-layout: home
+layout: endpoint
+try_it:
+  - op: partnerOnboardCustomer
+    heading: "Step 1 — Create Customer"
+  - op: customerLogin
+    heading: "Step 2 — Log In as the Customer"
+try_it_spec: /assets/openapi/partner.json
 permalink: /partner/onboard-customer
 parent: Partner API
 nav_order: 1

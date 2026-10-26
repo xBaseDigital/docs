@@ -1,6 +1,8 @@
 ---
 title: Accept Payroll Quote
-layout: home
+layout: endpoint
+try_it: acceptPayrollQuote
+try_it_spec: /assets/openapi/payroll.json
 permalink: /payroll/endpoints/accept-payroll-quote
 parent: Payroll API
 nav_order: 3

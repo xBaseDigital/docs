@@ -1,6 +1,8 @@
 ---
 title: Estimate Payroll Fee
-layout: home
+layout: endpoint
+try_it: estimatePayrollFee
+try_it_spec: /assets/openapi/payroll.json
 permalink: /payroll/endpoints/estimate-payroll-fee
 parent: Payroll API
 nav_order: 1

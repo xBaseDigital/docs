@@ -1,0 +1,1010 @@
+openapi: 3.1.0
+info:
+  title: Relm Banking API
+  version: "1.0.0-draft"
+  summary: Customer, currency, account, transaction, beneficiary, exchange and payout endpoints.
+  description: |
+    Relm Banking API. The "Try it" panel on each endpoint page sends requests to the **sandbox**
+    environment only.
+
+    ## Authenticating in the Try it panel
+
+    Paste a **sandbox Bearer token**. Never paste your API private key into a browser.
+
+    To get a token, call `GET /v1/api-keys/tokens` once from your backend, signed with your API key
+    (see [Authentication](/authentication)). The response contains `token` and `refreshToken`. Use
+    `token`. It is kept in the browser tab's session storage and is cleared when the tab closes.
+
+    Your own integration can keep using request signing (`Authorization: Signature keyId:sig:ts`).
+    Both schemes are accepted on every endpoint in this reference.
+
+    ## Response envelope
+
+    Successful responses are wrapped as `{ "success": true, "data": … }`. List endpoints that page
+    their results also return a `pagination` object. Errors return `{ "success": false, "error": … }`.
+
+    ## Status of this reference
+
+    Draft generated on 19 Oct 2026 from kubera `origin/main` (validators and controllers) and the
+    live sandbox response keys. Fields marked *conditional* only appear in some states.
+  contact:
+    name: Relm Support
+    email: support@relm.co
+servers:
+  - url: https://sandbox.api.relm.co
+    description: Sandbox
+security:
+  - bearerAuth: []
+  - signature: []
+tags:
+  - name: Customer
+    description: The authenticated customer's profile.
+  - name: Currency
+    description: Currencies supported by Relm.
+  - name: Accounts
+    description: Banking accounts and their currency balances.
+  - name: Transactions
+    description: Account transaction history.
+  - name: Beneficiaries
+    description: Saved payout recipients on an account.
+  - name: Exchange
+    description: FX quotes and exchange orders.
+  - name: Payouts
+    description: Payout fee estimates and payouts.
+
+paths:
+  /v1/customers/me:
+    get:
+      tags: [Customer]
+      operationId: getCustomerDetails
+      x-try-it-save:
+        - { from: data.id, to: customerId }
+      summary: Get customer details
+      description: |
+        Returns the profile of the authenticated customer, including product activations, company
+        and user details.
+
+        Allowed roles: `CUSTOMER`, `BANKING_VIEWER`, `ACCOUNT_ADMIN`, `ACCOUNT_VIEWER`.
+      responses:
+        "200":
+          description: Customer profile.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, data]
+                properties:
+                  success: { type: boolean, const: true }
+                  data: { $ref: "#/components/schemas/Customer" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/currencies:
+    get:
+      tags: [Currency]
+      operationId: getSupportedCurrencies
+      summary: Get supported currencies
+      description: Lists the currencies Relm supports, with fiat details or crypto networks.
+      parameters:
+        - name: market
+          in: query
+          required: false
+          description: Only return currencies available in this market.
+          schema:
+            type: string
+            enum: [UK, US, EU, GLOBAL]
+      responses:
+        "200":
+          description: Currency list.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, data]
+                properties:
+                  success: { type: boolean, const: true }
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Currency" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/customers/{customerId}/accounts:
+    get:
+      tags: [Accounts]
+      operationId: getAccountsList
+      x-try-it-save:
+        - { from: data.0.id, to: accountId }
+      summary: Get accounts list
+      description: |
+        Lists the customer's banking accounts with their currencies, balances and funding details.
+        Use the `id` from **Get customer details** as `customerId`.
+
+        Allowed roles: `CUSTOMER`, `ACCOUNT_ADMIN`, `ACCOUNT_VIEWER`.
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+      responses:
+        "200":
+          description: Account list.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, data]
+                properties:
+                  success: { type: boolean, const: true }
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Account" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/accounts/transactions:
+    get:
+      tags: [Transactions]
+      operationId: getTransactionList
+      summary: Get transaction list
+      description: |
+        Lists transactions across the customer's accounts, newest first by default. Filter to one
+        account with `accountId`.
+      parameters:
+        - name: accountId
+          in: query
+          description: Only return transactions for this account.
+          schema: { type: string, format: uuid }
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [PENDING, CANCELED, UNDER_REVIEW, DECLINED, PROCESSING, COMPLETED, FAILED, FAILED_HELD, RETRIED, REVERSED, AWAITING_FUNDS, ACTION_REQUIRED]
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [CREDIT, DEBIT, FX, WALLET_TRANSFER, ALL_WALLET_TRANSFERS]
+        - name: highRisk
+          in: query
+          schema: { type: string, enum: ["true", "false"] }
+        - name: currencyCode
+          in: query
+          description: 3–5 uppercase letters, e.g. `USD`, `USDC`.
+          schema: { type: string, minLength: 3, maxLength: 5, pattern: "^[A-Z]+$" }
+        - name: fromDate
+          in: query
+          description: ISO 8601 date, e.g. `2026-10-01`.
+          schema: { type: string, format: date }
+        - name: toDate
+          in: query
+          description: ISO 8601 date, e.g. `2026-10-19`.
+          schema: { type: string, format: date }
+        - name: internalTransferStatus
+          in: query
+          schema: { type: string, enum: [NA, PENDING, AWAITING_FUNDS, FAILED, COMPLETED] }
+        - name: paymentType
+          in: query
+          schema: { $ref: "#/components/schemas/PaymentType" }
+        - name: order
+          in: query
+          description: Sort by creation time.
+          schema: { type: string, enum: [asc, desc], default: desc }
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: Page of transactions.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, data, pagination]
+                properties:
+                  success: { type: boolean, const: true }
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Transaction" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/accounts/{accountId}/beneficiary:
+    get:
+      tags: [Beneficiaries]
+      operationId: getBeneficiaryList
+      x-try-it-save:
+        - { from: data.0.id, to: beneficiaryId }
+      summary: Get beneficiary list
+      description: |
+        Lists beneficiaries saved on an account. The response is paged by `page` and `limit` but
+        has **no `pagination` object**, so request the next page until fewer than `limit` items
+        come back.
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Limit"
+        - name: assetType
+          in: query
+          schema: { type: string, enum: [FIAT, CRYPTO] }
+      responses:
+        "200":
+          description: Beneficiaries.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, data]
+                properties:
+                  success: { type: boolean, const: true }
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Beneficiary" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+    post:
+      tags: [Beneficiaries]
+      operationId: createBeneficiary
+      summary: Create beneficiary
+      description: |
+        Saves a payout recipient on the account. `reference` and `currencyCode` are always
+        required, plus one of `firstName` (with `lastName` unless `type` is BUSINESS),
+        `companyName` or `name`. `bankingIdType` decides which routing fields are required.
+        If `address` is sent, `line1`, `line2` and `country` are required. Crypto beneficiaries
+        need `assetType: CRYPTO`, `cryptoWalletAddress` and `networkId`.
+      x-try-it-save:
+        - { from: data.id, to: beneficiaryId }
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreateBeneficiaryRequest" }
+            example:
+              type: INDIVIDUAL
+              firstName: Jane
+              lastName: Smith
+              reference: Supplier payment
+              currencyCode: GBP
+              countryCode: GB
+              bankCountryCode: GB
+              transactionType: LOCAL
+              bankingIdType: sortCode
+              sortCode: "040004"
+              accountNumber: "12345678"
+              address:
+                line1: 1 Main Street
+                line2: Flat 2
+                postCode: EC1A 1BB
+                country: GB
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/accounts/{accountId}/payouts/estimate:
+    get:
+      tags: [Payouts]
+      operationId: estimatePayoutFees
+      x-try-it-save:
+        - { from: data.feeHash, to: feeHash }
+      summary: Estimate payout fees
+      description: |
+        Calculates the fee for a payout and returns a `feeHash`. Passing `feeHash` to
+        **Create payout** locks in this estimate. It is optional on that endpoint.
+
+        Allowed roles: `CUSTOMER`, `ACCOUNT_ADMIN`.
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - name: amount
+          in: query
+          required: true
+          description: Payout amount, greater than 0, at most 2 decimal places.
+          schema: { type: number, exclusiveMinimum: 0, multipleOf: 0.01 }
+          example: 100
+        - name: currency
+          in: query
+          required: true
+          description: 3–5 uppercase letters.
+          schema: { type: string, minLength: 3, maxLength: 5, pattern: "^[A-Z]+$" }
+          example: AED
+        - name: beneficiaryId
+          in: query
+          required: false
+          description: Beneficiary the payout is for. Gives a more accurate estimate.
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Fee estimate.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, data]
+                properties:
+                  success: { type: boolean, const: true }
+                  data: { $ref: "#/components/schemas/PayoutFeeEstimate" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/accounts/{accountId}/beneficiaries/{beneficiaryId}:
+    put:
+      tags: [Beneficiaries]
+      operationId: confirmBeneficiary
+      summary: Confirm beneficiary
+      description: |
+        Confirms a pending beneficiary with `confirmed: true`. Sending `confirmed: false`
+        **deletes** the beneficiary.
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/BeneficiaryId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [confirmed]
+              properties:
+                confirmed: { type: boolean }
+            example: { confirmed: true }
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/accounts/{accountId}/orders/quote:
+    post:
+      tags: [Exchange]
+      operationId: generateQuote
+      summary: Generate quote
+      description: |
+        Quotes an FX conversion. Give the amount on **exactly one** side: `sourceCurrency.amount`
+        or `targetCurrency.amount`. Currency codes are 3 letters.
+
+        Allowed roles: `CUSTOMER`, `ACCOUNT_ADMIN`.
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [sourceCurrency, targetCurrency]
+              properties:
+                sourceCurrency:
+                  type: object
+                  required: [currency]
+                  properties:
+                    currency: { type: string, minLength: 3, maxLength: 3 }
+                    amount: { type: number, exclusiveMinimum: 0 }
+                targetCurrency:
+                  type: object
+                  required: [currency]
+                  properties:
+                    currency: { type: string, minLength: 3, maxLength: 3 }
+                    amount: { type: number, exclusiveMinimum: 0 }
+                settlementDate: { type: string }
+                type:
+                  type: object
+                  properties:
+                    from: { type: string, enum: [balance, bank] }
+                    to: { type: string, enum: [balance, payment, multiple, unknown, forward] }
+                idempotencyKey: { type: string, format: uuid }
+            example:
+              sourceCurrency: { currency: AED, amount: 100 }
+              targetCurrency: { currency: USD }
+              idempotencyKey: "{{uuid}}"
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/accounts/{accountId}/orders/exchange/trade:
+    post:
+      tags: [Exchange]
+      operationId: createExchangeOrder
+      summary: Create exchange order
+      description: |
+        Executes an FX conversion between two currencies on the account. Link it to a quote with
+        `quoteRequestId`. `idempotencyKey` must be a UUID v4.
+
+        Allowed roles: `CUSTOMER`, `ACCOUNT_ADMIN`.
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [amountFrom, amountTo, currencyFrom, currencyTo, idempotencyKey]
+              properties:
+                amountFrom: { type: number, minimum: 0 }
+                amountTo: { type: number, minimum: 0 }
+                currencyFrom: { type: string, minLength: 3, maxLength: 3 }
+                currencyTo: { type: string, minLength: 3, maxLength: 3 }
+                idempotencyKey: { type: string, format: uuid }
+                quoteRequestId: { type: string, maxLength: 100 }
+                orderId: { type: string, maxLength: 100 }
+                settlementDate: { type: string, maxLength: 10 }
+                fee: { type: number, minimum: 0 }
+                rate: { type: number, minimum: 0 }
+            example:
+              currencyFrom: AED
+              currencyTo: USD
+              amountFrom: 100
+              amountTo: 26.98
+              idempotencyKey: "{{uuid}}"
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/accounts/{accountId}/payout:
+    post:
+      tags: [Payouts]
+      operationId: createPayout
+      summary: Create payout
+      description: |
+        Sends money from the account to a beneficiary. `amount` is a **string** with at most 2
+        decimal places. `feeHash` (from **Estimate payout fees**) is optional and locks in the
+        estimated fee. `reference` is 6–35 letters, digits, `-` or `/`. `description` is required
+        when `purpose` is `"Other"`.
+
+        Allowed roles: `CUSTOMER`, `ACCOUNT_ADMIN`.
+      x-try-it-note: This moves money on sandbox. A new idempotencyKey is generated on every send.
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [beneficiaryId, amount, currency, idempotencyKey]
+              properties:
+                beneficiaryId: { type: string, format: uuid }
+                amount: { type: string, pattern: "^\\d+(\\.\\d{1,2})?$" }
+                currency: { type: string }
+                idempotencyKey: { type: string, format: uuid }
+                feeHash: { type: string }
+                estimatedFee: { type: string }
+                purpose: { type: string }
+                description: { type: string }
+                reference: { type: string, minLength: 6, maxLength: 35, pattern: "^[A-Za-z0-9/-]+$" }
+            example:
+              beneficiaryId: "{{beneficiaryId}}"
+              amount: "10.00"
+              currency: AED
+              reference: INV-2026-001
+              feeHash: "{{feeHash}}"
+              idempotencyKey: "{{uuid}}"
+      responses:
+        "200": { $ref: "#/components/responses/Envelope" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-label: Bearer token
+      x-help: Sandbox token from GET /v1/api-keys/tokens, called from your backend.
+      description: |
+        Sandbox access token from `GET /v1/api-keys/tokens`. Use this in the Try it panel.
+    signature:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: |
+        `Signature <keyId>:<signature>:<timestamp>`: ECDSA secp256k1 signature over
+        `METHOD\nPATH\nTIMESTAMP[\nSHA256(body)][\nCONTENT_TYPE]`, where PATH is the full path
+        including `/v1` and the query string. Timestamps must be within 300 seconds. Sign on your
+        server. This scheme can't be used from the console.
+
+  parameters:
+    CustomerId:
+      name: customerId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    BeneficiaryId:
+      name: beneficiaryId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    AccountId:
+      name: accountId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    Page:
+      name: page
+      in: query
+      schema: { type: integer, minimum: 1, default: 1 }
+    Limit:
+      name: limit
+      in: query
+      schema: { type: integer, minimum: 1, default: 10 }
+
+  responses:
+    Envelope:
+      description: Success. The resource is in `data`.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, const: true }
+              data: {}
+    BadRequest:
+      description: Validation failed. `error.msg` lists each problem as `<field> <message>`.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+          example:
+            success: false
+            error:
+              code: bad-request
+              fullCode: RELM-GEN-BAD-REQUEST
+              msg: ["currency code must contain only uppercase letters"]
+              source: GEN
+              statusCode: 400
+              traceId: 3f1c2e0a9b7d4c51
+    Unauthorized:
+      description: Missing, expired or invalid credentials.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    Forbidden:
+      description: The caller's role or account assignment doesn't allow this request.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+
+  schemas:
+    ErrorResponse:
+      type: object
+      required: [success, error]
+      properties:
+        success: { type: boolean, const: false }
+        error:
+          type: object
+          properties:
+            code: { type: string, examples: [bad-request] }
+            fullCode: { type: string, examples: [RELM-GEN-BAD-REQUEST] }
+            msg:
+              type: array
+              items: { type: string }
+            data: {}
+            source: { type: string, examples: [GEN] }
+            statusCode: { type: integer, examples: [400] }
+            traceId: { type: string, description: Quote this when contacting support. }
+
+    Pagination:
+      type: object
+      required: [total, page, limit, totalPages]
+      description: |
+        There is no `hasNextPage`. Keep requesting while `page < totalPages`.
+      properties:
+        total: { type: integer, examples: [34] }
+        page: { type: integer, examples: [1] }
+        limit: { type: integer, examples: [10] }
+        totalPages: { type: integer, examples: [4] }
+
+    Timestamps:
+      type: object
+      properties:
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    Address:
+      type: [object, "null"]
+      properties:
+        id: { type: string, format: uuid }
+        line1: { type: string }
+        line2: { type: [string, "null"] }
+        line3: { type: [string, "null"] }
+        line4: { type: [string, "null"] }
+        countyState: { type: [string, "null"] }
+        postCode: { type: [string, "null"] }
+        country: { type: string, description: ISO country code. }
+
+    ProductStatus:
+      type: string
+      examples: [APPROVED, REJECTED, PENDING]
+
+    Customer:
+      allOf:
+        - $ref: "#/components/schemas/Timestamps"
+        - type: object
+          properties:
+            id: { type: string, format: uuid }
+            customerType: { type: string, enum: [INDIVIDUAL, BUSINESS, MERCHANT] }
+            countryCode: { type: [string, "null"] }
+            terms: { type: boolean }
+            privacyPolicy: { type: boolean }
+            accountApplicationStatus: { type: string, examples: [APPROVED] }
+            verificationResult: { type: string, examples: [APPROVED] }
+            questionnaireStatus: { type: string, examples: [COMPLETED] }
+            bankingEnabledAt: { type: [string, "null"], format: date-time }
+            accountActivationFeePaid: { type: boolean }
+            isFeeProfileAvailable: { type: boolean }
+            isPartner: { type: boolean }
+            customerAddressId: { type: [string, "null"], format: uuid }
+            customerAddress: { $ref: "#/components/schemas/Address" }
+            preferences:
+              type: [object, "null"]
+              additionalProperties: true
+            productActivations:
+              type: object
+              description: Activation status per product. Keys present depend on what the customer applied for.
+              properties:
+                XBD_BANKING: { $ref: "#/components/schemas/ProductStatus" }
+                XBD_OTC: { $ref: "#/components/schemas/ProductStatus" }
+                XBD_POS: { $ref: "#/components/schemas/ProductStatus" }
+                XBD_PAYROLL: { $ref: "#/components/schemas/ProductStatus" }
+                XBD_INVOICE: { $ref: "#/components/schemas/ProductStatus" }
+                XBD_FIAT_ACQUIRING: { $ref: "#/components/schemas/ProductStatus" }
+              additionalProperties: { $ref: "#/components/schemas/ProductStatus" }
+            company:
+              type: [object, "null"]
+              properties:
+                id: { type: string, format: uuid }
+                customerId: { type: string, format: uuid }
+                name: { type: string }
+                displayName: { type: [string, "null"] }
+                registrationNumber: { type: [string, "null"] }
+                registeredAddress: { type: [string, "null"] }
+                industryName: { type: [string, "null"] }
+                industryType: { type: [string, "null"] }
+                status: { type: [string, "null"] }
+                companyAddress: { $ref: "#/components/schemas/Address" }
+            user:
+              type: object
+              properties:
+                id: { type: string, format: uuid }
+                email: { type: string, format: email }
+                firstName: { type: string }
+                middleName: { type: [string, "null"] }
+                lastName: { type: string }
+                title: { type: [string, "null"] }
+                emailVerified: { type: boolean }
+                phone: { type: [string, "null"] }
+                status: { type: string, examples: [ACTIVE] }
+                roles:
+                  type: array
+                  items: { type: string }
+                  examples: [[MERCHANT_ADMIN, CUSTOMER]]
+                passcodeSet: { type: boolean }
+                totpEnabled: { type: boolean }
+                lastLoginAt: { type: [string, "null"], format: date-time }
+          additionalProperties: true
+
+    Currency:
+      allOf:
+        - $ref: "#/components/schemas/Timestamps"
+        - type: object
+          properties:
+            id: { type: string, format: uuid }
+            currencyCode: { type: string, examples: [USD] }
+            currencyName: { type: string, examples: [United States Dollar] }
+            currencySymbol: { type: string, examples: ["$"] }
+            currencyFlag: { type: string, format: uri }
+            currencyType: { type: string, enum: [FIAT, CRYPTO] }
+            enabled: { type: boolean }
+            isSettlementCurrency: { type: boolean }
+            products:
+              type: array
+              description: Products this currency can be used with.
+              items: { type: string, examples: [XBD_BANKING] }
+            providers:
+              type: array
+              description: Opaque provider codes. Don't map these to provider names.
+              items: { type: string, examples: ["4"] }
+            fiatDetails:
+              type: [object, "null"]
+              properties:
+                id: { type: string }
+                decimals: { type: integer, examples: [2] }
+                countries:
+                  type: array
+                  items: { type: string }
+                isReserveCurrency: { type: boolean }
+            cryptoNetworks:
+              type: array
+              description: Networks a crypto currency is available on. Empty for fiat.
+              items: { $ref: "#/components/schemas/CurrencyNetwork" }
+          additionalProperties: true
+
+    Network:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        code: { type: string, examples: [ETH_TEST5] }
+        name: { type: string, examples: [Ethereum Sepolia (Sandbox)] }
+        chainId: { type: [string, "null"] }
+        nativeCurrency: { type: string, examples: [ETH] }
+        isTestnet: { type: boolean }
+        enabled: { type: boolean }
+
+    CurrencyNetwork:
+      type: object
+      additionalProperties: true
+      properties:
+        networkId: { type: string, format: uuid }
+        contractAddress: { type: [string, "null"] }
+        network: { $ref: "#/components/schemas/Network" }
+
+    AccountCurrency:
+      allOf:
+        - $ref: "#/components/schemas/Timestamps"
+        - type: object
+          properties:
+            id: { type: string, format: uuid }
+            accountId: { type: string, format: uuid }
+            currencyId: { type: string, format: uuid }
+            type: { type: string, enum: [FIAT, CRYPTO] }
+            balance: { type: string, description: Decimal as string., examples: ["4910.46"] }
+            available: { type: string, description: Decimal as string., examples: ["4673.46"] }
+            locked: { type: string, description: Decimal as string., examples: ["0"] }
+            status: { type: string, enum: [DISABLED, ENABLED, UNDER_REVIEW, DECLINED, LOCKED] }
+            usageType: { type: string, examples: [STANDARD] }
+            hideOnUI: { type: boolean }
+            networkId: { type: [string, "null"], format: uuid }
+            currency: { $ref: "#/components/schemas/Currency" }
+            accountDetails:
+              type: array
+              description: Bank details for receiving fiat into this currency.
+              items:
+                type: object
+                additionalProperties: true
+                properties:
+                  accountCurrencyId: { type: string, format: uuid }
+                  reference: { type: [string, "null"] }
+                  expires_at: { type: [string, "null"], format: date-time }
+            cryptoDetails:
+              type: [object, "null"]
+              description: Deposit wallet for crypto currencies.
+              properties:
+                id: { type: string, format: uuid }
+                networkId: { type: string, format: uuid }
+                walletAddress: { type: string }
+                label: { type: [string, "null"] }
+                network: { $ref: "#/components/schemas/Network" }
+          additionalProperties: true
+
+    Account:
+      allOf:
+        - $ref: "#/components/schemas/Timestamps"
+        - type: object
+          properties:
+            id: { type: string, format: uuid }
+            customerId: { type: string, format: uuid }
+            accountProvider:
+              type: string
+              description: Opaque provider code such as `"4"` or `"6"`. It's not a provider name and may change.
+              examples: ["6"]
+            onboardingMode: { type: string, examples: [AUTOMATED] }
+            status: { type: string, enum: [ACTIVE, LOCKED, BLOCKED, DISABLED, CLOSED, PENDING, PROCESSING] }
+            type: { type: string, examples: [PERSONAL] }
+            externalId: { type: [string, "null"] }
+            accountCurrencies:
+              type: array
+              items: { $ref: "#/components/schemas/AccountCurrency" }
+            beneficiaries:
+              type: array
+              items: { $ref: "#/components/schemas/Beneficiary" }
+            metadata:
+              type: [object, "null"]
+              description: Account-specific flags. Keys vary per account.
+              additionalProperties: true
+          additionalProperties: true
+
+    PaymentType:
+      type: string
+      enum:
+        - PAYMENT_TYPE_AU_NPP
+        - PAYMENT_TYPE_EU_TARGET2
+        - PAYMENT_TYPE_UK_FASTERPAYMENTS_POO
+        - PAYMENT_TYPE_UK_CHAPS
+        - PAYMENT_TYPE_GLOBAL_SWIFT
+        - PAYMENT_TYPE_SG_GIRO
+        - PAYMENT_TYPE_AU_DE
+        - PAYMENT_TYPE_EU_SEPA_INSTANT
+        - PAYMENT_TYPE_UK_BACS
+        - PAYMENT_TYPE_SG_MEPS
+        - PAYMENT_TYPE_US_ACH
+        - PAYMENT_TYPE_CARD
+        - PAYMENT_TYPE_EU_SEPA_STEP2
+        - PAYMENT_TYPE_SG_FAST
+        - PAYMENT_TYPE_AU_BPAY
+        - PAYMENT_TYPE_FX_INTER_LEDGER
+        - PAYMENT_TYPE_VIRTUAL_DEBIT_CARD_DEBIT
+        - PAYMENT_TYPE_SG_PAYNOW
+        - PAYMENT_TYPE_INTER_LEDGER
+        - PAYMENT_TYPE_UK_FASTERPAYMENTS
+        - PAYMENT_TYPE_FX
+        - PAYMENT_TYPE_US_WIRES
+        - PAYMENT_TYPE_WALLET_TRANSFER
+        - PAYMENT_TYPE_OTC_TRANSFER
+        - PAYMENT_TYPE_INVOICE_TRANSFER
+        - PAYMENT_TYPE_POS_SETTLEMENT_TRANSFER
+        - PAYMENT_TYPE_BLOCKCHAIN_TRANSFER
+        - PAYMENT_TYPE_FX_OFFLINE_TRANSFER
+
+    Transaction:
+      allOf:
+        - $ref: "#/components/schemas/Timestamps"
+        - type: object
+          properties:
+            id: { type: string, format: uuid }
+            idempotencyKey: { type: [string, "null"] }
+            externalId: { type: [string, "null"] }
+            transactionReference: { type: [string, "null"], examples: [Exchange AED to USD] }
+            transactionCategory: { type: string, examples: [FX] }
+            type: { type: string, enum: [CREDIT, DEBIT] }
+            status:
+              type: string
+              enum: [PENDING, CANCELED, UNDER_REVIEW, DECLINED, PROCESSING, COMPLETED, FAILED, FAILED_HELD, RETRIED, REVERSED, AWAITING_FUNDS, ACTION_REQUIRED]
+            internalTransferStatus: { type: [string, "null"], enum: [NA, PENDING, AWAITING_FUNDS, FAILED, COMPLETED, null] }
+            paymentMethod: { type: [string, "null"], examples: [LOCAL] }
+            paymentType: { $ref: "#/components/schemas/PaymentType" }
+            assetType: { type: string, enum: [FIAT, CRYPTO] }
+            amount: { type: string, description: Decimal as string., examples: ["100"] }
+            feeAmount: { type: [string, "null"], description: Decimal as string. }
+            totalAmount: { type: [string, "null"], description: Decimal as string. }
+            netAmount: { type: [string, "null"], description: Decimal as string. }
+            runningBalance: { type: [string, "null"], description: Account balance after this transaction. }
+            runningAvailableBalance: { type: [string, "null"] }
+            currencyId: { type: string, format: uuid }
+            currency: { $ref: "#/components/schemas/Currency" }
+            feeCurrencyId: { type: [string, "null"], format: uuid }
+            feeCurrency:
+              oneOf:
+                - $ref: "#/components/schemas/Currency"
+                - type: "null"
+            accountCurrencyId: { type: string, format: uuid }
+            accountCurrency: { $ref: "#/components/schemas/AccountCurrency" }
+            recipient:
+              type: [object, "null"]
+              additionalProperties: true
+            conversionRate: { type: [number, "null"] }
+            conversionDate: { type: [string, "null"], format: date-time }
+            settlementDate: { type: [string, "null"], format: date-time }
+            highRisk: { type: boolean }
+            refunded: { type: boolean }
+            riskScore: { type: [number, "null"] }
+            systemInitiated: { type: boolean }
+            additionalInfo:
+              type: [object, "null"]
+              description: Extra details that depend on the transaction type, e.g. FX legs.
+              additionalProperties: true
+              properties:
+                exchangeTo: { type: string }
+                exchangeRate:
+                  type: string
+                  description: Returned as a **string**, not a number.
+                  examples: ["0.2698"]
+                exchangeAmountTo: { type: number }
+                fromAccountId: { type: string, format: uuid }
+                toAccountId: { type: string, format: uuid }
+                purpose: { type: string }
+          additionalProperties: true
+
+    Beneficiary:
+      allOf:
+        - $ref: "#/components/schemas/Timestamps"
+        - type: object
+          description: |
+            `name` is no longer returned. Use `firstName` + `lastName` for individuals and
+            `companyName` for businesses.
+          properties:
+            id: { type: string, format: uuid }
+            recipientId: { type: [string, "null"], format: uuid }
+            accountId: { type: string, format: uuid }
+            firstName: { type: [string, "null"] }
+            lastName: { type: [string, "null"] }
+            companyName: { type: [string, "null"] }
+            displayName: { type: [string, "null"] }
+            email: { type: [string, "null"] }
+            reference: { type: [string, "null"] }
+            memo: { type: [string, "null"] }
+            type: { type: string, enum: [INDIVIDUAL, BUSINESS, CHARITY, INTERNAL] }
+            status: { type: string, enum: [PENDING, ACTIVE] }
+            assetType: { type: string, enum: [FIAT, CRYPTO] }
+            currencyCode: { type: string, examples: [AED] }
+            transactionType: { type: [string, "null"], examples: [LOCAL] }
+            iban: { type: [string, "null"] }
+            bicSwiftCode: { type: [string, "null"] }
+            correspondentBic: { type: [string, "null"] }
+            bankingId: { type: [string, "null"] }
+            bankingIdType:
+              type: [string, "null"]
+              enum: [sortCode, routingTransitNumber, transitNumber, bankStateBranch, ifsc, iban, null]
+            accountNumber: { type: [string, "null"] }
+            routingNumber: { type: [string, "null"] }
+            sortCode: { type: [string, "null"] }
+            routingTransitNumber: { type: [string, "null"] }
+            countryCode: { type: [string, "null"] }
+            bankCountryCode: { type: [string, "null"] }
+            addressId: { type: [string, "null"], format: uuid }
+            address: { $ref: "#/components/schemas/Address" }
+            cryptoWalletAddress: { type: [string, "null"], description: Crypto beneficiaries only. }
+            networkId: { type: [string, "null"], format: uuid, description: Crypto beneficiaries only. }
+            networkName: { type: [string, "null"] }
+            network:
+              oneOf:
+                - $ref: "#/components/schemas/Network"
+                - type: "null"
+            supplierStatus: { type: [string, "null"] }
+            externalId: { type: [string, "null"] }
+            metadata:
+              type: [object, "null"]
+              additionalProperties: true
+          additionalProperties: true
+
+    CreateBeneficiaryRequest:
+      type: object
+      required: [reference, currencyCode]
+      properties:
+        type: { type: string, enum: [INDIVIDUAL, BUSINESS] }
+        assetType: { type: string, enum: [FIAT, CRYPTO] }
+        firstName: { type: string, maxLength: 100 }
+        lastName: { type: string }
+        companyName: { type: string, maxLength: 35 }
+        name: { type: string }
+        email: { type: string }
+        reference: { type: string, maxLength: 200 }
+        currencyCode: { type: string, minLength: 3, maxLength: 5, pattern: "^[A-Z]+$" }
+        countryCode: { type: string, description: "ISO 3166-1 alpha-2, uppercase." }
+        bankCountryCode: { type: string, description: "ISO 3166-1 alpha-2, uppercase." }
+        transactionType: { type: string, examples: [LOCAL] }
+        bankingIdType: { type: string, enum: [sortCode, routingTransitNumber, transitNumber, bankStateBranch, ifsc, iban] }
+        accountNumber: { type: string }
+        sortCode: { type: string }
+        routingTransitNumber: { type: string }
+        transitNumber: { type: string }
+        bankStateBranch: { type: string }
+        ifsc: { type: string }
+        iban: { type: string, description: Required for SWIFT beneficiaries in IBAN countries. }
+        bicSwiftCode: { type: string }
+        correspondentBic: { type: string }
+        bankName: { type: string, description: "For PKR, must be a supported MCB bank name." }
+        cryptoWalletAddress: { type: string }
+        networkId: { type: string, format: uuid }
+        memo: { type: string }
+        metadata: { type: object, additionalProperties: true }
+        address:
+          type: object
+          required: [line1, line2, country]
+          properties:
+            line1: { type: string }
+            line2: { type: string }
+            line3: { type: string }
+            line4: { type: string }
+            countyState: { type: string }
+            postCode: { type: string }
+            country: { type: string }
+
+    PayoutFeeEstimate:
+      type: object
+      properties:
+        amount: { type: number, examples: [2] }
+        currency: { type: string, examples: [AED] }
+        totalFee: { type: number, description: Total fee charged for the payout., examples: [40] }
+        feeCurrency: { type: string, examples: [AED] }
+        totalAmount: { type: number, description: Amount plus fees., examples: [42] }
+        estimatedDate: { type: string, format: date-time }
+        isEstimateAvailable: { type: boolean }
+        ruleSet: { type: boolean, description: Whether a fee rule set was applied. }
+        feeHash:
+          type: string
+          description: Pass to **Create payout** to lock in this fee. Optional on that endpoint.
+      additionalProperties: true

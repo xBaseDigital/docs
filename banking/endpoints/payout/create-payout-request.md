@@ -1,6 +1,7 @@
 ---
 title: Create Payout Request
-layout: home
+layout: endpoint
+try_it: createPayout
 permalink: /banking/endpoints/payout/create-payout-request
 parent: Payout
 nav_order: 2

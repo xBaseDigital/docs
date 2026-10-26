@@ -1,6 +1,7 @@
 ---
 title: Generate Quote
-layout: home
+layout: endpoint
+try_it: generateQuote
 permalink: /banking/endpoints/exchange/generate-quote
 parent: Exchange
 nav_order: 1

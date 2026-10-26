@@ -1,6 +1,8 @@
 ---
 title: List Payroll Transfers
-layout: home
+layout: endpoint
+try_it: listPayrollTransfers
+try_it_spec: /assets/openapi/payroll.json
 permalink: /payroll/endpoints/list-payroll-transfers
 parent: Payroll API
 nav_order: 7

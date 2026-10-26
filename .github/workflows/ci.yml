@@ -20,3 +20,22 @@ jobs:
           cache-version: 0 # Increment this number if you need to re-download cached gems
       - name: Build with Jekyll
         run: bundle exec jekyll build
+
+  # Ask AI service (ai-assist/): types and tests.
+  ai-assist:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ai-assist
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ai-assist/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test

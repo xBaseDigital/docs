@@ -1,6 +1,7 @@
 ---
 title: Create Exchange Order
-layout: home
+layout: endpoint
+try_it: createExchangeOrder
 permalink: /banking/endpoints/exchange/create-exchange-order
 parent: Exchange
 nav_order: 2

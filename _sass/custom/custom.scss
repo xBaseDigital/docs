@@ -1,0 +1,1693 @@
+// Sidebar flush left on wide screens, so endpoint pages have room for the Try it panel
+// without the navigation jumping between pages.
+@include mq(lg) {
+  .side-bar {
+    width: $nav-width;
+  }
+
+  .side-bar + .main {
+    margin-left: $nav-width;
+  }
+}
+
+.main:has(.endpoint-layout) {
+  max-width: 88rem;
+}
+
+.endpoint-layout {
+  display: block;
+}
+
+.endpoint-docs {
+  min-width: 0;
+}
+
+.try-it {
+  margin-top: $sp-8;
+  border: $border $border-color;
+  border-radius: 8px;
+  background: $sidebar-color;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+@media (min-width: 75rem) {
+  .endpoint-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(22rem, 30rem);
+    gap: $sp-8;
+    align-items: start;
+  }
+
+  .try-it {
+    position: sticky;
+    top: $sp-4;
+    margin-top: 0;
+    max-height: calc(100vh - #{$sp-8});
+    overflow-y: auto;
+  }
+}
+
+.ti-head,
+.ti-endpoint,
+.ti-section,
+.ti-actions,
+.ti-curl-wrap {
+  padding: $sp-3 $sp-4;
+  border-bottom: $border $border-color;
+}
+
+.ti-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ti-title {
+  font-weight: 600;
+  color: $body-heading-color;
+}
+
+.ti-env {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #3a2f0b;
+  color: $yellow-100;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.ti-endpoint {
+  display: flex;
+  gap: $sp-2;
+  align-items: flex-start;
+}
+
+.ti-method {
+  flex: none;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: $mono-font-family;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: $grey-dk-300;
+  background: $green-000;
+}
+
+.ti-post { background: $blue-000; }
+.ti-put, .ti-patch { background: $yellow-200; }
+.ti-delete { background: $red-100; }
+
+.ti-url {
+  font-family: $mono-font-family;
+  font-size: 0.8rem;
+  word-break: break-all;
+  color: $body-text-color;
+}
+
+.ti-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $sp-2;
+  margin-bottom: $sp-2;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $grey-dk-000;
+}
+
+.ti-field + .ti-field,
+.ti-optional .ti-field {
+  margin-top: $sp-3;
+}
+
+.ti-label {
+  display: flex;
+  align-items: center;
+  gap: $sp-2;
+  margin-bottom: $sp-1;
+  color: $body-heading-color;
+
+  code {
+    font-size: 0.8rem;
+  }
+}
+
+.ti-req {
+  font-size: 0.7rem;
+  color: $red-000;
+}
+
+.ti-opt {
+  font-size: 0.7rem;
+  color: $grey-dk-000;
+}
+
+.ti-input {
+  display: block;
+  width: 100%;
+  padding: 6px 8px;
+  border: $border $grey-dk-200;
+  border-radius: 4px;
+  background: $grey-dk-250;
+  color: $body-text-color;
+  font-family: $mono-font-family;
+  font-size: 0.8rem;
+
+  &:focus {
+    outline: 2px solid $blue-100;
+    outline-offset: -1px;
+  }
+}
+
+.ti-invalid {
+  border-color: $red-200;
+}
+
+.ti-help {
+  margin-top: $sp-1;
+  font-size: 0.75rem;
+  color: $grey-dk-000;
+}
+
+.ti-link {
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: $link-color;
+  font-size: 0.75rem;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.ti-optional summary,
+.ti-curl-wrap summary {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: $grey-dk-000;
+  font-size: 0.8rem;
+}
+
+.ti-actions {
+  display: flex;
+  align-items: center;
+  gap: $sp-3;
+}
+
+.ti-send {
+  min-width: 6rem;
+}
+
+.ti-kbd {
+  font-size: 0.75rem;
+}
+
+.ti-muted {
+  color: $grey-dk-000;
+}
+
+.ti-status {
+  display: flex;
+  align-items: center;
+  gap: $sp-2;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+.ti-pill {
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-family: $mono-font-family;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.ti-ok {
+  background: rgba(65, 214, 147, 0.15);
+  color: $green-000;
+}
+
+.ti-err {
+  background: rgba(247, 126, 126, 0.15);
+  color: $red-000;
+}
+
+.ti-response,
+.ti-curl {
+  margin: 0;
+  padding: $sp-3;
+  max-height: 28rem;
+  overflow: auto;
+  border-radius: 4px;
+  background: $code-background-color;
+  font-size: 0.75rem;
+  white-space: pre;
+}
+
+.ti-curl {
+  margin-top: $sp-2;
+  max-height: none;
+}
+
+.ti-curl-wrap {
+  border-bottom: 0;
+}
+
+.ti-key { color: #e06c75; }
+.ti-str { color: #98c379; }
+.ti-num { color: #d19a66; }
+.ti-bool { color: #c678dd; }
+.ti-null { color: #c678dd; font-style: italic; }
+
+.ti-picker {
+  padding-top: $sp-2;
+  padding-bottom: $sp-2;
+}
+
+.ti-select {
+  font-family: $body-font-family;
+}
+
+textarea.ti-body {
+  resize: vertical;
+  min-height: 6rem;
+  line-height: 1.4;
+  white-space: pre;
+  tab-size: 2;
+}
+
+.ti-note {
+  font-size: 0.8rem;
+  color: $yellow-100;
+}
+
+.ti-saved {
+  margin-top: $sp-2;
+  font-size: 0.75rem;
+  color: $green-000;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.ti-jump {
+  margin-left: $sp-3;
+  padding: 2px 8px;
+  border: $border $grey-dk-200;
+  border-radius: 999px;
+  background: $grey-dk-250;
+  color: $link-color;
+  font-size: 0.7rem;
+  font-weight: 600;
+  vertical-align: middle;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $link-color;
+  }
+}
+
+@media (min-width: 75rem) {
+  .ti-jump-solo {
+    display: none;
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Ask AI (assets/js/ask-ai.js)
+
+$ask-ai-fill: $relm-accent-fill; // solid brand violet behind white icons and text
+$ask-ai-width: 27rem;
+// Colours that differ between the light and dark schemes.
+$ask-ai-muted: $relm-muted;
+$ask-ai-surface: $base-button-color;
+$ask-ai-tint: rgba($relm-accent, 0.12);
+$ask-ai-error: #fca5a5;
+$ask-ai-shadow: rgba(0, 0, 0, 0.5);
+
+@if $color-scheme == light {
+  $ask-ai-error: #b42318;
+  $ask-ai-shadow: rgba(27, 5, 76, 0.14);
+}
+
+.ask-ai-icon {
+  display: block;
+  width: 1em;
+  height: 1em;
+  flex: none;
+}
+
+
+.ask-ai-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-2;
+  height: 2.25rem;
+  padding: 0 $sp-2 0 $sp-3;
+  border: 1px solid rgba($relm-accent, 0.4);
+  border-radius: 999px;
+  background: $ask-ai-tint;
+  color: $body-heading-color;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+
+  .ask-ai-icon {
+    color: $relm-accent;
+    font-size: 1rem;
+  }
+
+  kbd {
+    display: none;
+    padding: 1px 6px;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    background: $body-background-color;
+    color: $ask-ai-muted;
+    font-family: inherit;
+    font-size: 0.6875rem;
+    font-weight: 500;
+
+    @include mq(md) {
+      display: inline;
+    }
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: $relm-accent;
+    background: rgba($relm-accent, 0.2);
+  }
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+// Phones and narrow windows, where the header search lives in the menu.
+.ask-ai-fab {
+  position: fixed;
+  right: $sp-4;
+  bottom: $sp-4;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-2;
+  padding: $sp-2 $sp-4;
+  border: 0;
+  border-radius: 999px;
+  background: $ask-ai-fill;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  .ask-ai-icon {
+    font-size: 1rem;
+  }
+
+  @include mq(md) {
+    display: none;
+  }
+
+  .ask-ai-open & {
+    display: none;
+  }
+}
+
+.ask-ai-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  background: $sidebar-color;
+  color: $body-text-color;
+  font-size: 0.875rem;
+  line-height: 1.55;
+
+  @include mq(md) {
+    inset: $sp-3 $sp-3 $sp-3 auto;
+    width: $ask-ai-width;
+    max-width: calc(100vw - #{$sp-6});
+    border: $border $border-color;
+    border-radius: 14px;
+    box-shadow: 0 24px 64px $ask-ai-shadow;
+    animation: ask-ai-in 0.18s ease-out;
+  }
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+@keyframes ask-ai-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+}
+
+// Keep the page usable beside the panel on wide screens.
+@media (min-width: 87.5rem) {
+  .ask-ai-open .main {
+    margin-right: calc(#{$ask-ai-width} + #{$sp-6});
+  }
+}
+
+// Until there's room for docs, Try it and the chat side by side, Try it moves below the docs.
+@media (min-width: 87.5rem) and (max-width: 119.99rem) {
+  .ask-ai-open .endpoint-layout {
+    display: block;
+  }
+
+  .ask-ai-open .try-it {
+    position: static;
+    max-height: none;
+    margin-top: $sp-8;
+  }
+}
+
+.ask-ai-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $sp-3;
+  padding: $sp-3 $sp-3 $sp-3 $sp-4;
+  border-bottom: $border $border-color;
+}
+
+.ask-ai-brand {
+  display: flex;
+  align-items: center;
+  gap: $sp-3;
+  min-width: 0;
+}
+
+.ask-ai-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 8px;
+  background: $ask-ai-fill;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.ask-ai-title {
+  color: $body-heading-color;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.ask-ai-subtitle {
+  color: $ask-ai-muted;
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+
+.ask-ai-head-actions {
+  display: flex;
+  gap: $sp-1;
+}
+
+.ask-ai-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: $ask-ai-muted;
+  font-size: 1.05rem;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: $ask-ai-surface;
+    color: $body-heading-color;
+  }
+}
+
+.ask-ai-messages {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: $sp-4;
+}
+
+.ask-ai-empty {
+  padding: $sp-6 $sp-2 $sp-2;
+  text-align: center;
+}
+
+.ask-ai-empty-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: $sp-3;
+  border-radius: 12px;
+  background: $ask-ai-fill;
+  color: #fff;
+  font-size: 1.4rem;
+}
+
+.ask-ai-empty-title {
+  margin: 0 0 $sp-1;
+  color: $body-heading-color;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.ask-ai-empty-text {
+  margin: 0 0 $sp-5;
+  color: $ask-ai-muted;
+}
+
+.ask-ai-suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-2;
+  text-align: left;
+}
+
+.ask-ai-suggestion {
+  padding: $sp-2 $sp-3;
+  border: $border $border-color;
+  border-radius: 10px;
+  background: $ask-ai-surface;
+  color: $body-text-color;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    border-color: rgba($relm-accent, 0.6);
+    color: $body-heading-color;
+  }
+}
+
+.ask-ai-msg {
+  margin-bottom: $sp-4;
+}
+
+.ask-ai-msg-user {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ask-ai-bubble {
+  max-width: 85%;
+  padding: $sp-2 $sp-3;
+  border-radius: 12px 12px 4px;
+  background: rgba($relm-accent, 0.14);
+  color: $body-heading-color;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.ask-ai-answer {
+  overflow-wrap: anywhere;
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  p,
+  ul,
+  ol,
+  blockquote,
+  .ask-ai-code,
+  .ask-ai-table {
+    margin: 0 0 $sp-3;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.25rem;
+  }
+
+  li {
+    margin: 0.15rem 0;
+  }
+
+  // The theme draws its own markers on content lists; use the browser's here.
+  ul > li::before,
+  ol > li::before {
+    content: none;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+    counter-reset: none;
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: $sp-4 0 $sp-2;
+    color: $body-heading-color;
+    font-size: 0.9375rem;
+  }
+
+  a {
+    color: $link-color;
+  }
+
+  code {
+    padding: 0.1em 0.3em;
+    border-radius: 4px;
+    background: $code-background-color;
+    font-size: 0.85em;
+  }
+
+  blockquote {
+    padding-left: $sp-3;
+    border-left: 3px solid $border-color;
+    color: $ask-ai-muted;
+  }
+
+  hr {
+    margin: $sp-4 0;
+  }
+}
+
+.ask-ai-code {
+  overflow: hidden;
+  border: $border $border-color;
+  border-radius: 8px;
+  background: $code-background-color;
+
+  pre {
+    margin: 0;
+    padding: $sp-3;
+    overflow-x: auto;
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  pre code {
+    padding: 0;
+    background: none;
+    font-size: inherit;
+  }
+}
+
+.ask-ai-code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px $sp-2 2px $sp-3;
+  border-bottom: $border $border-color;
+  color: $ask-ai-muted;
+  font-size: 0.75rem;
+}
+
+.ask-ai-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: $ask-ai-muted;
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: $ask-ai-surface;
+    color: $body-heading-color;
+  }
+}
+
+.ask-ai-table {
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    margin: 0;
+    font-size: 0.8rem;
+  }
+
+  th,
+  td {
+    padding: $sp-1 $sp-2;
+  }
+}
+
+.ask-ai-caret {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: $relm-accent;
+  animation: ask-ai-blink 1s steps(2) infinite;
+}
+
+@keyframes ask-ai-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.ask-ai-thinking {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: $ask-ai-muted;
+
+  span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: $relm-accent;
+    animation: ask-ai-dot 1.2s infinite ease-in-out;
+
+    &:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+  }
+
+  em {
+    margin-left: $sp-2;
+    font-style: normal;
+  }
+}
+
+@keyframes ask-ai-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.8);
+  }
+
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.ask-ai-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $sp-2;
+  margin-top: $sp-3;
+}
+
+.ask-ai-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ask-ai-sources-label {
+  width: 100%;
+  color: $ask-ai-muted;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.ask-ai-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 3px $sp-2;
+  border: $border $border-color;
+  border-radius: 999px;
+  background: $ask-ai-surface;
+  color: $body-text-color;
+  font-size: 0.75rem;
+  text-decoration: none;
+
+  .ask-ai-icon {
+    color: $ask-ai-muted;
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: $link-color;
+    color: $body-heading-color;
+  }
+}
+
+.ask-ai-source-title,
+.ask-ai-source-section {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ask-ai-source-section {
+  color: $ask-ai-muted;
+
+  &::before {
+    content: "· ";
+  }
+}
+
+.ask-ai-error {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $sp-2;
+  margin-top: $sp-2;
+  padding: $sp-2 $sp-3;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  border-radius: 8px;
+  background: rgba(248, 113, 113, 0.08);
+  color: $ask-ai-error;
+}
+
+.ask-ai-link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: $link-color;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ask-ai-note {
+  margin-top: $sp-2;
+  color: $ask-ai-muted;
+  font-size: 0.75rem;
+}
+
+.ask-ai-foot {
+  padding: $sp-3 $sp-3 $sp-2;
+  border-top: $border $border-color;
+}
+
+.ask-ai-compose {
+  display: flex;
+  align-items: flex-end;
+  gap: $sp-2;
+  padding: 6px 6px 6px $sp-3;
+  border: $border $border-color;
+  border-radius: 12px;
+  background: $body-background-color;
+
+  &:focus-within {
+    border-color: rgba($relm-accent, 0.7);
+  }
+}
+
+.ask-ai-input {
+  flex: 1;
+  min-height: 1.75rem;
+  max-height: 10rem;
+  padding: 4px 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: $body-heading-color;
+  font: inherit;
+  line-height: 1.45;
+  resize: none;
+
+  &::placeholder {
+    color: $ask-ai-muted;
+  }
+}
+
+.ask-ai-send {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: $ask-ai-fill;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+
+  .is-busy & {
+    background: $grey-dk-200;
+  }
+}
+
+.ask-ai-hint {
+  margin-top: 6px;
+  color: $ask-ai-muted;
+  font-size: 0.6875rem;
+  text-align: center;
+}
+
+// Row added to the top of the theme's search results.
+.ask-ai-search-row {
+  display: flex;
+  align-items: center;
+  gap: $sp-3;
+  width: 100%;
+  padding: $sp-2 $sp-3;
+  border: 0;
+  border-bottom: $border $border-color;
+  background: $ask-ai-tint;
+  color: $body-text-color;
+  font: inherit;
+  font-size: 0.875rem;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba($relm-accent, 0.2);
+  }
+
+  kbd {
+    margin-left: auto;
+    padding: 1px 6px;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    color: $ask-ai-muted;
+    font-family: inherit;
+    font-size: 0.6875rem;
+  }
+}
+
+.ask-ai-search-text {
+  display: flex;
+  gap: $sp-2;
+  min-width: 0;
+
+  strong {
+    color: $body-heading-color;
+    white-space: nowrap;
+  }
+}
+
+.ask-ai-search-query {
+  overflow: hidden;
+  color: $ask-ai-muted;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media print {
+  .ask-ai-panel,
+  .ask-ai-fab,
+  .header-actions {
+    display: none !important;
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Header actions: Ask AI and the light / dark toggle (_includes/header_custom.html)
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: $sp-2;
+  padding: $sp-2 $sp-4;
+
+  @include mq(md) {
+    padding: 0 $sp-4 0 0;
+  }
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: $border $border-color;
+  border-radius: 999px;
+  background: transparent;
+  color: $body-text-color;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+
+  svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: $search-background-color;
+    color: $body-heading-color;
+  }
+}
+
+// Show the icon for the mode the button switches to.
+.theme-toggle-moon {
+  display: none;
+}
+
+@if $color-scheme == light {
+  .theme-toggle-sun {
+    display: none;
+  }
+
+  .theme-toggle-moon {
+    display: block;
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Light mode: things above that were tuned for the dark scheme.
+
+@if $color-scheme == light {
+  // The logo is white artwork; draw it dark on the light header.
+  .site-logo {
+    filter: invert(1);
+  }
+
+  .ti-env {
+    background: rgba(247, 209, 46, 0.25);
+    color: #7a5600;
+  }
+
+  .ti-input,
+  .ti-select,
+  .ti-jump {
+    border-color: $grey-lt-300;
+    background: $white;
+  }
+
+  .ti-section-title,
+  .ti-opt,
+  .ti-help,
+  .ti-optional summary,
+  .ti-curl-wrap summary,
+  .ti-muted {
+    color: $grey-dk-100;
+  }
+
+  .ti-req {
+    color: $red-300;
+  }
+
+  .ti-note {
+    color: #7a5600;
+  }
+
+  .ti-saved {
+    color: $green-300;
+  }
+
+  .ti-ok {
+    color: $green-300;
+  }
+
+  .ti-err {
+    color: $red-300;
+  }
+
+  // One Light colours, matching the theme's code highlighting in light mode.
+  .ti-key { color: #e45649; }
+  .ti-str { color: #50a14f; }
+  .ti-num { color: #986801; }
+  .ti-bool,
+  .ti-null { color: #a626a4; }
+}
+
+// ===================================================================================================
+// Relm portal design: layout, sidebar, typography and the home page.
+// Colours come from _sass/color_schemes/{light,dark}.scss ($relm-*), fonts from _sass/custom/setup.scss.
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizelegibility;
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Layout: the header spans the content area; prose keeps a readable measure.
+
+@include mq(md) {
+  .main,
+  .main:has(.endpoint-layout) {
+    max-width: none;
+  }
+
+  .main-content-wrap {
+    max-width: 52rem;
+  }
+
+  .main:has(.endpoint-layout) .main-content-wrap {
+    max-width: 90rem;
+  }
+
+  .main:has(.home-hero) .main-content-wrap {
+    max-width: 68rem;
+  }
+}
+
+.main-header {
+  background: $body-background-color;
+}
+
+@include mq(md) {
+  // The theme stretches the box to the full header height; inset it as a rounded field instead.
+  .search-input-wrap {
+    top: 0.625rem;
+    left: $sp-4;
+    width: calc(100% - #{$sp-8});
+    max-width: 30rem;
+    height: 2.5rem !important;
+    border: $border $border-color;
+    border-radius: 10px;
+    background: $search-background-color;
+    transition: border-color 0.15s;
+  }
+
+  .search-input {
+    padding-left: 2.5rem;
+    background-color: transparent;
+    font-size: 0.9375rem;
+  }
+
+  .search-label {
+    padding-left: $sp-3;
+  }
+
+  .search-active .search-input-wrap,
+  .search-input-wrap:focus-within {
+    border-color: rgba($relm-accent, 0.6);
+    border-radius: 10px;
+  }
+
+  // Results drop down directly under the field, at its width.
+  .search-results {
+    top: 3.5rem;
+    left: $sp-4;
+    width: calc(100% - #{$sp-8});
+    max-width: 36rem;
+    overflow-x: hidden;
+    border: $border $border-color;
+    border-radius: 12px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, if($color-scheme == dark, 0.45, 0.12));
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Sidebar
+
+.side-bar {
+  @include mq(md) {
+    border-right: $border $border-color;
+  }
+}
+
+.site-title {
+  @include mq(md) {
+    padding: 1.05rem $sp-5;
+  }
+
+  &:hover {
+    background-image: none;
+  }
+}
+
+.site-nav {
+  padding: $sp-2 $sp-3 $sp-8;
+
+  @include mq(md) {
+    padding-top: $sp-4;
+  }
+}
+
+.site-nav .nav-list .nav-list-item {
+  .nav-list-link {
+    margin: 1px 0;
+    border-radius: 7px;
+    color: $body-text-color;
+    font-size: 0.875rem;
+    line-height: 1.35;
+    background-image: none;
+    transition: background-color 0.12s, color 0.12s;
+
+    @include mq(md) {
+      display: flex;
+      align-items: center;
+      min-height: 2.125rem;
+      padding-left: $sp-3;
+      line-height: 1.35;
+    }
+
+    &:hover {
+      background-color: $feedback-color;
+      background-image: none;
+      color: $body-heading-color;
+    }
+
+    &[aria-current="page"] {
+      background-color: rgba($relm-accent, 0.12);
+      background-image: none;
+      color: $link-color;
+      font-weight: 600;
+    }
+  }
+
+  .nav-list-expander {
+    color: $relm-muted;
+    opacity: 0.8;
+
+    &:hover {
+      background-image: none;
+      color: $body-heading-color;
+      opacity: 1;
+    }
+
+    @include mq(md) {
+      top: 1px;
+      height: 2.125rem;
+      padding: 0.6rem;
+    }
+  }
+}
+
+// "Get Started" holds every section; show the sections at the top level instead of nested under it.
+.site-nav > .nav-list > .nav-list-item > .nav-list {
+  padding-left: 0;
+
+  > .nav-list-item {
+    margin-top: 2px;
+
+    > .nav-list-link {
+      color: $body-heading-color;
+      font-weight: 500;
+    }
+
+    > .nav-list-link[aria-current="page"] {
+      color: $link-color;
+      font-weight: 600;
+    }
+  }
+}
+
+// Pages inside a section hang off a thin guide line; the current page marks it in violet.
+.site-nav .nav-list .nav-list .nav-list {
+  margin: 2px 0 $sp-2 1.0625rem;
+  padding-left: $sp-2;
+  border-left: $border $border-color;
+
+  .nav-list-link {
+    position: relative;
+    padding-left: $sp-3;
+
+    &[aria-current="page"]::before {
+      position: absolute;
+      top: 0.4rem;
+      bottom: 0.4rem;
+      left: calc(-#{$sp-2} - 1px);
+      width: 2px;
+      border-radius: 2px;
+      background: $link-color;
+      content: "";
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Typography
+
+.main-content {
+  line-height: 1.65;
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: $body-heading-color;
+    font-weight: 600;
+  }
+
+  h1 {
+    margin-bottom: $sp-4;
+    font-size: 2.125rem;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  h2 {
+    margin-top: 2.75rem;
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  h3 {
+    margin-top: $sp-8;
+    font-size: 1.125rem;
+    line-height: 1.4;
+  }
+
+  h4 {
+    font-size: 1rem;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  a:not(.btn) {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+
+  code {
+    padding: 0.1em 0.35em;
+    border: $border $border-color;
+    border-radius: 5px;
+    font-size: 0.85em;
+  }
+
+  pre code,
+  .highlight code {
+    padding: 0;
+    border: 0;
+  }
+
+  div.highlighter-rouge,
+  figure.highlight {
+    border: $border $border-color;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .table-wrapper {
+    border: $border $border-color;
+    border-radius: 10px;
+    box-shadow: none;
+  }
+
+  th {
+    background: $sidebar-color;
+    color: $body-heading-color;
+    font-weight: 600;
+  }
+
+  th,
+  td {
+    border-color: $border-color;
+  }
+
+  hr {
+    margin: $sp-8 0;
+    background: $border-color;
+  }
+}
+
+// The theme sets small headings and labels in tracked capitals; Relm uses sentence case throughout.
+.text-delta {
+  color: $body-heading-color;
+  font-size: 0.875rem !important;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+// "About this endpoint" callout on endpoint pages.
+p.endpoint-desc,
+blockquote.endpoint-desc {
+  padding: $sp-3 $sp-4;
+  border-left: 3px solid $link-color;
+  border-radius: 0 10px 10px 0;
+  background: rgba($relm-accent, 0.08);
+  box-shadow: none;
+
+  &::before {
+    padding-bottom: $sp-1;
+    color: $link-color;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+}
+
+.site-footer,
+.main-content-wrap + .site-footer {
+  color: $relm-muted;
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Home page (index.md)
+
+.home-hero {
+  display: grid;
+  gap: $sp-8;
+  align-items: center;
+  padding: $sp-4 0 $sp-10;
+
+  @include mq(lg) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: $sp-10;
+    padding-top: $sp-8;
+  }
+
+  h1 {
+    margin: 0 0 $sp-4;
+    font-size: 2.75rem;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+  }
+}
+
+.home-lede {
+  max-width: 32rem;
+  margin: 0 0 $sp-6;
+  color: $body-text-color;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $sp-3;
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: $sp-2;
+    height: 2.75rem;
+    padding: 0 $sp-5;
+    border-radius: 10px;
+    box-shadow: none;
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .btn-primary {
+    background: $relm-accent-fill;
+    color: #fff;
+
+    &:hover,
+    &:focus-visible {
+      background: darken($relm-accent-fill, 6%);
+    }
+  }
+
+  .home-ask {
+    border: $border $border-color;
+    background: transparent;
+    color: $body-heading-color;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      border-color: rgba($relm-accent, 0.6);
+      background: rgba($relm-accent, 0.06);
+    }
+
+    svg {
+      width: 1rem;
+      height: 1rem;
+      color: $link-color;
+    }
+
+    &[hidden] {
+      display: none;
+    }
+  }
+}
+
+// The signed request: the one thing every integration has in common.
+.home-request {
+  margin: 0;
+  overflow: hidden;
+  border: $border $border-color;
+  border-radius: 14px;
+  background: $code-background-color;
+
+  figcaption {
+    padding: $sp-3 $sp-4;
+    border-bottom: $border $border-color;
+    color: $relm-muted;
+    font-size: 0.8125rem;
+  }
+
+  pre {
+    margin: 0;
+    padding: $sp-5 $sp-4;
+    overflow-x: auto;
+    background: transparent;
+    font-family: $mono-font-family;
+    font-size: 0.8125rem;
+    line-height: 1.9;
+  }
+
+  code {
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: inherit;
+  }
+
+  .hr-method {
+    color: $link-color;
+    font-weight: 500;
+  }
+
+  .hr-name {
+    color: $body-heading-color;
+    font-weight: 500;
+  }
+
+  .hr-value {
+    color: $body-text-color;
+  }
+
+  .hr-sig {
+    color: $link-color;
+  }
+
+  .home-request-link {
+    display: block;
+    padding: $sp-3 $sp-4;
+    border-top: $border $border-color;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.home-directory {
+  h2 {
+    margin: 0 0 $sp-2;
+    font-size: 1.25rem;
+  }
+
+  > p {
+    margin: 0 0 $sp-4;
+    color: $relm-muted;
+  }
+}
+
+.main-content .home-products {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: $border $border-color;
+
+  > li {
+    display: grid;
+    gap: $sp-1 $sp-6;
+    margin: 0;
+    padding: $sp-5 0;
+    border-bottom: $border $border-color;
+
+    @include mq(md) {
+      grid-template-columns: 13rem minmax(0, 1fr);
+    }
+
+    &::before {
+      content: none;
+    }
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  p {
+    margin: 0 0 $sp-2;
+    max-width: 38rem;
+  }
+}
+
+.main-content .home-product-name {
+  color: $body-heading-color;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    color: $link-color;
+  }
+}
+
+.home-product-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $sp-1 $sp-5;
+  font-size: 0.875rem;
+
+  a {
+    font-weight: 500;
+  }
+}
+
+// With the chat panel open beside it, the home hero stacks instead of squeezing the request example.
+@media (min-width: 87.5rem) and (max-width: 119.99rem) {
+  .ask-ai-open .home-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,6 +1,10 @@
 ---
 title: Client Customer
-layout: home
+layout: endpoint
+try_it:
+  - op: getClientCustomer
+    heading: "Get Client Customer"
+try_it_spec: /assets/openapi/partner.json
 permalink: /partner/manage-client/customer
 parent: Manage Client Banking
 nav_order: 1

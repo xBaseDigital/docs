@@ -1,6 +1,10 @@
 ---
 title: Order Creation
-layout: home
+layout: endpoint
+try_it:
+  - op: createPosOrder
+    heading: "Integration Steps"
+try_it_spec: /assets/openapi/pos.json
 permalink: /pos/checkout
 parent: POS API
 nav_order: 1
