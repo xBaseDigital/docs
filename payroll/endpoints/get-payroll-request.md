@@ -366,6 +366,7 @@ Understanding the status progression helps interpret the request state:
 
 | Status | Description | Next Actions |
 |--------|-------------|--------------|
+| `RESOLVING_BENEFICIARIES` | Created from a spreadsheet; beneficiaries are being matched | Wait, or cancel |
 | `PENDING` | Source funds debited, awaiting admin quote | Wait for admin to provide quote |
 | `QUOTE_PROVIDED` | Admin provided FX quote | Accept quote or cancel |
 | `QUOTE_ACCEPTED` | Customer accepted quote | System executes transfers |

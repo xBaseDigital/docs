@@ -19,3 +19,6 @@ vendor/
 
 # Ignore macOS Finder metadata files
 .DS_Store
+
+# Ask AI server bundle (built by npm run build:server / the Dockerfile)
+ai-assist/dist/

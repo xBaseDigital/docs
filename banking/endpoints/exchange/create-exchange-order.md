@@ -129,3 +129,9 @@ Content-Type: application/json
   - `settlementDate`: The date of settlement.
   - `fee`: Any associated fee (can be 0).
   - `expiresAt`: The timestamp when the quote expires.
+
+### Possible values
+
+The order in the response is a transaction, with these values:
+
+{% include enums/transaction-values.md %}

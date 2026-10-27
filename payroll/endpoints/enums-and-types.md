@@ -18,6 +18,7 @@ Represents the current state of a payroll request throughout its lifecycle.
 
 | Status | Description | Can Accept Quote | Can Cancel | Next Possible States |
 |--------|-------------|------------------|------------|---------------------|
+| `RESOLVING_BENEFICIARIES` | Created from a payroll spreadsheet; Relm is matching or creating each employee's beneficiary. If any row can't be resolved, the whole request fails. | No | Yes | PENDING, FAILED, CANCELLED |
 | `PENDING` | Request created, source funds debited, awaiting admin quote | No | Yes | QUOTE_PROVIDED, CANCELLED |
 | `QUOTE_PROVIDED` | Admin has provided FX exchange quote | Yes | Yes | QUOTE_ACCEPTED, CANCELLED |
 | `QUOTE_ACCEPTED` | Customer accepted the quote, awaiting execution | No | Yes | EXECUTING, CANCELLED |
@@ -40,6 +41,9 @@ Once a request reaches a terminal state, it cannot transition to any other statu
 
 ```mermaid
 graph TD
+    R[RESOLVING_BENEFICIARIES<br/>spreadsheet uploads only] --> A
+    R --> H
+    R -.Cancel.-> I
     A[PENDING] --> B[QUOTE_PROVIDED]
     B --> C[QUOTE_ACCEPTED]
     C --> D[EXECUTING]
@@ -105,7 +109,7 @@ graph LR
 | Type | Count per Request | Visibility | Status Tracking |
 |------|-------------------|------------|-----------------|
 | `FUSE_INTERNAL_DEBIT` | 1 | Customer & Admin | Real-time via Fuse |
-| `FUSE_TO_MCB` | 1 | Admin only | Real-time via Fuse |
+| `FUSE_TO_MCB` | 1 | Customer & Admin (in the request details, not in the transfers list) | Real-time via Fuse |
 | `MCB_TO_BENEFICIARY` | N (one per beneficiary) | Customer & Admin | Real-time via MCB |
 
 ---
@@ -273,20 +277,30 @@ The fee breakdown in payroll request metadata contains:
 
 ## Error Codes
 
-Common error codes returned by Payroll API endpoints:
+Errors use the standard Relm error format. `error.code` says what kind of error it is and `error.msg` is a list of messages explaining why:
 
-| Code | HTTP Status | Description |
-|------|-------------|-------------|
-| `VALIDATION_ERROR` | 400 | Invalid request parameters |
-| `INVALID_FEE_HASH` | 400 | Fee hash is invalid or expired |
-| `INSUFFICIENT_BALANCE` | 400 | Source account has insufficient funds |
-| `INVALID_STATUS` | 400 | Operation not allowed in current status |
-| `QUOTE_EXPIRED` | 400 | Quote has expired |
-| `EXCHANGE_RATE_UNAVAILABLE` | 400 | Unable to retrieve exchange rate |
-| `UNAUTHORIZED` | 401 | Invalid or expired authentication token |
-| `FORBIDDEN` | 403 | Access denied to resource |
-| `NOT_FOUND` | 404 | Resource not found |
-| `INTERNAL_ERROR` | 500 | Unexpected server error |
+```json
+{
+  "errorCode": 400,
+  "success": false,
+  "error": {
+    "code": "bad-request",
+    "fullCode": "RELM-GEN-BAD-REQUEST",
+    "msg": ["Invalid or expired fee hash"],
+    "source": "GEN",
+    "statusCode": 400,
+    "traceId": "cfc75450-1bba-11f1-ad67-93c03b26c699"
+  }
+}
+```
+
+| `code` | `fullCode` | HTTP Status | When |
+|--------|------------|-------------|------|
+| `bad-request` | `RELM-GEN-BAD-REQUEST` | 400 | Invalid parameters (one message per problem field), or a request that can't be carried out. For example: `Invalid or expired fee hash`, `Insufficient available balance for payroll request`, `Payroll request is not in QUOTE_PROVIDED status`, `Payroll request cannot be cancelled in its current status`, `Quote has expired`, or an exchange rate that is unavailable. |
+| `unauthorized` | `RELM-GEN-UNAUTHORIZED` | 401 | Missing, invalid or expired authentication |
+| `forbidden` | `RELM-GEN-FORBIDDEN` | 403 | The account currency or request belongs to another customer |
+| `not-found` | `RELM-GEN-NOT-FOUND` | 404 | The payroll request or resource doesn't exist |
+| `internal-server-error` | `RELM-GEN-INTERNAL-SERVER-ERROR` | 500 | Unexpected server error |
 
 ---
 

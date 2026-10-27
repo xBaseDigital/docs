@@ -46,7 +46,7 @@ Headers
 | --------------- | ------- | -------- | ----------- |
 | `page`          | integer | No       | Page number to retrieve. Defaults to `1`. |
 | `limit`         | integer | No       | Number of records per page. |
-| `status`        | string  | No       | Filter by order status. Accepted values: `PENDING`, `PROCESSING`, `COMPLETED`, `CANCELLED`, `EXPIRED`, `FAILED`. |
+| `status`        | string  | No       | Filter by order status. Accepted values: `PENDING`, `PROCESSING`, `PARTIAL_FILLED` (the customer has paid part of the amount), `COMPLETED`, `CANCELLED`, `EXPIRED`, `FAILED`. Orders in the response use the same values. |
 | `orderType`     | string  | No       | Filter by order type. Accepted values: `EPOS`, `APP_POS`, `PAYMENT_LINK`. |
 | `posOrderId`    | UUID    | No       | Filter by the RELM-assigned order ID (must be a valid UUID). |
 | `clientOrderId` | string  | No       | Filter by the order ID assigned by your system. |

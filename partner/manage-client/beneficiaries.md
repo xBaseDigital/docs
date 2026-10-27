@@ -123,8 +123,8 @@ Core fields are listed below. Additional bank-scheme fields (`sortCode`, `routin
 | `companyName` | string | Conditional | Company name for business beneficiaries. Max 35 chars. |
 | `displayName` | string | No | Defaults to `name` when omitted. |
 | `reference` | string | Yes | Payment reference. Max 200 chars. |
-| `type` | string | No | `BeneficiaryType` (e.g. `INDIVIDUAL`, `BUSINESS`). |
-| `transactionType` | string | No | `BeneficiaryTransactionType` (e.g. `LOCAL`, `INTERNATIONAL`). |
+| `type` | string | No | `INDIVIDUAL`, `BUSINESS` or `CHARITY`. |
+| `transactionType` | string | No | `LOCAL` or `INTERNATIONAL`. |
 | `currencyCode` | string | Yes | 3–5 character uppercase currency code. |
 | `countryCode` | string | No | ISO 3166-1 alpha-2, uppercase. |
 | `bankCountryCode` | string | No | ISO 3166-1 alpha-2, uppercase. |
@@ -349,3 +349,7 @@ Status: 200 OK
   }
 }
 ```
+
+## Possible values
+
+{% include enums/beneficiary-values.md %}

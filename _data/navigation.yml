@@ -1,0 +1,140 @@
+# The sidebar, breadcrumbs and Previous / Next links are all built from this file
+# (by _plugins/docs_navigation.rb). The `parent` / `nav_order` front matter on pages is not used for them.
+#
+#   - title: Section name              # a top-level entry in the sidebar
+#     url: /section                    # optional: the section's own page (clicking the name opens it)
+#     index: true                      # optional: list the section's pages at the bottom of its page
+#     also: [/old/url]                 # optional: other pages that show this section's list
+#     pages: [/a, /b]                  # pages directly in the section, in order
+#     groups:                          # or pages under small headings
+#       - title: Heading
+#         url: /old/heading/page       # optional: a page that lists the group (not linked in the sidebar)
+#         pages:
+#           - /page                    # title and HTTP method come from the page itself
+#           - { url: /page, title: Shorter title }
+#
+# Every URL must be the permalink of a page; the build stops if one isn't. Pages left out of this
+# file are still published but don't appear in the sidebar (the build lists them as a warning).
+
+- title: Get Started
+  url: /
+
+- title: API Authentication
+  url: /auth
+  groups:
+    - title: Setup
+      pages:
+        - /auth/getting-started
+        - /auth/create-api-key
+        - /auth/auth-format
+        - /auth/signing-process
+    - title: Examples
+      url: /auth/implementation-examples
+      pages:
+        - /auth/implementation-examples/javascript
+        - /auth/implementation-examples/python
+        - /auth/implementation-examples/postman
+    - title: Reference
+      pages:
+        - /auth/security-best-practices
+        - /auth/troubleshooting
+        - /auth/technical-details
+
+- title: SDK Integration
+  url: /sdk-integration
+  pages:
+    - /onboarding-sdk
+    - /sumsub-sdk
+
+- title: Banking API
+  url: /banking
+  index: true
+  also: [/banking/endpoints]
+  groups:
+    - title: Customer
+      url: /banking/endpoints/customer
+      pages:
+        - /banking/endpoints/customer/get-customer-details
+    - title: Currency
+      url: /banking/endpoints/currency
+      pages:
+        - /banking/endpoints/currency/get-supported-currencies
+    - title: Accounts
+      url: /banking/endpoints/accounts
+      pages:
+        - /banking/endpoints/accounts/get-accounts-list
+    - title: Exchange
+      url: /banking/endpoints/exchange
+      pages:
+        - /banking/endpoints/exchange/generate-quote
+        - /banking/endpoints/exchange/create-exchange-order
+    - title: Payout
+      url: /banking/endpoints/payout
+      pages:
+        - /banking/endpoints/payout/estimate-payout-fees
+        - /banking/endpoints/payout/create-payout-request
+    - title: Transaction
+      url: /banking/endpoints/transaction
+      pages:
+        - /banking/endpoints/transaction/get-transaction-list
+    - title: Beneficiary
+      url: /banking/endpoints/beneficiary
+      pages:
+        - /banking/endpoints/beneficiary/get-beneficiary-list
+        - /banking/endpoints/beneficiary/create-beneficiary
+        - /banking/endpoints/beneficiary/confirm-beneficiary
+
+- title: Payroll
+  url: /payroll
+  groups:
+    - title: Payroll API
+      pages:
+        - { url: /payroll/api, title: Overview }
+        - /payroll/endpoints/estimate-payroll-fee
+        - /payroll/endpoints/create-payroll-request
+        - /payroll/endpoints/accept-payroll-quote
+        - /payroll/endpoints/get-payroll-request
+        - /payroll/endpoints/list-payroll-requests
+        - /payroll/endpoints/cancel-payroll-request
+        - /payroll/endpoints/list-payroll-transfers
+        - /payroll/endpoints/enums-and-types
+    - title: Embed
+      pages:
+        - /payroll/widget
+
+- title: POS API
+  url: /pos
+  index: true
+  groups:
+    - title: Orders
+      pages:
+        - /pos/checkout
+        - /pos/fetch-orders
+        - /pos/confirm-order
+    - title: Webhooks
+      url: /pos/webhook
+      pages:
+        - /pos/webhook/setup
+        - /pos/webhook/events
+        - /pos/webhook/authenticity
+
+- title: Partner API
+  url: /partner
+  groups:
+    - title: Onboarding
+      pages:
+        - /partner/onboard-customer
+    - title: Client Banking
+      pages:
+        - { url: /partner/manage-client, title: Overview }
+        - /partner/manage-client/customer
+        - /partner/manage-client/accounts
+        - /partner/manage-client/beneficiaries
+        - /partner/manage-client/whitelisting
+        - /partner/manage-client/payouts
+    - title: Client Payroll
+      pages:
+        - { url: /partner/manage-client-payroll, title: Overview }
+        - /partner/manage-client-payroll/fee-estimate
+        - /partner/manage-client-payroll/requests
+        - /partner/manage-client-payroll/transfers

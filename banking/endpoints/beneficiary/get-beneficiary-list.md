@@ -80,7 +80,9 @@ Content-Type: application/json
 
 - `id`: Unique identifier for the beneficiary.
 - `name`: Name of the beneficiary.
-- `type`: Type of beneficiary (e.g., `INDIVIDUAL`, `BUSINESS`).
+- `type`: Type of beneficiary: `INDIVIDUAL`, `BUSINESS` or `CHARITY`.
+- `status`: `PENDING` (not yet confirmed) or `ACTIVE` (ready for payouts).
+- `transactionType`: `LOCAL` or `INTERNATIONAL`.
 - `assetType`: Type of asset (`FIAT` or `CRYPTO`).
 - `iban`: IBAN for Fiat beneficiaries.
 - `bicSwiftCode`: BIC/SWIFT code for Fiat beneficiaries.
@@ -125,3 +127,7 @@ For beneficiaries with `assetType: "CRYPTO"`, the response includes `cryptoWalle
     ]
 }
 ```
+
+### Possible values
+
+{% include enums/beneficiary-values.md %}

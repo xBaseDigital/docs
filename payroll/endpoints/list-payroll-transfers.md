@@ -42,7 +42,7 @@ Filter by one or more of the following status values (comma-separated):
 - `COMPLETED` - Successfully paid to beneficiary
 - `FAILED` - Payment failed
 
-For detailed status descriptions, see [Enums & Types](enums-and-types#payroll-transfer-status).
+For detailed status descriptions, see [Enums & Types](enums-and-types#payrolltransferstatus).
 
 ### Example Requests
 

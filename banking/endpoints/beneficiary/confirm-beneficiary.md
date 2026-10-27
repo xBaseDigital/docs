@@ -99,13 +99,17 @@ Content-Type: application/json
 | `correspondentBic` | string \| null | Correspondent BIC code (if applicable) |
 | `sortCode` | string \| null | Bank sort code (if applicable) |
 | `accountNumber` | string \| null | Bank account number (if applicable) |
-| `type` | string | Type of beneficiary (e.g., "BUSINESS", "INDIVIDUAL") |
+| `type` | string | Type of beneficiary: `INDIVIDUAL`, `BUSINESS` or `CHARITY` |
 | `currencyCode` | string | Currency code (ISO 4217 format, e.g., "AED") |
 | `countryCode` | string \| null | Country code (if applicable) |
 | `bankCountryCode` | string \| null | Bank's country code (if applicable) |
-| `status` | string | Current status ("ACTIVE", "INACTIVE", etc.) |
+| `status` | string | `ACTIVE` once confirmed (`PENDING` before) |
 | `createdAt` | string | Timestamp when the beneficiary was created (ISO 8601) |
 | `updatedAt` | string | Timestamp when the beneficiary was last updated (ISO 8601) |
-| `transactionType` | string | Type of transaction ("INTERNATIONAL", "DOMESTIC") |
+| `transactionType` | string | `LOCAL` or `INTERNATIONAL` |
 | `addressId` | string | Unique identifier of the associated address |
 | `address` | object \| null | Address details (if included) |
+
+### Possible values
+
+{% include enums/beneficiary-values.md %}

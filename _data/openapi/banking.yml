@@ -85,14 +85,6 @@ paths:
       operationId: getSupportedCurrencies
       summary: Get supported currencies
       description: Lists the currencies Relm supports, with fiat details or crypto networks.
-      parameters:
-        - name: market
-          in: query
-          required: false
-          description: Only return currencies available in this market.
-          schema:
-            type: string
-            enum: [UK, US, EU, GLOBAL]
       responses:
         "200":
           description: Currency list.
@@ -269,7 +261,7 @@ paths:
               countryCode: GB
               bankCountryCode: GB
               transactionType: LOCAL
-              bankingIdType: sortCode
+              bankingIdType: SORT_CODE
               sortCode: "040004"
               accountNumber: "12345678"
               address:
@@ -916,7 +908,7 @@ components:
             email: { type: [string, "null"] }
             reference: { type: [string, "null"] }
             memo: { type: [string, "null"] }
-            type: { type: string, enum: [INDIVIDUAL, BUSINESS, CHARITY, INTERNAL] }
+            type: { type: string, enum: [INDIVIDUAL, BUSINESS, CHARITY] }
             status: { type: string, enum: [PENDING, ACTIVE] }
             assetType: { type: string, enum: [FIAT, CRYPTO] }
             currencyCode: { type: string, examples: [AED] }
@@ -927,7 +919,7 @@ components:
             bankingId: { type: [string, "null"] }
             bankingIdType:
               type: [string, "null"]
-              enum: [sortCode, routingTransitNumber, transitNumber, bankStateBranch, ifsc, iban, null]
+              enum: [IBAN, SORT_CODE, ROUTING_TRANSIT_NUMBER, TRANSIT_NUMBER, BANK_STATE_BRANCH, IFSC, BIC, null]
             accountNumber: { type: [string, "null"] }
             routingNumber: { type: [string, "null"] }
             sortCode: { type: [string, "null"] }
@@ -954,7 +946,7 @@ components:
       type: object
       required: [reference, currencyCode]
       properties:
-        type: { type: string, enum: [INDIVIDUAL, BUSINESS] }
+        type: { type: string, enum: [INDIVIDUAL, BUSINESS, CHARITY] }
         assetType: { type: string, enum: [FIAT, CRYPTO] }
         firstName: { type: string, maxLength: 100 }
         lastName: { type: string }
@@ -966,7 +958,7 @@ components:
         countryCode: { type: string, description: "ISO 3166-1 alpha-2, uppercase." }
         bankCountryCode: { type: string, description: "ISO 3166-1 alpha-2, uppercase." }
         transactionType: { type: string, examples: [LOCAL] }
-        bankingIdType: { type: string, enum: [sortCode, routingTransitNumber, transitNumber, bankStateBranch, ifsc, iban] }
+        bankingIdType: { type: string, enum: [IBAN, SORT_CODE, ROUTING_TRANSIT_NUMBER, TRANSIT_NUMBER, BANK_STATE_BRANCH, IFSC, BIC] }
         accountNumber: { type: string }
         sortCode: { type: string }
         routingTransitNumber: { type: string }

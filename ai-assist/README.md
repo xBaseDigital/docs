@@ -18,6 +18,55 @@ Browser (assets/js/ask-ai.js) ──POST /ask──► this service ──► fi
 - **Safe to expose**: the API key stays on the server; browsers on other sites are refused (CORS allow-list);
   each visitor is rate limited; input sizes are capped; errors come back as messages a developer can act on.
 
+## Deploy (Google Cloud Run)
+
+The `Dockerfile` at the root of the repo builds the whole docs site and serves it together with Ask AI
+from one container (`src/server.ts`). Ask AI is answered on the same domain at `/ai`, so there is no
+separate service, URL or CORS set-up, and the docs index is read from the image itself.
+
+One-time set-up (replace `PROJECT_ID`; `asia-south1` is Mumbai):
+
+```bash
+gcloud config set project PROJECT_ID
+gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com secretmanager.googleapis.com
+
+# Store the key in Secret Manager: paste it, press Enter, then Ctrl-D. It is never put in the image.
+gcloud secrets create anthropic-api-key --data-file=-
+
+# Let Cloud Run read it (the default runtime service account).
+PROJECT_NUMBER=$(gcloud projects describe "$(gcloud config get-value project)" --format='value(projectNumber)')
+gcloud secrets add-iam-policy-binding anthropic-api-key \
+  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+  --role=roles/secretmanager.secretAccessor
+```
+
+Deploy (run from the root of the repo; Cloud Build builds the image from the `Dockerfile`):
+
+```bash
+gcloud run deploy relm-docs --source . --region asia-south1 --allow-unauthenticated \
+  --set-secrets ANTHROPIC_API_KEY=anthropic-api-key:latest \
+  --max-instances 3
+```
+
+It prints the service URL. Check Ask AI at `<url>/ai/health` (`"configured": true` means the key was found).
+Each deploy rebuilds the site, so Ask AI always answers from the docs in that image.
+
+- **Rate limit**: Cloud Run uses the per-instance limiter (`RATE_LIMIT_PER_MINUTE`, default 10 per visitor),
+  so `--max-instances` also caps the total.
+- **Settings**: `MODEL`, `EFFORT`, `RATE_LIMIT_PER_MINUTE` and `ANTHROPIC_WORKSPACE_ID` can be set with
+  `--set-env-vars`. `ALLOWED_ORIGINS` is only needed for other sites calling `/ai`.
+- **Custom domain**: map `docs.relm.co` to the service in Cloud Run (or behind a load balancer). The site is
+  built with `SITE_URL=https://docs.relm.co`; to use another address, build with `--build-arg SITE_URL=...`.
+
+Try the image locally (on an Apple silicon Mac, keep `--platform linux/amd64`; the gem lockfile is for x86 Linux):
+
+```bash
+docker build --platform linux/amd64 -t relm-docs .
+docker run --rm -p 8080:8080 --env-file ai-assist/.dev.vars -e DOCS_INDEX_URL= relm-docs   # open http://localhost:8080
+```
+
+(`-e DOCS_INDEX_URL=` makes the container read the index it was built with, not your local `jekyll serve`.)
+
 ## Deploy (Cloudflare Workers)
 
 ```bash

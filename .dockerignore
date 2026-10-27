@@ -1,0 +1,25 @@
+# Secrets: never send these to the build.
+**/.dev.vars
+**/.env
+**/.env.*
+
+# Git, editor and OS files
+.git
+.github
+.idea
+.vscode
+**/.DS_Store
+
+# Build output and caches (the image builds its own)
+_site
+.sass-cache
+.jekyll-cache
+.jekyll-metadata
+.bundle
+vendor
+**/node_modules
+ai-assist/dist
+
+# Docker files themselves
+Dockerfile
+.dockerignore

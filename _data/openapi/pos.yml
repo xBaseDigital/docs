@@ -137,7 +137,7 @@ paths:
           in: query
           schema:
             type: string
-            enum: [PENDING, PROCESSING, INTERNAL_TRANSFER_COMPLETE, READY_FOR_EXECUTION, READY_FOR_SETTLEMENT, PROCESSING_SETTLEMENT, SETTLEMENT_INITATED, COMPLETED, CANCELLED, PARTIAL_FILLED, EXPIRED, FAILED]
+            enum: [PENDING, PROCESSING, PARTIAL_FILLED, COMPLETED, CANCELLED, EXPIRED, FAILED]
         - name: orderType
           in: query
           schema: { type: string, enum: [EPOS, APP_POS, PAYMENT_LINK] }
