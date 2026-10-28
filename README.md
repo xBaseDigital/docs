@@ -1,174 +1,116 @@
-# XBDPay Documentation
+# Relm Developer Docs
 
-This is a *bare-minimum* template to create a [Jekyll] site that:
+Source for the Relm developer portal at **[docs.relm.co](https://docs.relm.co)**: API authentication, Banking, Payroll, POS, Partner and SDK docs.
 
-- uses the [Just the Docs] theme;
-- can be built and published on [GitHub Pages];
-- can be built and previewed locally, and published on other platforms.
+It's a [Jekyll](https://jekyllrb.com) site using the [Just the Docs](https://just-the-docs.github.io/just-the-docs/) theme (0.10.1), plus:
 
-More specifically, the created site:
+- an interactive **Try it** panel on endpoint pages, driven by OpenAPI specs;
+- **Ask AI**, which answers questions from the docs using Claude (service in [`ai-assist/`](ai-assist/README.md));
+- a sidebar built from one file, `_data/navigation.yml`.
 
-- uses a gem-based approach, i.e. uses a `Gemfile` and loads the `just-the-docs` gem;
-- uses the [GitHub Pages / Actions workflow] to build and publish the site on GitHub Pages.
+## Repo layout
 
-To get started with creating a site, simply:
+| Path | What it is |
+| --- | --- |
+| `authentication/`, `banking/`, `partner/`, `payroll/`, `pos/`, `sdk/` | The docs pages (Markdown) |
+| `index.md` | Home page |
+| `_data/navigation.yml` | Sidebar, breadcrumbs and Previous / Next links |
+| `_data/openapi/*.yml` | OpenAPI 3.1 specs (banking, partner, payroll, pos) used by Try it |
+| `assets/openapi/*.json` | The same specs published as JSON (importable into Postman) |
+| `_includes/enums/` | Shared enum tables, included with `{% include enums/<name>.md %}` |
+| `_layouts/endpoint.html` | Layout for endpoint pages (page plus Try it panel) |
+| `_plugins/docs_navigation.rb` | Builds the navigation from `_data/navigation.yml` |
+| `_plugins/ai_docs_index.rb` | Builds `/assets/ai/docs-index.json` for Ask AI |
+| `assets/js/try-it.js`, `assets/js/ask-ai.js` | Try it panel and Ask AI chat |
+| `_sass/custom/` | Style overrides |
+| `ai-assist/` | Ask AI service (Node / TypeScript) and its own README |
+| `Dockerfile` | Builds the site and Ask AI into one container for Cloud Run |
 
-1. click "[use this template]" to create a GitHub repository
-2. go to Settings > Pages > Build and deployment > Source, and select GitHub Actions
+## Run locally
 
-If you want to maintain your docs in the `docs` directory of an existing project repo, see [Hosting your docs from an existing project repo](#hosting-your-docs-from-an-existing-project-repo).
+Requires Ruby 3.4.10 (see `.ruby-version`) and Bundler.
 
-After completing the creation of your new site on GitHub, update it as needed:
+```bash
+bundle install
+bundle exec jekyll serve      # http://localhost:4000
+```
 
-## Replace the content of the template pages
+Ask AI is hidden locally unless `ai_assist.endpoint` is set in `_config.yml`. To run it too, see [Local development](ai-assist/README.md#local-development) in `ai-assist/README.md`.
 
-Update the following files to your own content:
+## Writing docs
 
-- `index.md` (your new home page)
-- `README.md` (information for those who access your site repo on GitHub)
+### Add a page
 
-## Changing the version of the theme and/or Jekyll
+1. Create the Markdown file with front matter. Give it a `permalink`.
+2. Add the permalink to `_data/navigation.yml`. The sidebar is built only from this file; `parent` and `nav_order` front matter is ignored. The build **fails** if a URL in this file doesn't match a page's permalink. Pages left out still publish but don't appear in the sidebar (the build prints a warning).
 
-Simply edit the relevant line(s) in the `Gemfile`.
+### Endpoint pages and Try it
 
-## Adding a plugin
+Endpoint pages use the `endpoint` layout and name the OpenAPI operation(s) they document:
 
-The Just the Docs theme automatically includes the [`jekyll-seo-tag`] plugin.
+```yaml
+---
+title: Create Payout Request
+layout: endpoint
+try_it: createPayout                       # operationId in the spec
+permalink: /banking/endpoints/payout/create-payout-request
+---
+```
 
-To add an extra plugin, you need to add it in the `Gemfile` *and* in `_config.yml`. For example, to add [`jekyll-default-layout`]:
+For a page with several endpoints, list them. Each `heading` must match a heading on the page:
 
-- Add the following to your site's `Gemfile`:
+```yaml
+try_it:
+  - op: getClientPayoutFeeEstimate
+    heading: "Estimate Payout Fee"
+  - op: createClientPayout
+    heading: "Create Payout"
+try_it_spec: /assets/openapi/partner.json  # default is banking
+```
 
-  ```ruby
-  gem "jekyll-default-layout"
-  ```
+Try it only sends requests to the **sandbox** (`https://sandbox.api.relm.co`). When an endpoint's request or response changes, update the spec in `_data/openapi/` as well as the page. The specs follow the backend (kubera) validators and routes.
 
-- And add the following to your site's `_config.yml`:
+### Other front matter
 
-  ```yaml
-  plugins:
-    - jekyll-default-layout
-  ```
+- `ai_exclude: true` leaves a page out of Ask AI's knowledge.
 
-Note: If you are using a Jekyll version less than 3.5.0, use the `gems` key instead of `plugins`.
+## Deploy
 
-## Publishing your site on GitHub Pages
+### Google Cloud Run
 
-1.  If your created site is `YOUR-USERNAME/YOUR-SITE-NAME`, update `_config.yml` to:
+The `Dockerfile` builds the site and the Ask AI server into one image, which serves both on `$PORT` (8080). Ask AI is on the same domain at `/ai`. The Anthropic API key is passed at run time from Secret Manager and is never put in the image.
 
-    ```yaml
-    title: YOUR TITLE
-    description: YOUR DESCRIPTION
-    theme: just-the-docs
+Full set-up (Secret Manager, IAM, custom domain, settings) is in [`ai-assist/README.md`](ai-assist/README.md#deploy-google-cloud-run). Once set up, deploy from the repo root:
 
-    url: https://YOUR-USERNAME.github.io/YOUR-SITE-NAME
+```bash
+gcloud run deploy relm-docs --source . --region asia-south1 --allow-unauthenticated \
+  --set-secrets ANTHROPIC_API_KEY=anthropic-api-key:latest \
+  --max-instances 3
+```
 
-    aux_links: # remove if you don't want this link to appear on your pages
-      Template Repository: https://github.com/YOUR-USERNAME/YOUR-SITE-NAME
-    ```
+Cloud Build builds the image on x86 Linux. Check Ask AI afterwards at `<url>/ai/health`.
 
-2.  Push your updated `_config.yml` to your site on GitHub.
+Build arguments: `SITE_URL` (default `https://docs.relm.co`) and `AI_ENDPOINT` (default `/ai`; `""` hides Ask AI).
 
-3.  In your newly created repo on GitHub:
-    - go to the `Settings` tab -> `Pages` -> `Build and deployment`, then select `Source`: `GitHub Actions`.
-    - if there were any failed Actions, go to the `Actions` tab and click on `Re-run jobs`.
+### Building the image on an Apple silicon Mac
 
-## Building and previewing your site locally
+Cloud Run runs x86 (amd64) images, so build for that platform:
 
-Assuming [Jekyll] and [Bundler] are installed on your computer:
+```bash
+docker build --platform linux/amd64 -t relm-docs .
+docker run --rm -p 8080:8080 --env-file ai-assist/.dev.vars -e DOCS_INDEX_URL= relm-docs
+```
 
-1.  Change your working directory to the root directory of your site.
+Without `--platform linux/amd64`, Docker builds for arm64 and `bundle install` fails with *"Your bundle only supports platforms … your local platform is aarch64-linux"*, because `Gemfile.lock` doesn't list that platform. To also build natively on arm64, add it to the lockfile and commit:
 
-2.  Run `bundle install`.
+```bash
+bundle lock --add-platform aarch64-linux
+```
 
-3.  Run `bundle exec jekyll serve` to build your site and preview it at `localhost:4000`.
+### GitHub Pages
 
-    The built site is stored in the directory `_site`.
+`.github/workflows/` also builds and deploys the site to GitHub Pages on every push to `main` (`CNAME` is `docs.relm.co`). `ci.yml` builds the site and type-checks `ai-assist/` on pull requests.
 
-## Publishing your built site on a different platform
+## License
 
-Just upload all the files in the directory `_site`.
-
-## Customization
-
-You're free to customize sites that you create with this template, however you like!
-
-[Browse our documentation][Just the Docs] to learn more about how to use this theme.
-
-## Hosting your docs from an existing project repo
-
-You might want to maintain your docs in an existing project repo. Instead of creating a new repo using the [just-the-docs template](https://github.com/just-the-docs/just-the-docs-template), you can copy the template files into your existing repo and configure the template's Github Actions workflow to build from a `docs` directory. You can clone the template to your local machine or download the `.zip` file to access the files.
-
-### Copy the template files
-
-1.  Create a `.github/workflows` directory at your project root if your repo doesn't already have one. Copy the `pages.yml` file into this directory. GitHub Actions searches this directory for workflow files.
-
-2.  Create a `docs` directory at your project root and copy all remaining template files into this directory.
-
-### Modify the GitHub Actions workflow
-
-The GitHub Actions workflow that builds and deploys your site to Github Pages is defined by the `pages.yml` file. You'll need to edit this file to that so that your build and deploy steps look to your `docs` directory, rather than the project root.
-
-1.  Set the default `working-directory` param for the build job.
-
-    ```yaml
-    build:
-      runs-on: ubuntu-latest
-      defaults:
-        run:
-          working-directory: docs
-    ```
-
-2.  Set the `working-directory` param for the Setup Ruby step.
-
-    ```yaml
-    - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1'
-          bundler-cache: true
-          cache-version: 0
-          working-directory: '${{ github.workspace }}/docs'
-    ```
-
-3.  Set the path param for the Upload artifact step:
-
-    ```yaml
-    - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: "docs/_site/"
-    ```
-
-4.  Modify the trigger so that only changes within the `docs` directory start the workflow. Otherwise, every change to your project (even those that don't affect the docs) would trigger a new site build and deploy.
-
-    ```yaml
-    on:
-      push:
-        branches:
-          - "main"
-        paths:
-          - "docs/**"
-    ```
-
-## Licensing and Attribution
-
-This repository is licensed under the [MIT License]. You are generally free to reuse or extend upon this code as you see fit; just include the original copy of the license (which is preserved when you "make a template"). While it's not necessary, we'd love to hear from you if you do use this template, and how we can improve it for future use!
-
-The deployment GitHub Actions workflow is heavily based on GitHub's mixed-party [starter workflows]. A copy of their MIT License is available in [actions/starter-workflows].
-
-----
-
-[^1]: [It can take up to 10 minutes for changes to your site to publish after you push the changes to GitHub](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/creating-a-github-pages-site-with-jekyll#creating-your-site).
-
-[Jekyll]: https://jekyllrb.com
-[Just the Docs]: https://just-the-docs.github.io/just-the-docs/
-[GitHub Pages]: https://docs.github.com/en/pages
-[GitHub Pages / Actions workflow]: https://github.blog/changelog/2022-07-27-github-pages-custom-github-actions-workflows-beta/
-[Bundler]: https://bundler.io
-[use this template]: https://github.com/just-the-docs/just-the-docs-template/generate
-[`jekyll-default-layout`]: https://github.com/benbalter/jekyll-default-layout
-[`jekyll-seo-tag`]: https://jekyll.github.io/jekyll-seo-tag
-[MIT License]: https://en.wikipedia.org/wiki/MIT_License
-[starter workflows]: https://github.com/actions/starter-workflows/blob/main/pages/jekyll.yml
-[actions/starter-workflows]: https://github.com/actions/starter-workflows/blob/main/LICENSE
+[MIT](LICENSE). Based on the [Just the Docs template](https://github.com/just-the-docs/just-the-docs-template).
