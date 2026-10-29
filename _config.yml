@@ -23,6 +23,16 @@ callouts:
 ai_assist:
   endpoint: ""
 
+# Sass: the just-the-docs theme (still in 0.12) is built on @import, map-get() and darken(), which Dart Sass
+# flags as deprecated on every build. That's the theme's code, so keep it out of the build log.
+# Remove these lines once the theme moves to @use / sass:map / sass:color.
+sass:
+  quiet_deps: true
+  silence_deprecations:
+    - import
+    - global-builtin
+    - color-functions
+
 exclude:
   - ai-assist
 
