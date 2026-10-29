@@ -56,6 +56,14 @@ function publicOrigin(req: IncomingMessage): string {
   return `${proto}://${req.headers.host}`;
 }
 
+const CLIENT_IP_HEADERS = new Set(['x-forwarded-for', 'cf-connecting-ip']);
+
+function clientIpAddedByCloudRun(req: IncomingMessage): string {
+  const forwardedFor = [req.headers['x-forwarded-for']].flat().join(',');
+  const hops = forwardedFor.split(',').map((hop) => hop.trim()).filter(Boolean);
+  return hops[hops.length - 1] || req.socket.remoteAddress || 'anon';
+}
+
 async function readBody(req: IncomingMessage): Promise<Buffer | null> {
   const chunks: Buffer[] = [];
   let size = 0;
@@ -78,9 +86,11 @@ async function serveAi(req: IncomingMessage, res: ServerResponse, path: string):
 
   const headers = new Headers();
   for (const [name, value] of Object.entries(req.headers)) {
+    if (CLIENT_IP_HEADERS.has(name)) continue;
     if (typeof value === 'string') headers.set(name, value);
     else if (Array.isArray(value)) headers.set(name, value.join(', '));
   }
+  headers.set('X-Forwarded-For', clientIpAddedByCloudRun(req));
   const request = new Request(new URL(path || '/', origin), {
     method: req.method,
     headers,
