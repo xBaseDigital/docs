@@ -2,7 +2,7 @@
  * Ask AI: a chat panel that answers questions from these docs.
  *
  * Opens from the header button, ⌘I / Ctrl+I, or the "Ask AI" row at the top of search results
- * (Tab in the search box). Questions go to the ai-assist service, which finds the relevant doc
+ * (Enter in the search box). Questions go to the ai-assist service, which finds the relevant doc
  * sections and streams Claude's answer back with links to the pages it used. The conversation is
  * kept for this browser tab, so following a link keeps the chat open on the next page.
  */
@@ -675,7 +675,7 @@
       el('strong', { text: 'Ask AI' }),
       el('span', { class: 'ask-ai-search-query', text: '“' + query + '”' })
     ]));
-    searchRow.appendChild(el('kbd', { text: 'Tab' }));
+    searchRow.appendChild(el('kbd', { text: 'Enter' }));
     if (searchResults.firstChild !== searchRow) { searchResults.insertBefore(searchRow, searchResults.firstChild); }
   }
 
@@ -694,12 +694,17 @@
     new MutationObserver(function () {
       if (!searchRow || searchResults.firstChild !== searchRow) { updateSearchRow(); }
     }).observe(searchResults, { childList: true });
-    searchInput.addEventListener('keydown', function (event) {
-      if (event.key === 'Tab' && !event.shiftKey && searchInput.value.trim().length >= 2 && !state.disabled) {
-        event.preventDefault();
-        askFromSearch();
-      }
-    });
+    // Enter asks AI. If a result has been picked with the arrow keys, Enter opens that result as
+    // before. Listen in the capture phase so this runs before the theme's own Enter handler.
+    document.addEventListener('keydown', function (event) {
+      if (event.target !== searchInput || event.key !== 'Enter' || event.isComposing) { return; }
+      if (event.shiftKey || event.metaKey || event.ctrlKey || event.altKey) { return; }
+      if (state.disabled || searchInput.value.trim().length < 2) { return; }
+      if (searchResults.querySelector('.search-result.active')) { return; }
+      event.preventDefault();
+      event.stopPropagation();
+      askFromSearch();
+    }, true);
   }
 
   // ------------------------------------------------------------------------------------------------

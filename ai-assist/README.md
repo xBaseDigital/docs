@@ -128,7 +128,7 @@ npm run typecheck
 ## Using it
 
 - **Ask AI** button in the header, the floating button on phones, or **⌘I / Ctrl+I**.
-- Type in the docs search box and press **Tab** (or click the **Ask AI** row) to ask that question.
+- Type in the docs search box and press **Enter** (or click the **Ask AI** row) to ask that question. Use the arrow keys first to open a search result instead.
 - Follow-up questions keep the conversation; links in answers jump to the exact section, and the chat stays
   open on the next page (kept for the browser tab only).
 - Leave a page out of the AI's knowledge with `ai_exclude: true` in its front matter.
